@@ -1,0 +1,37 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * SG函数打表找规律}
+\PYG{c+cm}{ * mex(S): 表示不属于集合S的最小非负整数}
+\PYG{c+cm}{ * sg[x]=mex(s);    sg[x]=0当且仅当x为必败态}
+\PYG{c+cm}{ * f[i]: 表示每一步可走的情况(步数/可取的石子数)}
+\PYG{c+cm}{ */}
+\PYG{k+kt}{void} \PYG{n+nf}{getSG}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{memset}\PYG{p}{(}\PYG{n}{sg}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{sg}\PYG{p}{));}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{memset}\PYG{p}{(}\PYG{n}{s}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{s}\PYG{p}{));}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{n}{N} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{f}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{\PYGZlt{}=}\PYG{n}{i}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//打标记}
+            \PYG{n}{s}\PYG{p}{[}\PYG{n}{sg}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{n}{f}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]]]}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{s}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{sg}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{j}\PYG{p}{;}
+                \PYG{k}{break}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 初始化f[]}
+\PYG{c+cm}{ * 示例: Bash博弈}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{void} \PYG{n+nf}{init}\PYG{p}{()\PYGZob{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{N}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{m}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{f}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{i}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{n}{f}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{m}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

@@ -1,0 +1,41 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * m区间的最小值}
+\PYG{c+cm}{ * 有时候要根据题目需要手写单调队列}
+\PYG{c+cm}{ * 这题也可以直接用deque维护下标即可}
+\PYG{c+cm}{ * 维护pair(idx,val)，val从小到大}
+\PYG{c+cm}{ */} 
+\PYG{k}{struct} \PYG{n}{Queue}\PYG{p}{\PYGZob{}}
+    \PYG{n}{pair}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{p}{,}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}} \PYG{n}{a}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+    \PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{;}
+    \PYG{n}{Queue}\PYG{p}{()\PYGZob{}}
+        \PYG{n}{memset}\PYG{p}{(}\PYG{n}{a}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{a}\PYG{p}{));}
+        \PYG{n}{l}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{n}{r}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{void} \PYG{n}{push}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{isEmpty}\PYG{p}{())\PYGZob{}}
+            \PYG{n}{a}\PYG{p}{[}\PYG{n}{r}\PYG{o}{++}\PYG{p}{]}\PYG{o}{=}\PYG{n}{make\PYGZus{}pair}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,}\PYG{n}{x}\PYG{p}{);}
+            \PYG{k}{return}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//维护单调递增性}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZlt{}}\PYG{n}{r} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{a}\PYG{p}{[}\PYG{n}{r}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{].}\PYG{n}{second}\PYG{o}{\PYGZgt{}}\PYG{n}{x}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{r}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//去除过老的元素}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZlt{}}\PYG{n}{r} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{a}\PYG{p}{[}\PYG{n}{l}\PYG{p}{].}\PYG{n}{first}\PYG{o}{+}\PYG{n}{m}\PYG{o}{\PYGZlt{}=}\PYG{n}{i}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{l}\PYG{o}{++}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{a}\PYG{p}{[}\PYG{n}{r}\PYG{o}{++}\PYG{p}{]}\PYG{o}{=}\PYG{n}{make\PYGZus{}pair}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,}\PYG{n}{x}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{c+c1}{//直接取出堆头(最小值)}
+    \PYG{k+kt}{int} \PYG{n}{getMin}\PYG{p}{()\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{a}\PYG{p}{[}\PYG{n}{l}\PYG{p}{].}\PYG{n}{second}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+
+    \PYG{k+kt}{bool} \PYG{n}{isEmpty}\PYG{p}{()\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{l}\PYG{o}{==}\PYG{n}{r}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}\PYG{n}{q}\PYG{p}{;}
+\end{Verbatim}

@@ -1,0 +1,21 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 二维数组数组(I)，单点更新，区间求和(sum(x2,y2)\PYGZhy{}sum(x1\PYGZhy{}1,y2)\PYGZhy{}sum(x2,y1\PYGZhy{}1)+sum(x1\PYGZhy{}1,y1\PYGZhy{}1))}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{void} \PYG{n+nf}{add}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{y}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{z}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{n}{x}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{+=}\PYG{n}{lowbit}\PYG{p}{(}\PYG{n}{i}\PYG{p}{))\PYGZob{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{n}{y}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}=}\PYG{n}{m}\PYG{p}{;}\PYG{n}{j}\PYG{o}{+=}\PYG{n}{lowbit}\PYG{p}{(}\PYG{n}{j}\PYG{p}{))\PYGZob{}}
+            \PYG{n}{c}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]}\PYG{o}{+=}\PYG{n}{z}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}    
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{sum}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{y}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{n}{x}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZgt{}=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZhy{}=}\PYG{n}{lowbit}\PYG{p}{(}\PYG{n}{i}\PYG{p}{))\PYGZob{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{n}{y}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZgt{}=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZhy{}=}\PYG{n}{lowbit}\PYG{p}{(}\PYG{n}{j}\PYG{p}{))\PYGZob{}}
+            \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{c}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

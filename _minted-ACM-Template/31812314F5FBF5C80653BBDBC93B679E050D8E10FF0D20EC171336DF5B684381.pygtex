@@ -1,0 +1,15 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 有一堆n个石子，两人轮流取，一次可以取任意多个但不能取完，也不能超过上一个人取的两倍}
+\PYG{c+cm}{ * 预处理出斐波那契数列，先手必败态当且仅当n为斐波那契数}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{bool} \PYG{n+nf}{solve}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{bool} \PYG{n}{flag}\PYG{o}{=}\PYG{n+nb}{false}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{100}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{n}\PYG{o}{==}\PYG{n}{fib}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])\PYGZob{}}
+            \PYG{k}{return} \PYG{n+nb}{true}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n+nb}{false}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

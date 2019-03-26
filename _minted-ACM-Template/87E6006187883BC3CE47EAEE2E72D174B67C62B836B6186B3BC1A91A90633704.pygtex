@@ -1,0 +1,43 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}define Mod(a,b) ((a)\PYGZpc{}(b)+(b))\PYGZpc{}(b)}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * exgcd: 给定ax+by=gcd(a,b) 已知a,b求x,y且|x|+|y|最小}
+\PYG{c+cm}{ */}
+\PYG{n}{ll} \PYG{n+nf}{exgcd}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{a}\PYG{p}{,}\PYG{n}{ll} \PYG{n}{b}\PYG{p}{,}\PYG{n}{ll} \PYG{o}{\PYGZam{}}\PYG{n}{x}\PYG{p}{,}\PYG{n}{ll} \PYG{o}{\PYGZam{}}\PYG{n}{y}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{b}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{x}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{n}{y}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{k}{return} \PYG{n}{a}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{ll} \PYG{n}{d}\PYG{o}{=}\PYG{n}{exgcd}\PYG{p}{(}\PYG{n}{b}\PYG{p}{,}\PYG{n}{a}\PYG{o}{\PYGZpc{}}\PYG{n}{b}\PYG{p}{,}\PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{);}
+    \PYG{n}{ll} \PYG{n}{t}\PYG{o}{=}\PYG{n}{x}\PYG{p}{;}
+    \PYG{n}{x}\PYG{o}{=}\PYG{n}{y}\PYG{p}{;}
+    \PYG{n}{y}\PYG{o}{=}\PYG{n}{t}\PYG{o}{\PYGZhy{}}\PYG{n}{a}\PYG{o}{/}\PYG{n}{b}\PYG{o}{*}\PYG{n}{y}\PYG{p}{;}
+    \PYG{k}{return} \PYG{n}{d}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 解ax+by=c: 求非负整数解}
+\PYG{c+cm}{ * x,y: 最小非负整数解}
+\PYG{c+cm}{ * dx,dy: X=x+k*dx Y=y\PYGZhy{}k*dy为方程通解}
+\PYG{c+cm}{ * 无解返回false}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{bool} \PYG{n+nf}{solve}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{a}\PYG{p}{,}\PYG{n}{ll} \PYG{n}{b}\PYG{p}{,}\PYG{n}{ll} \PYG{n}{c}\PYG{p}{,}\PYG{n}{ll} \PYG{o}{\PYGZam{}}\PYG{n}{x}\PYG{p}{,}\PYG{n}{ll} \PYG{o}{\PYGZam{}}\PYG{n}{y}\PYG{p}{,}\PYG{n}{ll} \PYG{o}{\PYGZam{}}\PYG{n}{dx}\PYG{p}{,}\PYG{n}{ll} \PYG{o}{\PYGZam{}}\PYG{n}{dy}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//无非负整数解}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{a}\PYG{o}{==}\PYG{l+m+mi}{0} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{b}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n+nb}{false}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{ll} \PYG{n}{x0}\PYG{p}{,}\PYG{n}{y0}\PYG{p}{;}
+    \PYG{n}{ll} \PYG{n}{d}\PYG{o}{=}\PYG{n}{exgcd}\PYG{p}{(}\PYG{n}{a}\PYG{p}{,}\PYG{n}{b}\PYG{p}{,}\PYG{n}{x0}\PYG{p}{,}\PYG{n}{y0}\PYG{p}{);}
+    \PYG{c+c1}{//c不整除gcd(a,b)，无解}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{c}\PYG{o}{\PYGZpc{}}\PYG{n}{d}\PYG{o}{!=}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n+nb}{false}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//注意a和b要反过来}
+    \PYG{n}{dx}\PYG{o}{=}\PYG{n}{b}\PYG{o}{/}\PYG{n}{d}\PYG{p}{;}
+    \PYG{n}{dy}\PYG{o}{=}\PYG{n}{a}\PYG{o}{/}\PYG{n}{d}\PYG{p}{;}
+    \PYG{c+c1}{//取最小正数解}
+    \PYG{n}{x}\PYG{o}{=}\PYG{n}{Mod}\PYG{p}{(}\PYG{n}{x0}\PYG{o}{*}\PYG{n}{c}\PYG{o}{/}\PYG{n}{d}\PYG{p}{,}\PYG{n}{dx}\PYG{p}{);}
+    \PYG{n}{y}\PYG{o}{=}\PYG{p}{(}\PYG{n}{c}\PYG{o}{\PYGZhy{}}\PYG{n}{a}\PYG{o}{*}\PYG{n}{x}\PYG{p}{)}\PYG{o}{/}\PYG{n}{b}\PYG{p}{;}
+    \PYG{k}{return} \PYG{n+nb}{true}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

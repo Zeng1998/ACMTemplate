@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{map}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{p}{,}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}} \PYG{n}{mp}\PYG{p}{;} 
+\PYG{k+kt}{bool} \PYG{n+nf}{isHash}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{v}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{mp}\PYG{p}{[}\PYG{n}{u}\PYG{o}{*}\PYG{n}{N}\PYG{o}{+}\PYG{n}{v}\PYG{p}{]} \PYG{o}{||} \PYG{n}{mp}\PYG{p}{[}\PYG{n}{v}\PYG{o}{*}\PYG{n}{N}\PYG{o}{+}\PYG{n}{u}\PYG{p}{])\PYGZob{}}
+        \PYG{k}{return} \PYG{n+nb}{true}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{mp}\PYG{p}{[}\PYG{n}{u}\PYG{o}{*}\PYG{n}{N}\PYG{o}{+}\PYG{n}{v}\PYG{p}{]}\PYG{o}{=}\PYG{n}{mp}\PYG{p}{[}\PYG{n}{v}\PYG{o}{*}\PYG{n}{N}\PYG{o}{+}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{k}{return} \PYG{n+nb}{false}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

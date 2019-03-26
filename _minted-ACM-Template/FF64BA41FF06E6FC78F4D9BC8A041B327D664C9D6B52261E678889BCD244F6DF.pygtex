@@ -1,0 +1,16 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 求最大连续子序列和}
+\PYG{c+cm}{ * 定义dp[i]表示前ｉ个值的最大连续和，dp[i]=max(dp[i\PYGZhy{}1]+a[i],a[i])}
+\PYG{c+cm}{ */}
+\PYG{k+kt}{void} \PYG{n+nf}{maxSum}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{a}\PYG{p}{[],}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//根据题目具体要求赋初值}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{2147483647}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{cur}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{cur}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{n}{cur}\PYG{o}{+}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+	\PYG{n}{ans}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{n}{ans}\PYG{p}{,}\PYG{n}{cur}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

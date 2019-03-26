@@ -1,0 +1,51 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 线性筛同时筛出素数和欧拉函数}
+\PYG{c+cm}{ * check[i]: i是否是合数(被筛)}
+\PYG{c+cm}{ * p[i]: 第i个素数，p[0]为个数}
+\PYG{c+cm}{ * phi[i]: i的欧拉函数值}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{void} \PYG{n+nf}{init}\PYG{p}{()\PYGZob{}}
+    \PYG{n}{check}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+    \PYG{n}{phi}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{N}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{check}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])\PYGZob{}}
+            \PYG{n}{p}\PYG{p}{[}\PYG{o}{++}\PYG{n}{p}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]]}\PYG{o}{=}\PYG{n}{i}\PYG{p}{;}
+            \PYG{n}{phi}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}=}\PYG{n}{p}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{];}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{k+kt}{int} \PYG{n}{t}\PYG{o}{=}\PYG{n}{i}\PYG{o}{*}\PYG{n}{p}\PYG{p}{[}\PYG{n}{j}\PYG{p}{];}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{t}\PYG{o}{\PYGZgt{}}\PYG{n}{N}\PYG{p}{)\PYGZob{}}
+                \PYG{k}{break}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}} 
+            \PYG{n}{check}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+            \PYG{c+c1}{//t拥有多个相同质因子(p[j]至少就2次)}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{i}\PYG{o}{\PYGZpc{}}\PYG{n}{p}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+                \PYG{c+c1}{//i是p[j]的倍数，那t和i的质因子相同，由欧拉函数计算式可得两者只差一个系数}
+                \PYG{n}{phi}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]}\PYG{o}{=}\PYG{n}{phi}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{*}\PYG{n}{p}\PYG{p}{[}\PYG{n}{j}\PYG{p}{];}
+            \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+                \PYG{c+c1}{//欧拉函数是积性函数 phi[t]=phi[i]*phi[p[j]]}
+                \PYG{n}{phi}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]}\PYG{o}{=}\PYG{n}{phi}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{*}\PYG{p}{(}\PYG{n}{p}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 求单个欧拉函数 O(sqrt(n))}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{int} \PYG{n+nf}{getPhi}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{res}\PYG{o}{=}\PYG{n}{x}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{n}{i}\PYG{o}{*}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{x}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{x}\PYG{o}{\PYGZpc{}}\PYG{n}{i}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{res}\PYG{o}{=}\PYG{n}{res}\PYG{o}{\PYGZhy{}}\PYG{n}{res}\PYG{o}{/}\PYG{n}{i}\PYG{p}{;}
+            \PYG{k}{while}\PYG{p}{(}\PYG{n}{x}\PYG{o}{\PYGZpc{}}\PYG{n}{i}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{x}\PYG{o}{/=}\PYG{n}{i}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{x}\PYG{o}{!=}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{res}\PYG{o}{=}\PYG{n}{res}\PYG{o}{\PYGZhy{}}\PYG{n}{res}\PYG{o}{/}\PYG{n}{x}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{res}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

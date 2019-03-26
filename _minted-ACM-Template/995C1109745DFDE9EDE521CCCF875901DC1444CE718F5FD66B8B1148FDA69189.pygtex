@@ -1,0 +1,48 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 有三堆石子(a,b,c)，两人轮流取，每次从一堆中取至少一个}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{bool} \PYG{n+nf}{solve}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{a}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{b}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{c}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//可拓展到n堆}
+    \PYG{c+c1}{//根据必败态(0,0,0)判断}
+    \PYG{k}{return} \PYG{n}{a}\PYG{o}{\PYGZca{}}\PYG{n}{b}\PYG{o}{\PYGZca{}}\PYG{n}{c}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * SG函数打表}
+\PYG{c+cm}{ */}
+\PYG{k+kt}{void} \PYG{n+nf}{getSG}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{g}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{g}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{g}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+                \PYG{k+kt}{int} \PYG{n}{win}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{lose}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+                \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{k}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{k}\PYG{o}{\PYGZlt{}=}\PYG{n}{i}\PYG{p}{;}\PYG{n}{k}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+                    \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{sg}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{n}{k}\PYG{p}{][}\PYG{n}{j}\PYG{p}{][}\PYG{n}{g}\PYG{p}{])\PYGZob{}}
+                        \PYG{n}{win}\PYG{o}{++}\PYG{p}{;}
+                    \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+                        \PYG{n}{lose}\PYG{o}{++}\PYG{p}{;}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{}}
+                \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{k}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{k}\PYG{o}{\PYGZlt{}=}\PYG{n}{j}\PYG{p}{;}\PYG{n}{k}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+                    \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{sg}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{n}{k}\PYG{p}{][}\PYG{n}{g}\PYG{p}{])\PYGZob{}}
+                        \PYG{n}{win}\PYG{o}{++}\PYG{p}{;}
+                    \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+                        \PYG{n}{lose}\PYG{o}{++}\PYG{p}{;}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{}}
+                \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{k}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{k}\PYG{o}{\PYGZlt{}=}\PYG{n}{g}\PYG{p}{;}\PYG{n}{k}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+                    \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{sg}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{][}\PYG{n}{g}\PYG{o}{\PYGZhy{}}\PYG{n}{k}\PYG{p}{])\PYGZob{}}
+                        \PYG{n}{win}\PYG{o}{++}\PYG{p}{;}
+                    \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+                        \PYG{n}{lose}\PYG{o}{++}\PYG{p}{;}
+                    \PYG{p}{\PYGZcb{}}
+                \PYG{p}{\PYGZcb{}}
+                \PYG{k}{if}\PYG{p}{(}\PYG{n}{lose}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+                    \PYG{n}{sg}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{][}\PYG{n}{k}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+                \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+                    \PYG{n}{sg}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{][}\PYG{n}{k}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}} 
+\end{Verbatim}

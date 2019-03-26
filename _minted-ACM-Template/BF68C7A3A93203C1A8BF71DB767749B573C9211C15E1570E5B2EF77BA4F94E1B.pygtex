@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 使用斯特林公式求解n阶乘的位数}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{int} \PYG{n+nf}{count}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{n}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{n}\PYG{o}{==}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{p}{(}\PYG{k+kt}{int}\PYG{p}{)}\PYG{n}{ceil}\PYG{p}{(}\PYG{l+m+mf}{0.5}\PYG{o}{*}\PYG{n}{log10}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{M\PYGZus{}PI}\PYG{o}{*}\PYG{n}{n}\PYG{p}{)}\PYG{o}{+}\PYG{n}{n}\PYG{o}{*}\PYG{n}{log10}\PYG{p}{(}\PYG{n}{n}\PYG{p}{)}\PYG{o}{\PYGZhy{}}\PYG{n}{n}\PYG{o}{*}\PYG{n}{log10}\PYG{p}{(}\PYG{n}{M\PYGZus{}E}\PYG{p}{));}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

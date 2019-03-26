@@ -1,0 +1,28 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 预处理 O(nlogn)}
+\PYG{c+cm}{ * dp[i][j]:从a[i]开始2\PYGZca{}j个数的最小值}
+\PYG{c+cm}{ */}
+\PYG{k+kt}{void} \PYG{n+nf}{RMQ\PYGZus{}init}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;(}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{n}{j}\PYG{p}{)}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+	\PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{+}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{n}{j}\PYG{p}{)}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+	    \PYG{c+c1}{//两段重叠部分小区间}
+	    \PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]}\PYG{o}{=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{],}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{o}{+}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{p}{(}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{))][}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]);}
+	\PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 查询[l,r]最小值，最大值同理}
+\PYG{c+cm}{ */}
+\PYG{k+kt}{int} \PYG{n+nf}{RMQ}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{k}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{c+c1}{//保证刚好[l,l+2\PYGZca{}k]和[r\PYGZhy{}2\PYGZca{}k,r]重叠}
+    \PYG{k}{while}\PYG{p}{((}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{p}{(}\PYG{n}{k}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{))}\PYG{o}{\PYGZlt{}=}\PYG{n}{r}\PYG{o}{\PYGZhy{}}\PYG{n}{l}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{k}\PYG{o}{++}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{min}\PYG{p}{(}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{l}\PYG{p}{][}\PYG{n}{k}\PYG{p}{],}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{r}\PYG{o}{\PYGZhy{}}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{n}{k}\PYG{p}{)}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{n}{k}\PYG{p}{]);}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

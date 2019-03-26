@@ -1,0 +1,66 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 最小生成树Prim算法}
+\PYG{c+cm}{ * used[i][j]: i\PYGZhy{}j这条边是否在MST中}
+\PYG{c+cm}{ * path[i][j]: \PYGZlt{}i...j\PYGZgt{}的路径上的最长边}
+\PYG{c+cm}{ * pre[i]: MST中i的前驱节点，即上一步能够更新low[i]的点，即将i加入MST的点}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{int} \PYG{n+nf}{Prim}\PYG{p}{()\PYGZob{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{vis}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{false}\PYG{p}{;}
+        \PYG{n}{low}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{cost}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{][}\PYG{n}{i}\PYG{p}{];}
+        \PYG{n}{pre}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{used}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{false}\PYG{p}{;}
+            \PYG{n}{path}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{false}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{vis}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+    \PYG{n}{pre}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{n}{low}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{k}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{k+kt}{int} \PYG{n}{Min}\PYG{o}{=}\PYG{n}{INF}\PYG{p}{;}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{vis}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{low}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{Min}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{Min}\PYG{o}{=}\PYG{n}{low}\PYG{p}{[}\PYG{n}{j}\PYG{p}{];}
+                \PYG{n}{k}\PYG{o}{=}\PYG{n}{j}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{k}\PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{break}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{Min}\PYG{p}{;}
+        \PYG{n}{vis}\PYG{p}{[}\PYG{n}{k}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+        \PYG{n}{used}\PYG{p}{[}\PYG{n}{k}\PYG{p}{][}\PYG{n}{pre}\PYG{p}{[}\PYG{n}{k}\PYG{p}{]]}\PYG{o}{=}\PYG{n}{used}\PYG{p}{[}\PYG{n}{pre}\PYG{p}{[}\PYG{n}{k}\PYG{p}{]][}\PYG{n}{k}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//因为j访问过，也就是在MST中，即此时可以看成是j\PYGZhy{}\PYGZhy{}pre[k]\PYGZhy{}\PYGZhy{}k}
+            \PYG{c+c1}{//j是MST点集的一点，而k就刚好被选中要加入这个点集}
+            \PYG{c+c1}{//pre[k]是k的前驱，也就是点集的边缘，也就是把k带进MST的点}
+            \PYG{c+c1}{//所以j到k的最大边就是由两部分更新而来，path[j][pre[k]]和low[k]}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{vis}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{j}\PYG{o}{!=}\PYG{n}{k}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{path}\PYG{p}{[}\PYG{n}{j}\PYG{p}{][}\PYG{n}{k}\PYG{p}{]}\PYG{o}{=}\PYG{n}{path}\PYG{p}{[}\PYG{n}{k}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{n}{path}\PYG{p}{[}\PYG{n}{j}\PYG{p}{][}\PYG{n}{pre}\PYG{p}{[}\PYG{n}{k}\PYG{p}{]],}\PYG{n}{low}\PYG{p}{[}\PYG{n}{k}\PYG{p}{]);}
+            \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{vis}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{low}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{\PYGZgt{}}\PYG{n}{cost}\PYG{p}{[}\PYG{n}{k}\PYG{p}{][}\PYG{n}{j}\PYG{p}{])\PYGZob{}}
+                \PYG{n}{low}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{=}\PYG{n}{cost}\PYG{p}{[}\PYG{n}{k}\PYG{p}{][}\PYG{n}{j}\PYG{p}{];}
+                \PYG{n}{pre}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{=}\PYG{n}{k}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 先求出MST，再枚举不在MST中的边求出SST}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{int} \PYG{n+nf}{solve}\PYG{p}{()\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{n}{Prim}\PYG{p}{();}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{used}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{])\PYGZob{}}
+                \PYG{n}{ans}\PYG{o}{=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{ans}\PYG{p}{,}\PYG{n}{ans}\PYG{o}{\PYGZhy{}}\PYG{n}{path}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]}\PYG{o}{+}\PYG{n}{cost}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]);}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

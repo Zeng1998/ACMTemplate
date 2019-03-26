@@ -1,0 +1,45 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 求1\PYGZhy{}n字典序排列的第m个数}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{int} \PYG{n+nf}{solve}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{m}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//考虑一颗完全10叉树，树的所有节点就是1\PYGZhy{}n，要求的就是前序遍历的第m个节点}
+    \PYG{c+c1}{//m是可以走的步数}
+    \PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{n}{m}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{m}\PYG{o}{!=}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//计算i到i+1的字典序中间相隔的个数}
+        \PYG{k+kt}{int} \PYG{n}{s}\PYG{o}{=}\PYG{n}{i}\PYG{p}{,}\PYG{n}{e}\PYG{o}{=}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{k+kt}{int} \PYG{n}{num}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{c+c1}{//防止越界}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{s}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//计算每一层相差的个数}
+            \PYG{c+c1}{//n+1: 比如20\PYGZhy{}29其实是10个，而e就不用+1，因为e在这里表示30(40/50...)}
+            \PYG{n}{num}\PYG{o}{+=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{n}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{e}\PYG{p}{)}\PYG{o}{\PYGZhy{}}\PYG{n}{s}\PYG{p}{;}
+            \PYG{n}{s}\PYG{o}{*=}\PYG{l+m+mi}{10}\PYG{p}{;}
+            \PYG{n}{e}\PYG{o}{*=}\PYG{l+m+mi}{10}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{m}\PYG{o}{\PYGZlt{}}\PYG{n}{num}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//向下}
+            \PYG{n}{i}\PYG{o}{*=}\PYG{l+m+mi}{10}\PYG{p}{;}
+            \PYG{c+c1}{//走一步}
+            \PYG{n}{m}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{c+c1}{//向右}
+            \PYG{n}{i}\PYG{o}{++}\PYG{p}{;}
+            \PYG{c+c1}{//对前序遍历来说，走了num步}
+            \PYG{n}{m}\PYG{o}{\PYGZhy{}=}\PYG{n}{num}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{i}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{()\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{,}\PYG{n}{m}\PYG{p}{;}
+    \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{n}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{m}\PYG{p}{);}
+    \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{solve}\PYG{p}{(}\PYG{n}{n}\PYG{p}{,}\PYG{n}{m}\PYG{p}{));}
+    \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+     
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

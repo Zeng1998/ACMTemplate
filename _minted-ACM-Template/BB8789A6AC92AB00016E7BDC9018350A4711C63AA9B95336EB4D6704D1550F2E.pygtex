@@ -1,0 +1,40 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 数位dp，核心就是定义状态，并从高位枚举，从前一位(pre**)的状态转移而来}
+\PYG{c+cm}{ * a[i]:第i个数位}
+\PYG{c+cm}{ * dp[i][j][k][l]:}
+\PYG{c+cm}{ *     从最高位到第i位，前一个数字是j，前面数字模为k，前面是/否已经出现13的所有数的个数}
+\PYG{c+cm}{ */} 
+\PYG{c+c1}{//pos 当前位 mod 前面数字模13余数 pre 前一位数字 sta 前面是否有13 }
+\PYG{n}{ll} \PYG{n+nf}{dfs}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{pos}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{mod}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{pre}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{sta}\PYG{p}{,}\PYG{k+kt}{bool} \PYG{n}{limit}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//递归边界，枚举完所有位数}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{pos}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{p}{(}\PYG{n}{sta}\PYG{o}{==}\PYG{l+m+mi}{1} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{mod}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//记忆化搜索，必须是没有上限的情况下}
+    \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{limit} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{dp}\PYG{p}{[}\PYG{n}{pos}\PYG{p}{][}\PYG{n}{pre}\PYG{p}{][}\PYG{n}{mod}\PYG{p}{][}\PYG{n}{sta}\PYG{p}{]}\PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{dp}\PYG{p}{[}\PYG{n}{pos}\PYG{p}{][}\PYG{n}{pre}\PYG{p}{][}\PYG{n}{mod}\PYG{p}{][}\PYG{n}{sta}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//上限}
+    \PYG{k+kt}{int} \PYG{n}{up}\PYG{o}{=}\PYG{n}{limit}\PYG{o}{?}\PYG{n}{a}\PYG{p}{[}\PYG{n}{pos}\PYG{p}{]}\PYG{o}{:}\PYG{l+m+mi}{9}\PYG{p}{;}
+    \PYG{n}{ll} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{up}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//枚举当前位数字}
+	\PYG{n}{ans}\PYG{o}{+=}\PYG{n}{dfs}\PYG{p}{(}\PYG{n}{pos}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,(}\PYG{n}{mod}\PYG{o}{*}\PYG{l+m+mi}{10}\PYG{o}{+}\PYG{n}{i}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{l+m+mi}{13}\PYG{p}{,}\PYG{n}{i}\PYG{p}{,}\PYG{n}{sta}\PYG{o}{||}\PYG{p}{(}\PYG{n}{pre}\PYG{o}{==}\PYG{l+m+mi}{1} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{i}\PYG{o}{==}\PYG{l+m+mi}{3}\PYG{p}{),}\PYG{n}{limit}\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{p}{(}\PYG{n}{i}\PYG{o}{==}\PYG{n}{up}\PYG{p}{));}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//dp数组定义，必须是所有数}
+    \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{limit}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{dp}\PYG{p}{[}\PYG{n}{pos}\PYG{p}{][}\PYG{n}{pre}\PYG{p}{][}\PYG{n}{mod}\PYG{p}{][}\PYG{n}{sta}\PYG{p}{]}\PYG{o}{=}\PYG{n}{ans}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{n}{ll} \PYG{n+nf}{solve}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//如果有多次询问，memset一次dp即可}
+    \PYG{k+kt}{int} \PYG{n}{k}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{a}\PYG{p}{[}\PYG{n}{k}\PYG{o}{++}\PYG{p}{]}\PYG{o}{=}\PYG{n}{x}\PYG{o}{\PYGZpc{}}\PYG{l+m+mi}{10}\PYG{p}{;}
+        \PYG{n}{x}\PYG{o}{/=}\PYG{l+m+mi}{10}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{dfs}\PYG{p}{(}\PYG{n}{k}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n+nb}{false}\PYG{p}{,}\PYG{n+nb}{true}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

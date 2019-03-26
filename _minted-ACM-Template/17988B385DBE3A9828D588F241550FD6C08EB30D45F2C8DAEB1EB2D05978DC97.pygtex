@@ -1,0 +1,36 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 最小生成树(MST)Prim算法，使用邻接矩阵}
+\PYG{c+cm}{ * 顶点0\PYGZti{}n\PYGZhy{}1}
+\PYG{c+cm}{ * dis[i]: 已选点集到i的最短边}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{int} \PYG{n+nf}{Prim}\PYG{p}{()\PYGZob{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{dis}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{cost}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{][}\PYG{n}{i}\PYG{p}{];}
+        \PYG{n}{vis}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{false}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{vis}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{k}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{k+kt}{int} \PYG{n}{mc}\PYG{o}{=}\PYG{n}{INF}\PYG{p}{;}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{vis}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{dis}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{mc}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{mc}\PYG{o}{=}\PYG{n}{dis}\PYG{p}{[}\PYG{n}{j}\PYG{p}{];}
+                \PYG{n}{k}\PYG{o}{=}\PYG{n}{j}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{k}\PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{break}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{vis}\PYG{p}{[}\PYG{n}{k}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+        \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{mc}\PYG{p}{;}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{vis}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{dis}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{\PYGZgt{}}\PYG{n}{cost}\PYG{p}{[}\PYG{n}{k}\PYG{p}{][}\PYG{n}{j}\PYG{p}{])\PYGZob{}}
+                \PYG{n}{dis}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{=}\PYG{n}{cost}\PYG{p}{[}\PYG{n}{k}\PYG{p}{][}\PYG{n}{j}\PYG{p}{];}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

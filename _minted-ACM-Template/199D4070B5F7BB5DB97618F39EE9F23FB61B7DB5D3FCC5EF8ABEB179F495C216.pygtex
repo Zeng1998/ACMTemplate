@@ -1,0 +1,53 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 有两堆石子(a,b)，两人轮流从一堆或者两堆中取出相同个数，每次最少取一个}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{bool} \PYG{n+nf}{solve}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{a}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{b}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{a}\PYG{o}{\PYGZgt{}}\PYG{n}{b}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{swap}\PYG{p}{(}\PYG{n}{a}\PYG{p}{,}\PYG{n}{b}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{c}\PYG{o}{=}\PYG{k+kt}{int}\PYG{p}{((}\PYG{n}{b}\PYG{o}{\PYGZhy{}}\PYG{n}{a}\PYG{p}{)}\PYG{o}{*}\PYG{p}{(}\PYG{n}{sqrt}\PYG{p}{(}\PYG{l+m+mf}{5.0}\PYG{p}{)}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{);}
+    \PYG{c+c1}{//根据(0,0)先手必败态来判断}
+    \PYG{k}{return} \PYG{n}{c}\PYG{o}{!=}\PYG{n}{a}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * SG函数打表}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{void} \PYG{n+nf}{getSG}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//枚举两堆分别的数量和取的数量}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//记录后继状态形式}
+            \PYG{k+kt}{int} \PYG{n}{win}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{lose}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+            \PYG{c+c1}{//同时从两堆中取k个}
+            \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{k}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{k}\PYG{o}{\PYGZlt{}=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,}\PYG{n}{j}\PYG{p}{);}\PYG{n}{k}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+                \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{sg}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{n}{k}\PYG{p}{][}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{n}{k}\PYG{p}{])\PYGZob{}}
+                    \PYG{n}{win}\PYG{o}{++}\PYG{p}{;}
+                \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+                    \PYG{n}{lose}\PYG{o}{++}\PYG{p}{;}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{k}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{k}\PYG{o}{\PYGZlt{}=}\PYG{n}{i}\PYG{p}{;}\PYG{n}{k}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+                \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{sg}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{n}{k}\PYG{p}{][}\PYG{n}{j}\PYG{p}{])\PYGZob{}}
+                    \PYG{n}{win}\PYG{o}{++}\PYG{p}{;}
+                \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+                    \PYG{n}{lose}\PYG{o}{++}\PYG{p}{;}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{k}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{k}\PYG{o}{\PYGZlt{}=}\PYG{n}{j}\PYG{p}{;}\PYG{n}{k}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+                \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{sg}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{n}{k}\PYG{p}{])\PYGZob{}}
+                    \PYG{n}{win}\PYG{o}{++}\PYG{p}{;}
+                \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+                    \PYG{n}{lose}\PYG{o}{++}\PYG{p}{;}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{c+c1}{//后继都是必败态，则当前状态是必胜态}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{lose}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{sg}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+                \PYG{n}{sg}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

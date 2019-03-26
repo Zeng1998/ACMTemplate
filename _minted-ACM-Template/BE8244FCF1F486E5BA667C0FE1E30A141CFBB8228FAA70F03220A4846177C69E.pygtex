@@ -1,0 +1,29 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 编辑距离/莱温斯坦距离}
+\PYG{c+cm}{ * 两个字符串，三种操作(替换/插入/删除一个字符)，求使两个字符串相同的最小操作数}
+\PYG{c+cm}{ * dp[i][j]: 表示str1前i个字符和str2前j个字符的最小编辑距离}
+\PYG{c+cm}{ * dp[i][0]=dp[0][i]=i;}
+\PYG{c+cm}{ * dp[i][j]=dp[i\PYGZhy{}1][j\PYGZhy{}1]                               (str1[i\PYGZhy{}1]==str2[j\PYGZhy{}1])}
+\PYG{c+cm}{ *         =min(dp[i\PYGZhy{}1][j],dp[i][j\PYGZhy{}1],dp[i\PYGZhy{}1][j\PYGZhy{}1])+1  (otherwise)}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{void} \PYG{n+nf}{LD}\PYG{p}{(}\PYG{k+kt}{char} \PYG{n}{str1}\PYG{p}{[],}\PYG{k+kt}{char} \PYG{n}{str2}\PYG{p}{[])\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{n}\PYG{o}{=}\PYG{n}{strlen}\PYG{p}{(}\PYG{n}{str1}\PYG{p}{);}
+    \PYG{k+kt}{int} \PYG{n}{m}\PYG{o}{=}\PYG{n}{strlen}\PYG{p}{(}\PYG{n}{str2}\PYG{p}{);}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{n}{i}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{m}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{dp}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{][}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{i}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}=}\PYG{n}{m}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{str1}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{==}\PYG{n}{str2}\PYG{p}{[}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{])\PYGZob{}}
+                \PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]}\PYG{o}{=}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{];}
+            \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+                \PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]}\PYG{o}{=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{min}\PYG{p}{(}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{n}{j}\PYG{p}{],}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]),}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{])}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

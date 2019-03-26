@@ -1,0 +1,35 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 矩阵快速幂}
+\PYG{c+cm}{ * Mat: 矩阵类型，包含一个二维数组}
+\PYG{c+cm}{ */} 
+\PYG{n}{Mat} \PYG{k}{operator} \PYG{o}{*} \PYG{p}{(}\PYG{n}{Mat} \PYG{n}{a}\PYG{p}{,} \PYG{n}{Mat} \PYG{n}{b}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{Mat} \PYG{n}{ans}\PYG{p}{;}
+    \PYG{n}{memset}\PYG{p}{(}\PYG{n}{ans}\PYG{p}{.}\PYG{n}{mat}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{,} \PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{ans}\PYG{p}{.}\PYG{n}{mat}\PYG{p}{));}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;} \PYG{n}{i}\PYG{o}{++}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{k}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{k}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;} \PYG{n}{k}\PYG{o}{++}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;} \PYG{n}{j}\PYG{o}{++}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+                \PYG{n}{ans}\PYG{p}{.}\PYG{n}{mat}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]} \PYG{o}{+=} \PYG{p}{(}\PYG{n}{a}\PYG{p}{.}\PYG{n}{mat}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{k}\PYG{p}{]} \PYG{o}{\PYGZpc{}} \PYG{n}{mod}\PYG{p}{)} \PYG{o}{*} \PYG{p}{(}\PYG{n}{b}\PYG{p}{.}\PYG{n}{mat}\PYG{p}{[}\PYG{n}{k}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZpc{}} \PYG{n}{mod}\PYG{p}{)} \PYG{o}{\PYGZpc{}} \PYG{n}{mod}\PYG{p}{;}
+                \PYG{n}{ans}\PYG{p}{.}\PYG{n}{mat}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZpc{}=} \PYG{n}{mod}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{c}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{n}{Mat} \PYG{k}{operator} \PYG{o}{\PYGZca{}} \PYG{p}{(}\PYG{n}{Mat} \PYG{n}{a}\PYG{p}{,} \PYG{n}{ll} \PYG{n}{n}\PYG{p}{)}  \PYG{p}{\PYGZob{}}
+    \PYG{n}{Mat} \PYG{n}{ans}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{6}\PYG{p}{;} \PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{6}\PYG{p}{;} \PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+             \PYG{n}{ans}\PYG{p}{.}\PYG{n}{mat}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]}\PYG{o}{=}\PYG{p}{(}\PYG{n}{i}\PYG{o}{==}\PYG{n}{j}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{n}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{n}\PYG{o}{\PYGZpc{}}\PYG{l+m+mi}{2}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{ans}\PYG{o}{=}\PYG{n}{ans}\PYG{o}{*}\PYG{n}{a}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{a}\PYG{o}{=}\PYG{n}{a}\PYG{o}{*}\PYG{n}{a}\PYG{p}{;}
+        \PYG{n}{n}\PYG{o}{/=}\PYG{l+m+mi}{2}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

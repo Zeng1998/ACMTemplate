@@ -1,0 +1,44 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 基础并查集 (注意初始化p[i]=i)}
+\PYG{c+cm}{ * p[i]: i的根}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{int} \PYG{n+nf}{find}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//递归写法}
+    \PYG{k}{return} \PYG{n}{x}\PYG{o}{==}\PYG{n}{p}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{?}\PYG{n}{p}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{:}\PYG{n}{p}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{==}\PYG{n}{find}\PYG{p}{(}\PYG{n}{p}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]);}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//=========================//}
+\PYG{c+c1}{//有时候需要写成这样}
+\PYG{k+kt}{int} \PYG{n+nf}{find}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{x}\PYG{o}{!=}\PYG{n}{p}\PYG{p}{[}\PYG{n}{x}\PYG{p}{])\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{fa}\PYG{o}{=}\PYG{n}{p}\PYG{p}{[}\PYG{n}{x}\PYG{p}{];}
+        \PYG{n}{p}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{=}\PYG{n}{find}\PYG{p}{(}\PYG{n}{p}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]);}
+        \PYG{c+c1}{//这里就可以对临时保存的fa进行操作，特别在带权并查集中}
+        \PYG{c+c1}{//也可以直接p[x]=find(p[x])，然后对修改后的p[x]进行操作}
+        \PYG{n}{v}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{+=}\PYG{n}{v}\PYG{p}{[}\PYG{n}{fa}\PYG{p}{];}       
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{p}\PYG{p}{[}\PYG{n}{x}\PYG{p}{];}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{find}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//有时需要维护多个信息(带权并查集)，需要非递归写法}
+    \PYG{k+kt}{int} \PYG{n}{fa}\PYG{o}{=}\PYG{n}{x}\PYG{p}{;}
+    \PYG{c+c1}{//找到x的根}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{fa}\PYG{o}{!=}\PYG{n}{p}\PYG{p}{[}\PYG{n}{fa}\PYG{p}{])\PYGZob{}}
+        \PYG{n}{fa}\PYG{o}{=}\PYG{n}{p}\PYG{p}{[}\PYG{n}{fa}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//从x重新一步一步往上，沿途更新}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{x}\PYG{o}{!=}\PYG{n}{p}\PYG{p}{[}\PYG{n}{x}\PYG{p}{])\PYGZob{}}
+        \PYG{n}{x}\PYG{o}{=}\PYG{n}{p}\PYG{p}{[}\PYG{n}{x}\PYG{p}{];}
+        \PYG{n}{p}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{p}\PYG{p}{[}\PYG{n}{x}\PYG{p}{];}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{unit}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{a}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{b}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//最基础的合并}
+    \PYG{k+kt}{int} \PYG{n}{fa}\PYG{o}{=}\PYG{n}{find}\PYG{p}{(}\PYG{n}{a}\PYG{p}{);}
+    \PYG{k+kt}{int} \PYG{n}{fb}\PYG{o}{=}\PYG{n}{find}\PYG{p}{(}\PYG{n}{b}\PYG{p}{);}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{fa}\PYG{o}{!=}\PYG{n}{fb}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{p}\PYG{p}{[}\PYG{n}{fa}\PYG{p}{]}\PYG{o}{=}\PYG{n}{fb}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

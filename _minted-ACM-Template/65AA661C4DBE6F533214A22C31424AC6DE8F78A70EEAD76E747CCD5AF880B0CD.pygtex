@@ -1,0 +1,58 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 带权并查集}
+\PYG{c+cm}{ * 所谓带权并查集就是在并查集的基础上除了维护根节点再维护一些其他的值}
+\PYG{c+cm}{ * 例如集合大小，元素移动次数，元素到根节点的距离等}
+\PYG{c+cm}{ * 状态的转移在find和unit都要考虑，而且要注意顺序}
+\PYG{c+cm}{ * eg. poj1182——食物链 设r[i]表示i和父节点(根)的关系}
+\PYG{c+cm}{ * r[i]=0表示和父节点同类，1表示被父节点吃，2表示吃父节点}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{int} \PYG{n+nf}{find}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{x}\PYG{o}{!=}\PYG{n}{p}\PYG{p}{[}\PYG{n}{x}\PYG{p}{])\PYGZob{}}
+        \PYG{c+c1}{//暂存当前根节点，用于状态转移更新信息}
+        \PYG{k+kt}{int} \PYG{n}{t}\PYG{o}{=}\PYG{n}{p}\PYG{p}{[}\PYG{n}{x}\PYG{p}{];}
+        \PYG{c+c1}{//递归压缩路径，此时p[x]信息已更新}
+        \PYG{n}{p}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{=}\PYG{n}{find}\PYG{p}{(}\PYG{n}{p}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]);}
+        \PYG{c+c1}{//元素移动次数/元素到根距离}
+        \PYG{n}{cnt}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{+=}\PYG{n}{cnt}\PYG{p}{[}\PYG{n}{t}\PYG{p}{];}
+        \PYG{c+c1}{//假设r[x]=1，即x被t吃，如果r[t]=2，即t吃p[x]}
+        \PYG{c+c1}{//那说明x和p[x]同类，r[x]=(1+2)\PYGZpc{}3=0，其他同理}
+        \PYG{n}{r}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{=}\PYG{p}{(}\PYG{n}{r}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{+}\PYG{n}{r}\PYG{p}{[}\PYG{n}{t}\PYG{p}{])}\PYG{o}{\PYGZpc{}}\PYG{l+m+mi}{3}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{p}\PYG{p}{[}\PYG{n}{x}\PYG{p}{];}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{unit}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{a}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{b}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{fa}\PYG{o}{=}\PYG{n}{find}\PYG{p}{(}\PYG{n}{a}\PYG{p}{);}
+    \PYG{k+kt}{int} \PYG{n}{fb}\PYG{o}{=}\PYG{n}{find}\PYG{p}{(}\PYG{n}{b}\PYG{p}{);}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{fa}\PYG{o}{!=}\PYG{n}{fb}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{p}\PYG{p}{[}\PYG{n}{fa}\PYG{p}{]}\PYG{o}{=}\PYG{n}{fb}\PYG{p}{;}
+        \PYG{c+c1}{//hdu2818 将一堆放到另一堆上 维护某一元素下方元素个数，即到根的距离}
+        \PYG{n}{cnt}\PYG{p}{[}\PYG{n}{fa}\PYG{p}{]}\PYG{o}{=}\PYG{n}{siz}\PYG{p}{[}\PYG{n}{fb}\PYG{p}{];}
+        \PYG{c+c1}{//集合大小}
+        \PYG{n}{siz}\PYG{p}{[}\PYG{n}{fb}\PYG{p}{]}\PYG{o}{+=}\PYG{n}{siz}\PYG{p}{[}\PYG{n}{fa}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{bool} \PYG{n+nf}{unit}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{a}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{b}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{q}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{q}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+    \PYG{c+c1}{//q是操作，0表示同类，1表示a吃b}
+    \PYG{k+kt}{int} \PYG{n}{fa}\PYG{o}{=}\PYG{n}{find}\PYG{p}{(}\PYG{n}{a}\PYG{p}{);}
+    \PYG{k+kt}{int} \PYG{n}{fb}\PYG{o}{=}\PYG{n}{find}\PYG{p}{(}\PYG{n}{b}\PYG{p}{);}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{fa}\PYG{o}{!=}\PYG{n}{fb}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{p}\PYG{p}{[}\PYG{n}{fb}\PYG{p}{]}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{;}
+        \PYG{c+c1}{//可以画图去看 r[fb]即求fb到fa的关系}
+        \PYG{c+c1}{//必须通过fb\PYGZhy{}\PYGZgt{}b(\PYGZhy{}r[b]) b\PYGZhy{}\PYGZgt{}a(q) a\PYGZhy{}\PYGZgt{}fa(r[a])三个向量相加即可}
+        \PYG{n}{r}\PYG{p}{[}\PYG{n}{fb}\PYG{p}{]}\PYG{o}{=}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{n}{r}\PYG{p}{[}\PYG{n}{b}\PYG{p}{]}\PYG{o}{+}\PYG{n}{r}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{o}{+}\PYG{n}{q}\PYG{o}{+}\PYG{l+m+mi}{3}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{l+m+mi}{3}\PYG{p}{;}
+        \PYG{k}{return} \PYG{n+nb}{false}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+        \PYG{c+c1}{//已在同一集合}
+        \PYG{c+c1}{//同样通过画图，此时a,b有相同根f}
+        \PYG{c+c1}{//r[a]+q即b\PYGZhy{}\PYGZgt{}a(q) a\PYGZhy{}\PYGZgt{}f(r[a])==r[b]，若不符合，即矛盾}
+        \PYG{k}{if}\PYG{p}{((}\PYG{n}{r}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{o}{+}\PYG{n}{q}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{l+m+mi}{3}\PYG{o}{!=}\PYG{n}{r}\PYG{p}{[}\PYG{n}{b}\PYG{p}{])\PYGZob{}}
+            \PYG{c+c1}{//矛盾}
+            \PYG{k}{return} \PYG{n+nb}{true}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
