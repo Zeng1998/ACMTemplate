@@ -1,0 +1,114 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 有n个不同颜色，两种操作，修改某个位置的颜色，查询某个区间[l,r]里不同颜色个数}
+\PYG{c+cm}{ * 比普通的莫队多了一个修改的操作，所以Q结构体多了一个时间戳tim}
+\PYG{c+cm}{ * 排序的时候也要多加一个判断，在l，r都同块的情况下对tim排序}
+\PYG{c+cm}{ * 除了询问要保存时间，修改也要在对应时间保存起来，记录原来的颜色和修改后的颜色}
+\PYG{c+cm}{ * 查询答案时，先对时间T进行调整，再套用普通莫队}
+\PYG{c+cm}{ */} 
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{N}\PYG{o}{=}\PYG{l+m+mf}{1e5}\PYG{o}{+}\PYG{l+m+mi}{50}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{,}\PYG{n}{m}\PYG{p}{,}\PYG{n}{a}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{be}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k}{struct} \PYG{n}{Q}\PYG{p}{\PYGZob{}}
+    \PYG{c+c1}{//多了一个tim类似于保存版本号}
+    \PYG{k+kt}{int} \PYG{n}{id}\PYG{p}{,}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{,}\PYG{n}{tim}\PYG{p}{,}\PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}\PYG{n}{q}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{bool} \PYG{n+nf}{cmp1}\PYG{p}{(}\PYG{n}{Q} \PYG{n}{a}\PYG{p}{,}\PYG{n}{Q} \PYG{n}{b}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{be}\PYG{p}{[}\PYG{n}{a}\PYG{p}{.}\PYG{n}{l}\PYG{p}{]}\PYG{o}{==}\PYG{n}{be}\PYG{p}{[}\PYG{n}{b}\PYG{p}{.}\PYG{n}{l}\PYG{p}{]}\PYG{o}{?}\PYG{p}{(}\PYG{n}{be}\PYG{p}{[}\PYG{n}{a}\PYG{p}{.}\PYG{n}{r}\PYG{p}{]}\PYG{o}{==}\PYG{n}{be}\PYG{p}{[}\PYG{n}{b}\PYG{p}{.}\PYG{n}{r}\PYG{p}{]}\PYG{o}{?}\PYG{n}{a}\PYG{p}{.}\PYG{n}{tim}\PYG{o}{\PYGZlt{}}\PYG{n}{b}\PYG{p}{.}\PYG{n+nl}{tim}\PYG{p}{:}\PYG{n}{a}\PYG{p}{.}\PYG{n}{r}\PYG{o}{\PYGZlt{}}\PYG{n}{b}\PYG{p}{.}\PYG{n}{r}\PYG{p}{)}\PYG{o}{:}\PYG{n}{a}\PYG{p}{.}\PYG{n}{l}\PYG{o}{\PYGZlt{}}\PYG{n}{b}\PYG{p}{.}\PYG{n}{l}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{bool} \PYG{n+nf}{cmp2}\PYG{p}{(}\PYG{n}{Q} \PYG{n}{a}\PYG{p}{,}\PYG{n}{Q} \PYG{n}{b}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{a}\PYG{p}{.}\PYG{n}{id}\PYG{o}{\PYGZlt{}}\PYG{n}{b}\PYG{p}{.}\PYG{n}{id}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k}{struct} \PYG{n}{Change}\PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{pos}\PYG{p}{,}\PYG{n}{New}\PYG{p}{,}\PYG{n}{Old}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}\PYG{n}{c}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{char} \PYG{n}{qe}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{Time}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{now}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{ans}\PYG{p}{,}\PYG{n}{color}\PYG{p}{[}\PYG{n}{N}\PYG{o}{*}\PYG{l+m+mi}{100}\PYG{p}{],}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{;}
+\PYG{k+kt}{void} \PYG{n+nf}{revise}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{d}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//这里的x对应going的d，而d则是代表加或减}
+    \PYG{c+c1}{//x这种颜色的个数}
+    \PYG{n}{color}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{+=}\PYG{n}{d}\PYG{p}{;}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{d}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//刚好第一次出现这种颜色，更新答案}
+        \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{color}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{==}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{d}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//这种颜色刚好被删完，更新答案}
+        \PYG{n}{ans}\PYG{o}{\PYGZhy{}=}\PYG{n}{color}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//带时间修改，将x的颜色改为d}
+\PYG{k+kt}{void} \PYG{n+nf}{going}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{d}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//x如果在当前的区间内}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZlt{}=}\PYG{n}{x} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{x}\PYG{o}{\PYGZlt{}=}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//更新答案}
+        \PYG{n}{revise}\PYG{p}{(}\PYG{n}{d}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{n}{revise}\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{n}{x}\PYG{p}{],}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{c+c1}{//修改颜色}
+        \PYG{n}{a}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{=}\PYG{n}{d}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{n}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{m}\PYG{p}{);}
+    \PYG{k+kt}{int} \PYG{n}{unit}\PYG{o}{=}\PYG{n}{sqrt}\PYG{p}{(}\PYG{n}{n}\PYG{p}{);}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+        \PYG{n}{be}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{i}\PYG{o}{/}\PYG{n}{unit}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;} 
+        \PYG{n}{now}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{qcnt}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{m}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}s\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{n}{qe}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{x}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{y}\PYG{p}{);}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{qe}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{==}\PYG{l+s+sc}{\PYGZsq{}Q\PYGZsq{}}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{q}\PYG{p}{[}\PYG{o}{++}\PYG{n}{qcnt}\PYG{p}{]}\PYG{o}{=}\PYG{n}{Q}\PYG{p}{\PYGZob{}}\PYG{n}{qcnt}\PYG{p}{,}\PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{,}\PYG{n}{Time}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{\PYGZcb{};}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{qe}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{==}\PYG{l+s+sc}{\PYGZsq{}R\PYGZsq{}}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//记录修改状态}
+            \PYG{n}{c}\PYG{p}{[}\PYG{o}{++}\PYG{n}{Time}\PYG{p}{]}\PYG{o}{=}\PYG{n}{Change}\PYG{p}{\PYGZob{}}\PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{,}\PYG{n}{now}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]\PYGZcb{};} 
+            \PYG{n}{now}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{=}\PYG{n}{y}\PYG{p}{;}     
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{sort}\PYG{p}{(}\PYG{n}{q}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{q}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{o}{+}\PYG{n}{qcnt}\PYG{p}{,}\PYG{n}{cmp1}\PYG{p}{);}
+    \PYG{n}{l}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{r}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{T}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{qcnt}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//维护时间T}
+        \PYG{c+c1}{//q[i].tim表示在这个时刻发生的查询，所以维护当前时刻T直到为tim}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{T}\PYG{o}{\PYGZlt{}}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{tim}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//所以在这个过程中要执行修改}
+            \PYG{n}{going}\PYG{p}{(}\PYG{n}{c}\PYG{p}{[}\PYG{n}{T}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{].}\PYG{n}{pos}\PYG{p}{,}\PYG{n}{c}\PYG{p}{[}\PYG{n}{T}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{].}\PYG{n}{New}\PYG{p}{);}
+            \PYG{n}{T}\PYG{o}{++}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{T}\PYG{o}{\PYGZgt{}}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{tim}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{going}\PYG{p}{(}\PYG{n}{c}\PYG{p}{[}\PYG{n}{T}\PYG{p}{].}\PYG{n}{pos}\PYG{p}{,}\PYG{n}{c}\PYG{p}{[}\PYG{n}{T}\PYG{p}{].}\PYG{n}{Old}\PYG{p}{);}
+            \PYG{n}{T}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//时间维护完，维护空间顺序，同普通莫队}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZlt{}}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{l}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{revise}\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{n}{l}\PYG{p}{],}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+            \PYG{n}{l}\PYG{o}{++}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZgt{}}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{l}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{revise}\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{n}{l}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{],}\PYG{l+m+mi}{1}\PYG{p}{);}
+            \PYG{n}{l}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{r}\PYG{o}{\PYGZlt{}}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{revise}\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{n}{r}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{],}\PYG{l+m+mi}{1}\PYG{p}{);}
+            \PYG{n}{r}\PYG{o}{++}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{r}\PYG{o}{\PYGZgt{}}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{revise}\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{n}{r}\PYG{p}{],}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+            \PYG{n}{r}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{ans}\PYG{o}{=}\PYG{n}{ans}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{sort}\PYG{p}{(}\PYG{n}{q}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{q}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{o}{+}\PYG{n}{qcnt}\PYG{p}{,}\PYG{n}{cmp2}\PYG{p}{);}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{qcnt}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{ans}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

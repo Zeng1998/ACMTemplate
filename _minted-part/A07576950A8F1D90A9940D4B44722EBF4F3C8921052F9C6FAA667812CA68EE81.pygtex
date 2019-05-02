@@ -1,0 +1,54 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 最小费用最大流(mcmf)}
+\PYG{c+cm}{ * inq[i]: i节点是否在队列中}
+\PYG{c+cm}{ * d[i]: bellmanford算法的距离}
+\PYG{c+cm}{ * p[i]: 记录流向i的上一条边编号}
+\PYG{c+cm}{ * a[i]: i的可改进量(通过量)}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{bool} \PYG{n+nf}{BellmanFord}\PYG{p}{(}\PYG{k+kt}{int} \PYG{o}{\PYGZam{}}\PYG{n}{flow}\PYG{p}{,}\PYG{k+kt}{int} \PYG{o}{\PYGZam{}}\PYG{n}{cost}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{N}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{d}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{INF}\PYG{p}{;}
+        \PYG{n}{inq}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{false}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{d}\PYG{p}{[}\PYG{n}{s}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{n}{p}\PYG{p}{[}\PYG{n}{s}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{n}{a}\PYG{p}{[}\PYG{n}{s}\PYG{p}{]}\PYG{o}{=}\PYG{n}{INF}\PYG{p}{;}
+    \PYG{n}{queue}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}} \PYG{n}{q}\PYG{p}{;}
+    \PYG{n}{q}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{n}{s}\PYG{p}{);}
+    \PYG{n}{inq}\PYG{p}{[}\PYG{n}{s}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+    \PYG{k}{while}\PYG{p}{(}\PYG{o}{!}\PYG{n}{q}\PYG{p}{.}\PYG{n}{empty}\PYG{p}{())\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{u}\PYG{o}{=}\PYG{n}{q}\PYG{p}{.}\PYG{n}{front}\PYG{p}{();}
+        \PYG{n}{q}\PYG{p}{.}\PYG{n}{pop}\PYG{p}{();}
+        \PYG{n}{inq}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{false}\PYG{p}{;}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{n}{head}\PYG{p}{[}\PYG{n}{u}\PYG{p}{];}\PYG{n}{i}\PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{=}\PYG{n}{edge}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{next}\PYG{p}{)\PYGZob{}}
+            \PYG{k+kt}{int} \PYG{n}{v}\PYG{o}{=}\PYG{n}{edge}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{v}\PYG{p}{;}
+            \PYG{k+kt}{int} \PYG{n}{w}\PYG{o}{=}\PYG{n}{edge}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{w}\PYG{p}{;}
+            \PYG{k+kt}{int} \PYG{n}{c}\PYG{o}{=}\PYG{n}{edge}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{c}\PYG{p}{;}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{w}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{d}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{\PYGZgt{}}\PYG{n}{d}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{+}\PYG{n}{c}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{d}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{=}\PYG{n}{d}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{+}\PYG{n}{c}\PYG{p}{;}
+                \PYG{n}{p}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{=}\PYG{n}{i}\PYG{p}{;}
+                \PYG{n}{a}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{n}{u}\PYG{p}{],}\PYG{n}{w}\PYG{p}{);}
+                \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{inq}\PYG{p}{[}\PYG{n}{v}\PYG{p}{])\PYGZob{}}
+                    \PYG{n}{q}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{n}{v}\PYG{p}{);}
+                    \PYG{n}{inq}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{d}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]}\PYG{o}{==}\PYG{n}{INF}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n+nb}{false}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{flow}\PYG{o}{+=}\PYG{n}{a}\PYG{p}{[}\PYG{n}{t}\PYG{p}{];}
+    \PYG{n}{cost}\PYG{o}{+=}\PYG{n}{d}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]}\PYG{o}{*}\PYG{n}{a}\PYG{p}{[}\PYG{n}{t}\PYG{p}{];}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{o}{=}\PYG{n}{t}\PYG{p}{;}\PYG{n}{u}\PYG{o}{!=}\PYG{n}{s}\PYG{p}{;}\PYG{n}{u}\PYG{o}{=}\PYG{n}{edge}\PYG{p}{[}\PYG{n}{p}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]].}\PYG{n}{u}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{edge}\PYG{p}{[}\PYG{n}{p}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]].}\PYG{n}{w}\PYG{o}{\PYGZhy{}=}\PYG{n}{a}\PYG{p}{[}\PYG{n}{t}\PYG{p}{];}
+        \PYG{n}{edge}\PYG{p}{[}\PYG{n}{p}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{].}\PYG{n}{w}\PYG{o}{+=}\PYG{n}{a}\PYG{p}{[}\PYG{n}{t}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n+nb}{true}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{mcmf}\PYG{p}{(}\PYG{k+kt}{int} \PYG{o}{\PYGZam{}}\PYG{n}{flow}\PYG{p}{,}\PYG{k+kt}{int} \PYG{o}{\PYGZam{}}\PYG{n}{cost}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{flow}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{cost}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{BellmanFord}\PYG{p}{(}\PYG{n}{flow}\PYG{p}{,}\PYG{n}{cost}\PYG{p}{));}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

@@ -1,0 +1,81 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/* * KM算法计算二分图带权最优匹配}
+\PYG{c+cm}{ * n个男生和n个女生，两两之间有好感度(边权)，匹配使得总好感度最大}
+\PYG{c+cm}{ * love[i][j]: 女生i和男生j的好感度}
+\PYG{c+cm}{ * exg[i]/exb[i]: 女生期望值(初始值为最高好感度)，男生期望值(初始值为0)}
+\PYG{c+cm}{ * visg[i]/visb[i]: 记录每一轮匹配中是否匹配过}
+\PYG{c+cm}{ * match[i]: 男生i匹配到的女生，初始值为\PYGZhy{}1}
+\PYG{c+cm}{ * slack[i]: 男生i还需要多少期望值才能匹配到女生}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{bool} \PYG{n+nf}{dfs}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{visg}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{visb}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])\PYGZob{}}
+            \PYG{k}{continue}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//计算期望度和好感度差值}
+        \PYG{k+kt}{int} \PYG{n}{gap}\PYG{o}{=}\PYG{n}{exg}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{+}\PYG{n}{exb}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{love}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{i}\PYG{p}{];}
+        \PYG{c+c1}{//这里改成gap!=0可以求出最小完备匹配}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{gap}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//符合要求}
+            \PYG{n}{visb}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+            \PYG{c+c1}{//男生没有匹配，或者男生对应女生可以找另一个男生}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{match}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o}{||} \PYG{n}{dfs}\PYG{p}{(}\PYG{n}{match}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]))\PYGZob{}}
+                \PYG{n}{match}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{u}\PYG{p}{;}
+                \PYG{k}{return} \PYG{n+nb}{true}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{c+c1}{//无法找到匹配的，必须修改期望度(对当前女生u，也就是KM算法里枚举的i)}
+            \PYG{n}{slack}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{slack}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],}\PYG{n}{gap}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n+nb}{false}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{km}\PYG{p}{()\PYGZob{}}
+    \PYG{n}{memset}\PYG{p}{(}\PYG{n}{match}\PYG{p}{,}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{match}\PYG{p}{));}
+    \PYG{n}{memset}\PYG{p}{(}\PYG{n}{exb}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{exb}\PYG{p}{));}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{exg}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{love}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{];}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{exg}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{n}{exg}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],}\PYG{n}{love}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{memset}\PYG{p}{(}\PYG{n}{slack}\PYG{p}{,}\PYG{n}{INF}\PYG{p}{,}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{slack}\PYG{p}{));}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n+nb}{true}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{memset}\PYG{p}{(}\PYG{n}{visg}\PYG{p}{,}\PYG{n+nb}{false}\PYG{p}{,}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{visg}\PYG{p}{));}
+            \PYG{n}{memset}\PYG{p}{(}\PYG{n}{visb}\PYG{p}{,}\PYG{n+nb}{false}\PYG{p}{,}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{visb}\PYG{p}{));}
+            \PYG{c+c1}{//找到}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{dfs}\PYG{p}{(}\PYG{n}{i}\PYG{p}{))\PYGZob{}}
+                \PYG{k}{break}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{c+c1}{//找不到}
+            \PYG{k+kt}{int} \PYG{n}{d}\PYG{o}{=}\PYG{n}{INF}\PYG{p}{;}
+            \PYG{c+c1}{//枚举男生}
+            \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+                \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{visb}\PYG{p}{[}\PYG{n}{j}\PYG{p}{])\PYGZob{}}
+                    \PYG{c+c1}{//降到某个slack[j]}
+                    \PYG{n}{d}\PYG{o}{=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{d}\PYG{p}{,}\PYG{n}{slack}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]);}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{c+c1}{//这一轮问过的女生降低期望值，男生增加期望值}
+            \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+                \PYG{k}{if}\PYG{p}{(}\PYG{n}{visg}\PYG{p}{[}\PYG{n}{j}\PYG{p}{])\PYGZob{}}
+                    \PYG{n}{exg}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{\PYGZhy{}=}\PYG{n}{d}\PYG{p}{;}
+                \PYG{p}{\PYGZcb{}}
+                \PYG{k}{if}\PYG{p}{(}\PYG{n}{visb}\PYG{p}{[}\PYG{n}{j}\PYG{p}{])\PYGZob{}}
+                    \PYG{n}{exb}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{+=}\PYG{n}{d}\PYG{p}{;}
+                \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+                    \PYG{c+c1}{//没访问过的男生，因为女生期望值降低，所以距离女生期望值又近一步}
+                    \PYG{n}{slack}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{\PYGZhy{}=}\PYG{n}{d}\PYG{p}{;}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{love}\PYG{p}{[}\PYG{n}{match}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]][}\PYG{n}{i}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

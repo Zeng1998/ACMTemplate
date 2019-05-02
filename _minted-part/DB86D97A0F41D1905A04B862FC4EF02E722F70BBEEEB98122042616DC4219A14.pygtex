@@ -1,0 +1,57 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 求有向图的强连通分量}
+\PYG{c+cm}{ * 强连通分量: 分量内任意两个点都能互相到达}
+\PYG{c+cm}{ * low[u]:u能回溯到的最早祖先}
+\PYG{c+cm}{ * dfn[u]:dfs序}
+\PYG{c+cm}{ * scc[u]:u所属scc编号}
+\PYG{c+cm}{ * inSta[u]:u是否在栈中}
+\PYG{c+cm}{ * s:暂存节点}
+\PYG{c+cm}{ */}
+\PYG{k+kt}{void} \PYG{n+nf}{dfs}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//初始化dfs序}
+    \PYG{n}{low}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{n}{dfn}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=++}\PYG{n}{idx}\PYG{p}{;}
+    \PYG{n}{s}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{n}{u}\PYG{p}{);}
+    \PYG{n}{inSta}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{siz}\PYG{o}{=}\PYG{n}{g}\PYG{p}{[}\PYG{n}{u}\PYG{p}{].}\PYG{n}{size}\PYG{p}{();}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{siz}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{v}\PYG{o}{=}\PYG{n}{g}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{i}\PYG{p}{];}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{dfn}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//未访问}
+            \PYG{n}{dfs}\PYG{p}{(}\PYG{n}{v}\PYG{p}{);}
+            \PYG{c+c1}{//此时已经递归到底，可以用low[v]来更新low[u]}
+            \PYG{n}{low}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{low}\PYG{p}{[}\PYG{n}{u}\PYG{p}{],}\PYG{n}{low}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]);}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{inSta}\PYG{p}{[}\PYG{n}{v}\PYG{p}{])\PYGZob{}}
+            \PYG{c+c1}{//访问过，在栈中(low[v]还没完全更新)}
+            \PYG{n}{low}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{low}\PYG{p}{[}\PYG{n}{u}\PYG{p}{],}\PYG{n}{dfn}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{low}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{==}\PYG{n}{dfn}\PYG{p}{[}\PYG{n}{u}\PYG{p}{])\PYGZob{}}
+        \PYG{c+c1}{//能回到的最早节点就是本身，说明得到一个强连通分量}
+        \PYG{n}{cnt}\PYG{o}{++}\PYG{p}{;}
+        \PYG{k}{while}\PYG{p}{(}\PYG{o}{!}\PYG{n}{s}\PYG{p}{.}\PYG{n}{empty}\PYG{p}{())\PYGZob{}}
+            \PYG{k+kt}{int} \PYG{n}{t}\PYG{o}{=}\PYG{n}{s}\PYG{p}{.}\PYG{n}{top}\PYG{p}{();}
+	    \PYG{n}{scc}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]}\PYG{o}{=}\PYG{n}{cnt}\PYG{p}{;}
+            \PYG{n}{s}\PYG{p}{.}\PYG{n}{pop}\PYG{p}{();}
+            \PYG{n}{inSta}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{false}\PYG{p}{;}
+	    \PYG{k}{if}\PYG{p}{(}\PYG{n}{t}\PYG{o}{==}\PYG{n}{u}\PYG{p}{)\PYGZob{}}
+                \PYG{k}{break}\PYG{p}{;}
+	    \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{tarjan}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{memset}\PYG{p}{(}\PYG{n}{dfn}\PYG{p}{,}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{dfn}\PYG{p}{));}
+    \PYG{n}{memset}\PYG{p}{(}\PYG{n}{scc}\PYG{p}{,}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{scc}\PYG{p}{));}
+    \PYG{k}{while}\PYG{p}{(}\PYG{o}{!}\PYG{n}{s}\PYG{p}{.}\PYG{n}{empty}\PYG{p}{())\PYGZob{}}
+        \PYG{n}{s}\PYG{p}{.}\PYG{n}{pop}\PYG{p}{();}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{idx}\PYG{o}{=}\PYG{n}{cnt}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//未访问}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{dfn}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{dfs}\PYG{p}{(}\PYG{n}{i}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

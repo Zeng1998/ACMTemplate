@@ -1,0 +1,28 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{java.io.*}\PYG{o}{;}
+\PYG{k+kn}{import} \PYG{n+nn}{java.util.StringTokenizer}\PYG{o}{;}
+\PYG{k+kd}{public} \PYG{k+kd}{class} \PYG{n+nc}{Main}\PYG{o}{\PYGZob{}}
+    \PYG{k+kd}{static} \PYG{k+kd}{class} \PYG{n+nc}{InputReader}\PYG{o}{\PYGZob{}}
+        \PYG{k+kd}{public} \PYG{n}{BufferedReader} \PYG{n}{reader}\PYG{o}{;}
+        \PYG{k+kd}{public} \PYG{n}{StringTokenizer} \PYG{n}{tokenizer}\PYG{o}{;}
+        \PYG{k+kd}{public} \PYG{n+nf}{InputReader}\PYG{o}{(}\PYG{n}{InputStream} \PYG{n}{stream}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+            \PYG{n}{reader} \PYG{o}{=} \PYG{k}{new} \PYG{n}{BufferedReader}\PYG{o}{(}\PYG{k}{new} \PYG{n}{InputStreamReader}\PYG{o}{(}\PYG{n}{stream}\PYG{o}{),} \PYG{l+m+mi}{32768}\PYG{o}{);}
+            \PYG{n}{tokenizer} \PYG{o}{=} \PYG{k+kc}{null}\PYG{o}{;}
+        \PYG{o}{\PYGZcb{}}
+        \PYG{k+kd}{public} \PYG{n}{String} \PYG{n+nf}{next}\PYG{o}{()} \PYG{o}{\PYGZob{}}
+            \PYG{k}{while} \PYG{o}{(}\PYG{n}{tokenizer} \PYG{o}{==} \PYG{k+kc}{null} \PYG{o}{||} \PYG{o}{!}\PYG{n}{tokenizer}\PYG{o}{.}\PYG{n+na}{hasMoreTokens}\PYG{o}{())} \PYG{o}{\PYGZob{}}
+                \PYG{k}{try} \PYG{o}{\PYGZob{}}
+                    \PYG{n}{tokenizer} \PYG{o}{=} \PYG{k}{new} \PYG{n}{StringTokenizer}\PYG{o}{(}\PYG{n}{reader}\PYG{o}{.}\PYG{n+na}{readLine}\PYG{o}{());}
+                \PYG{o}{\PYGZcb{}} \PYG{k}{catch} \PYG{o}{(}\PYG{n}{IOException} \PYG{n}{e}\PYG{o}{)} \PYG{o}{\PYGZob{}}\PYG{n}{e}\PYG{o}{.}\PYG{n+na}{printStackTrace}\PYG{o}{();\PYGZcb{}}
+            \PYG{o}{\PYGZcb{}}
+            \PYG{k}{return} \PYG{n}{tokenizer}\PYG{o}{.}\PYG{n+na}{nextToken}\PYG{o}{();}
+        \PYG{o}{\PYGZcb{}}
+        \PYG{k+kd}{public} \PYG{k+kt}{int} \PYG{n+nf}{nextInt}\PYG{o}{()\PYGZob{}}
+            \PYG{k}{return} \PYG{n}{Integer}\PYG{o}{.}\PYG{n+na}{parseInt}\PYG{o}{(}\PYG{n}{next}\PYG{o}{());}
+        \PYG{o}{\PYGZcb{}}
+    \PYG{o}{\PYGZcb{}}
+    \PYG{k+kd}{public} \PYG{k+kd}{static} \PYG{k+kt}{void} \PYG{n+nf}{main}\PYG{o}{(}\PYG{n}{String}\PYG{o}{[]} \PYG{n}{args}\PYG{o}{)} \PYG{o}{\PYGZob{}}
+        \PYG{n}{InputReader} \PYG{n}{cin}\PYG{o}{=}\PYG{k}{new} \PYG{n}{InputReader}\PYG{o}{(}\PYG{k}{new} \PYG{n}{BufferedInputStream}\PYG{o}{(}\PYG{n}{System}\PYG{o}{.}\PYG{n+na}{in}\PYG{o}{));}
+    \PYG{o}{\PYGZcb{}}
+\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

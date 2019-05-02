@@ -1,0 +1,40 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/* }
+\PYG{c+cm}{ * 堆优化的Dijkstra(最短距离、最短路条数)}
+\PYG{c+cm}{ * dis[i]: i到最短路集合的距离}
+\PYG{c+cm}{ * pcnt[i]: 到i的路径条数}
+\PYG{c+cm}{ */}
+\PYG{k+kt}{void} \PYG{n+nf}{Dijkstra}\PYG{p}{()\PYGZob{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{N}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{dis}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{INF}\PYG{p}{;}
+        \PYG{n}{vis}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{false}\PYG{p}{;}
+        \PYG{n}{pcnt}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{priority\PYGZus{}queue}\PYG{o}{\PYGZlt{}}\PYG{n}{node}\PYG{o}{\PYGZgt{}} \PYG{n}{q}\PYG{p}{;}
+    \PYG{n}{dis}\PYG{p}{[}\PYG{n}{s}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{n}{pcnt}\PYG{p}{[}\PYG{n}{s}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{n}{q}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{n}{node}\PYG{p}{\PYGZob{}}\PYG{n}{s}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{\PYGZcb{});}
+    \PYG{k}{while}\PYG{p}{(}\PYG{o}{!}\PYG{n}{q}\PYG{p}{.}\PYG{n}{empty}\PYG{p}{())\PYGZob{}}
+        \PYG{n}{node} \PYG{n}{tmp}\PYG{o}{=}\PYG{n}{q}\PYG{p}{.}\PYG{n}{top}\PYG{p}{();}
+        \PYG{n}{q}\PYG{p}{.}\PYG{n}{pop}\PYG{p}{();}
+        \PYG{k+kt}{int} \PYG{n}{u}\PYG{o}{=}\PYG{n}{tmp}\PYG{p}{.}\PYG{n}{v}\PYG{p}{;}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{vis}\PYG{p}{[}\PYG{n}{u}\PYG{p}{])\PYGZob{}}
+            \PYG{k}{continue}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{vis}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{n}{head}\PYG{p}{[}\PYG{n}{u}\PYG{p}{];}\PYG{n}{i}\PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{=}\PYG{n}{edge}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{next}\PYG{p}{)\PYGZob{}}
+            \PYG{k+kt}{int} \PYG{n}{v}\PYG{o}{=}\PYG{n}{edge}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{v}\PYG{p}{;}
+            \PYG{k+kt}{int} \PYG{n}{w}\PYG{o}{=}\PYG{n}{edge}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{w}\PYG{p}{;}
+            \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{vis}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{dis}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{\PYGZgt{}}\PYG{n}{dis}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{+}\PYG{n}{w}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{dis}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{=}\PYG{n}{dis}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{+}\PYG{n}{w}\PYG{p}{;}
+                \PYG{c+c1}{//多加了一条u\PYGZhy{}v的边而已，所以到v的最短路条数和到u的相同}
+                \PYG{n}{pcnt}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{=}\PYG{n}{pcnt}\PYG{p}{[}\PYG{n}{u}\PYG{p}{];}
+                \PYG{n}{q}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{n}{node}\PYG{p}{\PYGZob{}}\PYG{n}{v}\PYG{p}{,}\PYG{n}{dis}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]\PYGZcb{});}
+            \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{vis}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{dis}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{==}\PYG{n}{dis}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{+}\PYG{n}{w}\PYG{p}{)\PYGZob{}}
+                \PYG{c+c1}{//相等的情况就多出了pcnt[u]条路了}
+                \PYG{n}{pcnt}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{+=}\PYG{n}{pcnt}\PYG{p}{[}\PYG{n}{u}\PYG{p}{];}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

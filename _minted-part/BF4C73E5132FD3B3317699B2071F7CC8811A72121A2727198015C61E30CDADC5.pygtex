@@ -1,0 +1,79 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 贪心求解树上最小支配集/最小点覆盖/最大独立集}
+\PYG{c+cm}{ * p[i]: i的父节点}
+\PYG{c+cm}{ * dft[i]: dfs序第i个节点}
+\PYG{c+cm}{ * s[]: 求解的集合}
+\PYG{c+cm}{ * vis[i]: i是否被集合覆盖}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{void} \PYG{n+nf}{dfs}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{f}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//dfs序}
+    \PYG{n}{dft}\PYG{p}{[}\PYG{n}{k}\PYG{o}{++}\PYG{p}{]}\PYG{o}{=}\PYG{n}{u}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{n}{head}\PYG{p}{[}\PYG{n}{u}\PYG{p}{];}\PYG{n}{i}\PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{=}\PYG{n}{edge}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{next}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{v}\PYG{o}{=}\PYG{n}{edge}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{v}\PYG{p}{;}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{v}\PYG{o}{==}\PYG{n}{f}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{continue}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{p}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{=}\PYG{n}{u}\PYG{p}{;}
+        \PYG{n}{dfs}\PYG{p}{(}\PYG{n}{v}\PYG{p}{,}\PYG{n}{u}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{bool} \PYG{n}{s}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{vis}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{c+c1}{//最小支配集(覆盖所有点)}
+\PYG{k+kt}{int} \PYG{n+nf}{greedy1}\PYG{p}{()\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{c+c1}{//逆序进行贪心}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZgt{}=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{t}\PYG{o}{=}\PYG{n}{dft}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+        \PYG{c+c1}{//当前点未被覆盖}
+        \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{vis}\PYG{p}{[}\PYG{n}{t}\PYG{p}{])\PYGZob{}}
+            \PYG{c+c1}{//父节点不属于支配集}
+            \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{s}\PYG{p}{[}\PYG{n}{p}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]])\PYGZob{}}
+                \PYG{c+c1}{//将父节点加入支配集}
+                \PYG{n}{s}\PYG{p}{[}\PYG{n}{p}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+                \PYG{n}{ans}\PYG{o}{++}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{c+c1}{//父节点加入支配集，即该节点和父节点的父节点都被覆盖}
+            \PYG{n}{vis}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+            \PYG{n}{vis}\PYG{p}{[}\PYG{n}{p}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+            \PYG{n}{vis}\PYG{p}{[}\PYG{n}{p}\PYG{p}{[}\PYG{n}{p}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]]]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//最小点覆盖集(覆盖所有边)}
+\PYG{k+kt}{int} \PYG{n+nf}{greedy2}\PYG{p}{()\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{c+c1}{//该贪心策略要排除根节点dft[0]}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZgt{}=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{t}\PYG{o}{=}\PYG{n}{dft}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+        \PYG{c+c1}{//当前节点和父节点都不属于覆盖集}
+        \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{vis}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{o}{!}\PYG{n}{vis}\PYG{p}{[}\PYG{n}{p}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]])\PYGZob{}}
+            \PYG{c+c1}{//父节点加入覆盖集}
+            \PYG{n}{s}\PYG{p}{[}\PYG{n}{p}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+            \PYG{n}{ans}\PYG{o}{++}\PYG{p}{;}
+            \PYG{c+c1}{//当前点和父节点的父节点被覆盖}
+            \PYG{n}{vis}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+            \PYG{n}{vis}\PYG{p}{[}\PYG{n}{p}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//最大点独立集}
+\PYG{k+kt}{int} \PYG{n+nf}{greedy3}\PYG{p}{()\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZgt{}=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{t}\PYG{o}{=}\PYG{n}{dft}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+        \PYG{c+c1}{//当前节点没有被覆盖}
+        \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{vis}\PYG{p}{[}\PYG{n}{t}\PYG{p}{])\PYGZob{}}
+            \PYG{c+c1}{//加入独立集}
+            \PYG{n}{s}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+            \PYG{n}{ans}\PYG{o}{++}\PYG{p}{;}
+            \PYG{c+c1}{//当前节点和父节点被覆盖}
+            \PYG{n}{vis}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+            \PYG{n}{vis}\PYG{p}{[}\PYG{n}{p}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

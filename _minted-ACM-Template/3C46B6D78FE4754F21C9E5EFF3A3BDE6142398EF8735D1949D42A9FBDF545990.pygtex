@@ -1,0 +1,583 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 预处理 O(nlogn)}
+\PYG{c+cm}{ * dp[i][j]:从a[i]开始2\PYGZca{}j个数的最小值}
+\PYG{c+cm}{ */}
+\PYG{k+kt}{void} \PYG{n+nf}{RMQ\PYGZus{}init}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;(}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{n}{j}\PYG{p}{)}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+	    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{+}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{n}{j}\PYG{p}{)}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+	        \PYG{c+c1}{//两段重叠部分小区间}
+	        \PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]}\PYG{o}{=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{],}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{o}{+}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{p}{(}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{))][}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]);}
+	    \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 查询[l,r]最小值，最大值同理}
+\PYG{c+cm}{ */}
+\PYG{k+kt}{int} \PYG{n+nf}{RMQ}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{k}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{c+c1}{//保证刚好[l,l+2\PYGZca{}k]和[r\PYGZhy{}2\PYGZca{}k,r]重叠}
+    \PYG{k}{while}\PYG{p}{((}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{p}{(}\PYG{n}{k}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{))}\PYG{o}{\PYGZlt{}=}\PYG{n}{r}\PYG{o}{\PYGZhy{}}\PYG{n}{l}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{k}\PYG{o}{++}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{min}\PYG{p}{(}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{l}\PYG{p}{][}\PYG{n}{k}\PYG{p}{],}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{r}\PYG{o}{\PYGZhy{}}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{n}{k}\PYG{p}{)}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{n}{k}\PYG{p}{]);}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{c+c1}{//=====================后缀数组应用总结========================}
+\PYG{c+c1}{//1.任意两个后缀的最长公共前缀长度}
+\PYG{c+cm}{/* }
+\PYG{c+cm}{ * 转化为求两个后缀对应排名区间的最小h值，即RMQ问题}
+\PYG{c+cm}{ * 要先初始化RMQ(n+1)，求回文串时RMQ(2*n+2)}
+\PYG{c+cm}{ * 分清查询的是两个后缀首字符还是两个后缀排名}
+\PYG{c+cm}{ * l,r为两个后缀的排名}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{int} \PYG{n+nf}{solve0}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{l}\PYG{o}{==}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{l}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZgt{}}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{swap}\PYG{p}{(}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//这里可灵活处理，有时候不需要+1}
+    \PYG{k}{return} \PYG{n}{RMQ}\PYG{p}{(}\PYG{n}{l}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{r}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * i,j为两个后缀的首字符下标}
+\PYG{c+cm}{ */}  
+\PYG{k+kt}{int} \PYG{n+nf}{solve1}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{j}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{i}\PYG{o}{==}\PYG{n}{j}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{n}{i}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{ri}\PYG{o}{=}\PYG{n}{rk}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+    \PYG{k+kt}{int} \PYG{n}{rj}\PYG{o}{=}\PYG{n}{rk}\PYG{p}{[}\PYG{n}{j}\PYG{p}{];}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{ri}\PYG{o}{\PYGZgt{}}\PYG{n}{rj}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{swap}\PYG{p}{(}\PYG{n}{ri}\PYG{p}{,}\PYG{n}{rj}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//注意h数组是类似差分的表示，区间n其实只有n\PYGZhy{}1的h数组}
+    \PYG{k}{return} \PYG{n}{RMQ}\PYG{p}{(}\PYG{n}{ri}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{rj}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//2.可重叠最长重复子串长度}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 重复子串＝最长公共前缀＝区间内min(h)}
+\PYG{c+cm}{ * 最长重复子串＝所有区间max(min(h))=max(h)}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{int} \PYG{n+nf}{solve2}\PYG{p}{()\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{c+c1}{//注意从1开始，排名为0的是无效后缀\PYGZsq{}\PYGZdl{}\PYGZsq{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{ans}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{n}{ans}\PYG{p}{,}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//3.不可重叠最长重复子串}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 先二分答案(子串长度)将问题转化为判定性问题}
+\PYG{c+cm}{ * 即判断字符串里是否存在长度为mid的重复子串}
+\PYG{c+cm}{ * 将后缀按排名顺序进行分组，每组后缀间h值\PYGZgt{}=mid}
+\PYG{c+cm}{ * 否则单独一个组}
+\PYG{c+cm}{ * 同一组中判断max(sa[i])和min(sa[i])}
+\PYG{c+cm}{ * 即最左后缀和最右后缀的差值是否\PYGZgt{}=mid(即不重叠)}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{int} \PYG{n+nf}{solve3}\PYG{p}{()\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{l}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{r}\PYG{o}{=}\PYG{n}{n}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{;}
+    \PYG{c+c1}{//分组和判断同时进行}
+    \PYG{c+c1}{//mx mn分别维护组内最右和最左后端}
+    \PYG{k+kt}{int} \PYG{n}{mx}\PYG{o}{=\PYGZhy{}}\PYG{n}{INF}\PYG{p}{,}\PYG{n}{mn}\PYG{o}{=}\PYG{n}{INF}\PYG{p}{;}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZlt{}=}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{mid}\PYG{o}{=}\PYG{p}{(}\PYG{n}{l}\PYG{o}{+}\PYG{n}{r}\PYG{p}{)}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{;}
+        \PYG{k+kt}{bool} \PYG{n}{flag}\PYG{o}{=}\PYG{n+nb}{false}\PYG{p}{;}
+        \PYG{c+c1}{//可以直接从2开始，因为1和0的h值在这里无意义}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+                \PYG{c+c1}{//新的分组}
+                \PYG{n}{mx}\PYG{o}{=\PYGZhy{}}\PYG{n}{INF}\PYG{p}{;}
+                \PYG{n}{mn}\PYG{o}{=}\PYG{n}{INF}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+                \PYG{c+c1}{//h[i]表示的就是sa[i]和sa[i\PYGZhy{}1]这两个后缀的LCP}
+                \PYG{c+c1}{//所以这两个位置都有可能}
+                \PYG{n}{mx}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{n}{mx}\PYG{p}{,}\PYG{n}{max}\PYG{p}{(}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]));}
+                \PYG{n}{mn}\PYG{o}{=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{mn}\PYG{p}{,}\PYG{n}{min}\PYG{p}{(}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]));}
+                \PYG{c+c1}{//poj1743求的是差分数组所以这里是\PYGZgt{}}
+                \PYG{k}{if}\PYG{p}{(}\PYG{n}{mx}\PYG{o}{\PYGZhy{}}\PYG{n}{mn}\PYG{o}{\PYGZgt{}=}\PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+                    \PYG{n}{flag}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+                    \PYG{k}{break}\PYG{p}{;}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{flag}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{ans}\PYG{o}{=}\PYG{n}{mid}\PYG{p}{;}
+            \PYG{n}{l}\PYG{o}{=}\PYG{n}{mid}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{n}{r}\PYG{o}{=}\PYG{n}{mid}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//4.重叠出现至少k次的最长重复子串}
+\PYG{c+cm}{/* }
+\PYG{c+cm}{ * 同样是二分答案，后缀分组再进行判断}
+\PYG{c+cm}{ * 不过这里判断的是组内后缀个数是否\PYGZgt{}=k}
+\PYG{c+cm}{ */}
+\PYG{k+kt}{int} \PYG{n+nf}{solve4}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{k}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{l}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{r}\PYG{o}{=}\PYG{n}{n}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{;}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZlt{}=}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{mid}\PYG{o}{=}\PYG{p}{(}\PYG{n}{l}\PYG{o}{+}\PYG{n}{r}\PYG{p}{)}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{;}
+        \PYG{k+kt}{int} \PYG{n}{cnt}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{k+kt}{bool} \PYG{n}{flag}\PYG{o}{=}\PYG{n+nb}{false}\PYG{p}{;}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{cnt}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+                \PYG{n}{cnt}\PYG{o}{++}\PYG{p}{;}
+                \PYG{k}{if}\PYG{p}{(}\PYG{n}{cnt}\PYG{o}{\PYGZgt{}=}\PYG{n}{k}\PYG{p}{)\PYGZob{}}
+                    \PYG{n}{flag}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+                    \PYG{k}{break}\PYG{p}{;}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{flag}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{ans}\PYG{o}{=}\PYG{n}{mid}\PYG{p}{;}
+            \PYG{n}{l}\PYG{o}{=}\PYG{n}{mid}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{n}{r}\PYG{o}{=}\PYG{n}{mid}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//5.(长度大于等于k)的不同子串个数}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 按排名枚举后缀，对于排名为i的后缀来说，贡献为n\PYGZhy{}sa[i]+h[i](k为1的情况)}
+\PYG{c+cm}{ * 即后缀长度(从后缀第一个字符到后缀第i个字符算一个子串)减去重复部分}
+\PYG{c+cm}{ */}
+\PYG{k+kt}{int} \PYG{n+nf}{solve5}\PYG{p}{()\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])\PYGZob{}}
+            \PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{p}{(}\PYG{n}{k}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{));}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{max}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,(}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{p}{(}\PYG{n}{k}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{\PYGZhy{}}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]));}
+        \PYG{c+c1}{//k为1的情况}
+        \PYG{c+c1}{//ans+=(n\PYGZhy{}sa[i]\PYGZhy{}h[i]);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//6.最长回文子串}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 将字符串反转接在原串后面(中间加入特殊分隔符)，将问题转化为求LCP}
+\PYG{c+cm}{ * 枚举每一个位置分别求出奇数回文串和偶数回文串长度}
+\PYG{c+cm}{ */}
+\PYG{k+kt}{int} \PYG{n+nf}{solve6}\PYG{p}{()\PYGZob{}}
+    \PYG{c+c1}{//要先把字符串反转拼接再求sa}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//奇数回文串}
+        \PYG{n}{ans}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{n}{ans}\PYG{p}{,}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{solve1}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{n}{i}\PYG{p}{)}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{c+c1}{//偶数回文串}
+        \PYG{n}{ans}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{n}{ans}\PYG{p}{,}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{solve1}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{));}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//7.出现次数[a,b]/k次(即[k,k])的子串个数}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 设cal(k)为出现次数大于等于k的子串个数}
+\PYG{c+cm}{ * 问题转化为求cal(a)\PYGZhy{}cal(b+1)}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{int} \PYG{n+nf}{cal}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{k}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//特判k}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{k}\PYG{o}{==}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//即所有不同子串个数}
+        \PYG{k}{return} \PYG{n}{solve5}\PYG{p}{();}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{c+c1}{//不断枚举每一段k\PYGZhy{}1的h区间(其实就是k个后缀)}
+    \PYG{c+c1}{//0没有h值，1的h值恒为0}
+    \PYG{k+kt}{int} \PYG{n}{l}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{p}{,}\PYG{n}{r}\PYG{o}{=}\PYG{n}{k}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{pre}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{r}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//这里直接使用RMQ}
+        \PYG{k+kt}{int} \PYG{n}{now}\PYG{o}{=}\PYG{n}{RMQ}\PYG{p}{(}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{);}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{now}\PYG{o}{\PYGZgt{}=}\PYG{n}{pre}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{now}\PYG{o}{\PYGZhy{}}\PYG{n}{pre}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{pre}\PYG{o}{=}\PYG{n}{now}\PYG{p}{;}
+        \PYG{n}{l}\PYG{o}{++}\PYG{p}{;}
+        \PYG{n}{r}\PYG{o}{++}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{solve7}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{a}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{b}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{cal}\PYG{p}{(}\PYG{n}{a}\PYG{p}{)}\PYG{o}{\PYGZhy{}}\PYG{n}{cal}\PYG{p}{(}\PYG{n}{b}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//8.字符串S由字符串T重复Q次得到，求最大Q}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 使用kmp更方便，如果非要用后缀数组请用dc3模板}
+\PYG{c+cm}{ * 枚举T串长度k，先判断len(S)\PYGZpc{}len(T)==0？}
+\PYG{c+cm}{ * 再判断lcp(suffix(0),suffix(k))==n\PYGZhy{}k?}
+\PYG{c+cm}{ * suffix(i)指首字符位置为i的后缀}
+\PYG{c+cm}{ * 因为suffix(0)固定，无需预处理出整个RMQ}
+\PYG{c+cm}{ * 只需O(n)求出所有lcp(suffix(0),x)即可}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{int} \PYG{n+nf}{solve8}\PYG{p}{()\PYGZob{}}
+    \PYG{n}{lcp}\PYG{p}{[}\PYG{n}{rk}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]]}\PYG{o}{=}\PYG{n}{n}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{n}{rk}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZgt{}=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{lcp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{lcp}\PYG{p}{[}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{],}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{]);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{n}{rk}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{lcp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{lcp}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{],}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{k}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{k}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{k}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{n}\PYG{o}{\PYGZpc{}}\PYG{n}{k}\PYG{o}{==}\PYG{l+m+mi}{0} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{lcp}\PYG{p}{[}\PYG{n}{rk}\PYG{p}{[}\PYG{n}{k}\PYG{p}{]]}\PYG{o}{==}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{n}{k}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{return} \PYG{n}{n}\PYG{o}{/}\PYG{n}{k}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//9.重复次数最多的连续重复子串}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 暂时无法理解,贴个题解板子}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{void} \PYG{n+nf}{solve9}\PYG{p}{()\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{pos}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{lenn}\PYG{p}{;}
+    \PYG{c+c1}{//保证有重复,所以是len/2}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{len}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{n}{len}\PYG{o}{\PYGZhy{}}\PYG{n}{i}\PYG{p}{;}\PYG{n}{j}\PYG{o}{+=}\PYG{n}{i}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{str}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{!=}\PYG{n}{str}\PYG{p}{[}\PYG{n}{j}\PYG{o}{+}\PYG{n}{i}\PYG{p}{])\PYGZob{}}
+                \PYG{k}{continue}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{c+c1}{//通过下标查询}
+            \PYG{k+kt}{int} \PYG{n}{k}\PYG{o}{=}\PYG{n}{solve1}\PYG{p}{(}\PYG{n}{j}\PYG{p}{,}\PYG{n}{j}\PYG{o}{+}\PYG{n}{i}\PYG{p}{);}
+            \PYG{k+kt}{int} \PYG{n}{tol}\PYG{o}{=}\PYG{n}{k}\PYG{o}{/}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+            \PYG{k+kt}{int} \PYG{n}{r}\PYG{o}{=}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{n}{k}\PYG{o}{\PYGZpc{}}\PYG{n}{i}\PYG{p}{;}
+            \PYG{k+kt}{int} \PYG{n}{p}\PYG{o}{=}\PYG{n}{j}\PYG{p}{;}
+            \PYG{k+kt}{int} \PYG{n}{cnt}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+            \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{m}\PYG{o}{=}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{m}\PYG{o}{\PYGZgt{}}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{n}{i}\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{n}{str}\PYG{p}{[}\PYG{n}{m}\PYG{p}{]}\PYG{o}{==}\PYG{n}{str}\PYG{p}{[}\PYG{n}{m}\PYG{o}{+}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{n}{m}\PYG{o}{\PYGZgt{}=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{m}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{cnt}\PYG{o}{++}\PYG{p}{;}
+                \PYG{k}{if}\PYG{p}{(}\PYG{n}{cnt}\PYG{o}{==}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+                    \PYG{n}{tol}\PYG{o}{++}\PYG{p}{;}
+                    \PYG{n}{p}\PYG{o}{=}\PYG{n}{m}\PYG{p}{;}
+                \PYG{p}{\PYGZcb{}}
+                \PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{rk}\PYG{p}{[}\PYG{n}{p}\PYG{p}{]}\PYG{o}{\PYGZgt{}}\PYG{n}{rk}\PYG{p}{[}\PYG{n}{m}\PYG{p}{])\PYGZob{}}
+                    \PYG{n}{p}\PYG{o}{=}\PYG{n}{m}\PYG{p}{;}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{ans}\PYG{o}{\PYGZlt{}}\PYG{n}{tol}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{ans}\PYG{o}{=}\PYG{n}{tol}\PYG{p}{;}
+                \PYG{n}{pos}\PYG{o}{=}\PYG{n}{p}\PYG{p}{;}
+                \PYG{n}{lenn}\PYG{o}{=}\PYG{n}{tol}\PYG{o}{*}\PYG{n}{i}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{ans}\PYG{o}{==}\PYG{n}{tol} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{rk}\PYG{p}{[}\PYG{n}{pos}\PYG{p}{]}\PYG{o}{\PYGZgt{}}\PYG{n}{rk}\PYG{p}{[}\PYG{n}{p}\PYG{p}{])\PYGZob{}}
+                \PYG{n}{pos}\PYG{o}{=}\PYG{n}{p}\PYG{p}{;}
+                \PYG{n}{lenn}\PYG{o}{=}\PYG{n}{tol}\PYG{o}{*}\PYG{n}{i}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//这里，如果字符总长度小于2，那么就在原串中找出一个最小的字符就好}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{ans}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{2}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{char} \PYG{n}{ch}\PYG{o}{=}\PYG{l+s+sc}{\PYGZsq{}z\PYGZsq{}}\PYG{p}{;}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{len}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{str}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{ch}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{ch}\PYG{o}{=}\PYG{n}{str}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}c}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{ch}\PYG{p}{);}
+        \PYG{k}{return}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{n}{pos}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{pos}\PYG{o}{+}\PYG{n}{lenn}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}c\PYGZdq{}}\PYG{p}{,}\PYG{n}{str}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//10.最长公共子串}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 求A和B的最长公共子串即转化为求A和B后缀的最长公共前缀}
+\PYG{c+cm}{ * 将A和B拼接求出h数组，当suffix(sa[i])和suffix(sa[i\PYGZhy{}1])不在同个字符串时}
+\PYG{c+cm}{ * h[i]才有效，求出最大值即可}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{int} \PYG{n+nf}{solve10}\PYG{p}{()\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//al为第一个字符串长度}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{al} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{al} \PYG{o}{||} \PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZgt{}=}\PYG{n}{al} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{\PYGZgt{}=}\PYG{n}{al}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{continue}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{ans}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{n}{ans}\PYG{p}{,}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//11.求长度大于等于k的公共子串个数}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 同样是转化为A和B所有后缀的最长公共前缀大于等于k的贡献累加起来}
+\PYG{c+cm}{ * 用常用的处理方法，将两个字符串拼接，中间用分隔符隔开，求出h数组}
+\PYG{c+cm}{ * 然后对h数组分组(把h值大于等于k的分在一组)}
+\PYG{c+cm}{ * 然后在这道题里要使用一个单调栈来维护前面的后缀对后面的后缀的贡献}
+\PYG{c+cm}{ * 单调栈维护一个h值和一个该h值在前面充当lcp的}
+\PYG{c+cm}{ * sta[i][0]: 维护h值 sta[i][1]: 维护这个h值代表前面多少个后缀的lcp贡献(最小h值)}
+\PYG{c+cm}{ * 维护的类似一种前缀和的东西，具体看代码详细注释}
+\PYG{c+cm}{ */}
+\PYG{k+kt}{int} \PYG{n+nf}{solve11}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{k}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{top}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{tot}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{c+c1}{//对h分组}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{k}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//单独一个后缀的分组，无需考虑}
+            \PYG{n}{top}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+            \PYG{n}{tot}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{c+c1}{//cnt表示h[i]作为lcp的后缀个数}
+            \PYG{k+kt}{int} \PYG{n}{cnt}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+            \PYG{c+c1}{//前一个后缀属于A，计算贡献}
+            \PYG{c+c1}{//即能产生多少个长度大于等于k的公共子串}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{al}\PYG{p}{)\PYGZob{}}
+                \PYG{c+c1}{//前面(i\PYGZhy{}1)必须是属于A的后缀，才能计算这个贡献}
+                \PYG{c+c1}{//所以后面把B的后缀入栈是没毛病的，这里维护的实际上是一个类似前缀和的东西}
+                \PYG{c+c1}{//即栈顶元素已经是累加了栈底所有元素的贡献}
+                \PYG{c+c1}{//但是这个单调栈是动态变化的，所以不能单纯保留栈顶元素}
+                \PYG{n}{cnt}\PYG{o}{++}\PYG{p}{;}
+                \PYG{c+c1}{//比如h[i]=4，例如abcd，那么大于等于k的子串就可以是}
+                \PYG{c+c1}{//ab abc abcd这三个，所以是h[i]\PYGZhy{}k+1}
+                \PYG{n}{tot}\PYG{o}{+=}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{k}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{c+c1}{//维护单调栈(栈顶到栈底递减)}
+            \PYG{c+c1}{//这里不用考虑h[i]是A的还是B的}
+            \PYG{k}{while}\PYG{p}{(}\PYG{n}{top} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZlt{}=}\PYG{n}{sta}\PYG{p}{[}\PYG{n}{top}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{])\PYGZob{}}
+                \PYG{n}{top}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+                \PYG{c+c1}{//更新贡献}
+                \PYG{c+c1}{//这里实际上应该是tot(贡献)减去sta[top][0]*sta[top][1]}
+                \PYG{c+c1}{//再加上h[i]*sta[top][1]}
+                \PYG{c+c1}{//相当于就是栈顶被替换了，所以栈顶这个h值之前充当了多少后缀的lcp}
+                \PYG{c+c1}{//都要改成这个新的栈顶h[i]的贡献了}
+                \PYG{n}{tot}\PYG{o}{+=}\PYG{p}{(}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{sta}\PYG{p}{[}\PYG{n}{top}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{])}\PYG{o}{*}\PYG{n}{sta}\PYG{p}{[}\PYG{n}{top}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{];}
+                \PYG{c+c1}{//既然h[i]比sta[top][0]小，那么sta[top][0]能作为lcp(h最小值)的h[i]}
+                \PYG{c+c1}{//肯定也可以，所以累加上即可}
+                \PYG{n}{cnt}\PYG{o}{+=}\PYG{n}{sta}\PYG{p}{[}\PYG{n}{top}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{];}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{c+c1}{//此时栈里的所有h值都小于h[i]}
+            \PYG{c+c1}{//入栈，维持单调性}
+            \PYG{n}{sta}\PYG{p}{[}\PYG{n}{top}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+            \PYG{n}{sta}\PYG{p}{[}\PYG{n}{top}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{=}\PYG{n}{cnt}\PYG{p}{;}
+            \PYG{n}{top}\PYG{o}{++}\PYG{p}{;}
+            \PYG{c+c1}{//属于B的后缀，累加A的贡献}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZgt{}}\PYG{n}{al}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{tot}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//同理对B串的后缀维护单调栈，累计B的贡献}
+    \PYG{n}{top}\PYG{o}{=}\PYG{n}{tot}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{k}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{top}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+            \PYG{n}{tot}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{k+kt}{int} \PYG{n}{cnt}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{\PYGZgt{}}\PYG{n}{al}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{cnt}\PYG{o}{++}\PYG{p}{;}
+                \PYG{n}{tot}\PYG{o}{+=}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{k}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{k}{while}\PYG{p}{(}\PYG{n}{top} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZlt{}=}\PYG{n}{sta}\PYG{p}{[}\PYG{n}{top}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{])\PYGZob{}}
+                \PYG{n}{top}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+                \PYG{n}{tot}\PYG{o}{+=}\PYG{p}{(}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{sta}\PYG{p}{[}\PYG{n}{top}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{])}\PYG{o}{*}\PYG{n}{sta}\PYG{p}{[}\PYG{n}{top}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{];}
+                \PYG{n}{cnt}\PYG{o}{+=}\PYG{n}{sta}\PYG{p}{[}\PYG{n}{top}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{];}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{sta}\PYG{p}{[}\PYG{n}{top}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+            \PYG{n}{sta}\PYG{p}{[}\PYG{n}{top}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{=}\PYG{n}{cnt}\PYG{p}{;}
+            \PYG{n}{top}\PYG{o}{++}\PYG{p}{;}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{al}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{tot}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//12.给n个字符串，出现在不少于k个字符串的最长子串}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 同样是拼接字符串对h数组分组，二分答案进行判断}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{bool} \PYG{n+nf}{check12}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{bool} \PYG{n}{flag}\PYG{o}{=}\PYG{n+nb}{false}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{len}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//不满足要求的组直接不用管}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{continue}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//组内不同字符串个数}
+        \PYG{k+kt}{int} \PYG{n}{cnt}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{c+c1}{//标记某个字符串是否出现过}
+        \PYG{n}{memset}\PYG{p}{(}\PYG{n}{vis}\PYG{p}{,}\PYG{n+nb}{false}\PYG{p}{,}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{vis}\PYG{p}{));}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZgt{}=}\PYG{n}{mid} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{len}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{vis}\PYG{p}{[}\PYG{n}{idx}\PYG{p}{[}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]]])\PYGZob{}}
+                \PYG{n}{vis}\PYG{p}{[}\PYG{n}{idx}\PYG{p}{[}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]]]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+                \PYG{n}{cnt}\PYG{o}{++}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{c+c1}{//找到1组}
+            \PYG{n}{i}\PYG{o}{++}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//注意最后一个的判断}
+        \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{vis}\PYG{p}{[}\PYG{n}{idx}\PYG{p}{[}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]]])\PYGZob{}}
+            \PYG{n}{vis}\PYG{p}{[}\PYG{n}{idx}\PYG{p}{[}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]]]}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+            \PYG{n}{cnt}\PYG{o}{++}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//出现在k个不同字符串中}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{cnt}\PYG{o}{\PYGZgt{}}\PYG{n}{k}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{flag}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{flag}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+                \PYG{c+c1}{//清空之前的答案}
+                \PYG{c+c1}{//ans存储出现在至少k个不同字符串的后缀sa值}
+                \PYG{n}{ans}\PYG{p}{.}\PYG{n}{clear}\PYG{p}{();}
+                \PYG{n}{ans}\PYG{p}{.}\PYG{n}{push\PYGZus{}back}\PYG{p}{(}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]);}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{k}{else}\PYG{p}{\PYGZob{}}
+                \PYG{c+c1}{//只需加入最后一个满足条件后缀的sa}
+                \PYG{n}{ans}\PYG{p}{.}\PYG{n}{push\PYGZus{}back}\PYG{p}{(}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]);}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//是否有满足要求的答案}
+    \PYG{k}{return} \PYG{n}{flag}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{solve12}\PYG{p}{()\PYGZob{}}
+    \PYG{n}{ans}\PYG{p}{.}\PYG{n}{clear}\PYG{p}{();}
+    \PYG{k+kt}{int} \PYG{n}{l}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{r}\PYG{o}{=}\PYG{n}{len}\PYG{p}{;}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZlt{}=}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{mid}\PYG{o}{=}\PYG{p}{(}\PYG{n}{l}\PYG{o}{+}\PYG{n}{r}\PYG{p}{)}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{check}\PYG{p}{(}\PYG{n}{mid}\PYG{p}{))\PYGZob{}}
+            \PYG{n}{l}\PYG{o}{=}\PYG{n}{mid}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{n}{r}\PYG{o}{=}\PYG{n}{mid}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//输出多个最长公共子串(至少在k个字符串中出现过)}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{ans}\PYG{p}{.}\PYG{n}{size}\PYG{p}{();}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{n}{ans}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}\PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{n}{ans}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{+}\PYG{n}{r}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)}
+            \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}c\PYGZdq{}}\PYG{p}{,}\PYG{n}{s}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{o}{+}\PYG{l+s+sc}{\PYGZsq{}a\PYGZsq{}}\PYG{p}{);}
+        \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//13.给n个字符串，在每个字符串中至少出现两次且不重叠的最长子串}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 把每个字符串拼接起来，中间用分隔符分开，求h数组}
+\PYG{c+cm}{ * 二分子串长度，对h数组分组，维护每一个字符串在当前组的最小和最大sa值 }
+\PYG{c+cm}{ * 然后判断不重叠即可(也同时判断了出现2次)}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{bool} \PYG{n+nf}{check13}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//后缀起始位置的最大最小值}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{mx}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{n}{mn}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{INF}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{len}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//重置分组}
+            \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{mx}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+                \PYG{n}{mn}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{INF}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{c+c1}{//一个h值表示两个后缀}
+            \PYG{n}{mx}\PYG{p}{[}\PYG{n}{idx}\PYG{p}{[}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]]}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{n}{mx}\PYG{p}{[}\PYG{n}{idx}\PYG{p}{[}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]],}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+            \PYG{n}{mn}\PYG{p}{[}\PYG{n}{idx}\PYG{p}{[}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]]}\PYG{o}{=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{mn}\PYG{p}{[}\PYG{n}{idx}\PYG{p}{[}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]],}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+            \PYG{n}{mx}\PYG{p}{[}\PYG{n}{idx}\PYG{p}{[}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]]]}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{n}{mx}\PYG{p}{[}\PYG{n}{idx}\PYG{p}{[}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]]],}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]);}
+            \PYG{n}{mn}\PYG{p}{[}\PYG{n}{idx}\PYG{p}{[}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]]]}\PYG{o}{=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{mn}\PYG{p}{[}\PYG{n}{idx}\PYG{p}{[}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]]],}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]);}
+            \PYG{k+kt}{bool} \PYG{n}{flag}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+            \PYG{c+c1}{//需要判断每个字符串(都要出现两次以上，且不重叠)}
+            \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+                \PYG{k}{if}\PYG{p}{(}\PYG{n}{mx}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{mn}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+                    \PYG{n}{flag}\PYG{o}{=}\PYG{n+nb}{false}\PYG{p}{;}
+                    \PYG{k}{break}\PYG{p}{;}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{flag}\PYG{p}{)\PYGZob{}}
+                \PYG{k}{return} \PYG{n+nb}{true}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n+nb}{false}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{solve13}\PYG{p}{()\PYGZob{}}
+    \PYG{c+c1}{//len为拼接后的字符串长度}
+    \PYG{k+kt}{int} \PYG{n}{l}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{r}\PYG{o}{=}\PYG{n}{len}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZlt{}=}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{mid}\PYG{o}{=}\PYG{p}{(}\PYG{n}{l}\PYG{o}{+}\PYG{n}{r}\PYG{p}{)}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{check13}\PYG{p}{(}\PYG{n}{mid}\PYG{p}{))\PYGZob{}}
+            \PYG{n}{ans}\PYG{o}{=}\PYG{n}{mid}\PYG{p}{;}
+            \PYG{n}{l}\PYG{o}{=}\PYG{n}{mid}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{n}{r}\PYG{o}{=}\PYG{n}{mid}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//14.给n个字符串，正序或逆序出现在每个字符串的最长子串}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 把每个字符串正序和逆序拼接起来，中间用分隔符分开，求h数组}
+\PYG{c+cm}{ * 二分子串长度，对h数组分组，判断是否存在一组h值里面所属n个不同字符串}
+\PYG{c+cm}{ * 所以在拼接字符串的时候要把每个字符串(正序和逆序)的每个字符标记是第几个字符串}
+\PYG{c+cm}{ * for(int j=0;j\PYGZlt{}siz;j++)\PYGZob{}}
+\PYG{c+cm}{        idx[len]=i;   }
+\PYG{c+cm}{        //加2*n+1保证不会跟分隔符相同}
+\PYG{c+cm}{        s[len++]=ss[i][j]\PYGZhy{}\PYGZsq{}A\PYGZsq{}+2*n+1;}
+\PYG{c+cm}{    \PYGZcb{}}
+\PYG{c+cm}{    idx[len]=i;}
+\PYG{c+cm}{    s[len++]=sep++;}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{bool} \PYG{n+nf}{check14}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//这里用set来进行组内所属字符串的去重}
+    \PYG{n}{set}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}} \PYG{n}{se}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{len}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZgt{}=}\PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{se}\PYG{p}{.}\PYG{n}{insert}\PYG{p}{(}\PYG{n}{idx}\PYG{p}{[}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]);}
+            \PYG{n}{se}\PYG{p}{.}\PYG{n}{insert}\PYG{p}{(}\PYG{n}{idx}\PYG{p}{[}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]]);}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{se}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{o}{==}\PYG{n}{n}\PYG{p}{)\PYGZob{}}
+                \PYG{k}{return} \PYG{n+nb}{true}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{se}\PYG{p}{.}\PYG{n}{clear}\PYG{p}{();}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//注意最后一个组}
+    \PYG{k}{return} \PYG{n}{se}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{o}{==}\PYG{n}{n}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{solve14}\PYG{p}{()\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{n}\PYG{o}{==}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{strlen}\PYG{p}{(}\PYG{n}{ss}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{l}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{r}\PYG{o}{=}\PYG{l+m+mi}{100}\PYG{p}{;}
+    \PYG{c+c1}{//变量记得初始化！！！}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZlt{}=}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{mid}\PYG{o}{=}\PYG{p}{(}\PYG{n}{l}\PYG{o}{+}\PYG{n}{r}\PYG{p}{)}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{check14}\PYG{p}{(}\PYG{n}{mid}\PYG{p}{))\PYGZob{}}
+            \PYG{n}{ans}\PYG{o}{=}\PYG{n}{mid}\PYG{p}{;}
+            \PYG{n}{l}\PYG{o}{=}\PYG{n}{mid}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{n}{r}\PYG{o}{=}\PYG{n}{mid}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//几个注意点}
+\PYG{c+c1}{//字符串数组一般可以用一个int数组来表示,特别是需要拼接字符串的题目}
+\PYG{c+c1}{//拼接字符串先设定一个比较大的分隔符,比如300,然后每次分割一次都要+1}
+\PYG{c+c1}{//注意最后一位补0 s[len]=0}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{    len=0;}
+\PYG{c+cm}{    int sep=30;}
+\PYG{c+cm}{    for(int i=0;i\PYGZlt{}n;i++)\PYGZob{}}
+\PYG{c+cm}{        scanf(\PYGZdq{}\PYGZpc{}s\PYGZdq{},str[i]);}
+\PYG{c+cm}{        siz[i]=strlen(str[i]);}
+\PYG{c+cm}{        for(int j=0;j\PYGZlt{}siz[i];j++)\PYGZob{}}
+\PYG{c+cm}{             s[len++]=str[i][j]\PYGZhy{}\PYGZsq{}a\PYGZsq{}+1;}
+\PYG{c+cm}{             idx[len\PYGZhy{}1]=i;}
+\PYG{c+cm}{        \PYGZcb{}}
+\PYG{c+cm}{        s[len++]=sep++;}
+\PYG{c+cm}{    \PYGZcb{}}
+\PYG{c+cm}{    s[len]=0;}
+\PYG{c+cm}{    build\PYGZus{}sa(len,250);}
+\PYG{c+cm}{ */} 
+\end{Verbatim}

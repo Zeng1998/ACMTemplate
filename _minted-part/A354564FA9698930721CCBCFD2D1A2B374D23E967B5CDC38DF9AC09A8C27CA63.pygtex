@@ -1,0 +1,53 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * tarjan算法求桥/边\PYGZhy{}双连通分量}
+\PYG{c+cm}{ * 双连通分量即删除桥后的各个连通分量，可以说BCC=SCC+桥的判定}
+\PYG{c+cm}{ * 小结论:一个有桥的连通图要变为边双连通图至少需要加几条边？ }
+\PYG{c+cm}{ *     双连通分量缩点建树，求叶子节点数量，答案为(leaf+1)/2}
+\PYG{c+cm}{ */}
+\PYG{k+kt}{void} \PYG{n+nf}{dfs}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{f}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{low}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{n}{dfn}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=++}\PYG{n}{idx}\PYG{p}{;}
+    \PYG{n}{s}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{n}{u}\PYG{p}{);}
+    \PYG{n}{inStack}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{n}{head}\PYG{p}{[}\PYG{n}{u}\PYG{p}{];}\PYG{n}{i}\PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{=}\PYG{n}{edge}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{next}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{v}\PYG{o}{=}\PYG{n}{edge}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{v}\PYG{p}{;}
+        \PYG{c+c1}{//无向图}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{v}\PYG{o}{==}\PYG{n}{f}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{continue}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{dfn}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{dfs}\PYG{p}{(}\PYG{n}{v}\PYG{p}{,}\PYG{n}{u}\PYG{p}{);}
+            \PYG{n}{low}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{low}\PYG{p}{[}\PYG{n}{u}\PYG{p}{],}\PYG{n}{low}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]);}
+            \PYG{c+c1}{//桥的判定}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{low}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{\PYGZgt{}}\PYG{n}{dfn}\PYG{p}{[}\PYG{n}{u}\PYG{p}{])\PYGZob{}}
+                \PYG{n}{bridegs}\PYG{p}{.}\PYG{n}{push\PYGZus{}back}\PYG{p}{(}\PYG{n}{make\PYGZus{}pair}\PYG{p}{(}\PYG{n}{u}\PYG{p}{,}\PYG{n}{v}\PYG{p}{));}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{inStack}\PYG{p}{[}\PYG{n}{v}\PYG{p}{])\PYGZob{}}
+            \PYG{n}{low}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{low}\PYG{p}{[}\PYG{n}{u}\PYG{p}{],}\PYG{n}{dfn}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//删掉桥剩下的就是边\PYGZhy{}双联通分类}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{low}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{==}\PYG{n}{dfn}\PYG{p}{[}\PYG{n}{u}\PYG{p}{])\PYGZob{}}
+        \PYG{n}{num}\PYG{o}{++}\PYG{p}{;}
+        \PYG{k}{while}\PYG{p}{(}\PYG{o}{!}\PYG{n}{s}\PYG{p}{.}\PYG{n}{empty}\PYG{p}{())\PYGZob{}}
+            \PYG{k+kt}{int} \PYG{n}{t}\PYG{o}{=}\PYG{n}{s}\PYG{p}{.}\PYG{n}{top}\PYG{p}{();}        
+            \PYG{n}{s}\PYG{p}{.}\PYG{n}{pop}\PYG{p}{();}
+            \PYG{n}{inStack}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{false}\PYG{p}{;}
+            \PYG{n}{bcc}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]}\PYG{o}{=}\PYG{n}{num}\PYG{p}{;}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{t}\PYG{o}{==}\PYG{n}{u}\PYG{p}{)\PYGZob{}}
+                \PYG{k}{break}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+       \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{solve}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{num}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{n}{memset}\PYG{p}{(}\PYG{n}{dfn}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{dfn}\PYG{p}{));}
+    \PYG{n}{memset}\PYG{p}{(}\PYG{n}{low}\PYG{p}{,} \PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{low}\PYG{p}{));}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{dfn}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{dfs}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

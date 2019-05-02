@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 跑一遍Hungary算法，判断是否每个点都有匹配}
+\PYG{c+cm}{ * mat[i]: 左点集i对应的匹配点}
+\PYG{c+cm}{ */} 
+\end{Verbatim}

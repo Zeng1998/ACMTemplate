@@ -1,0 +1,214 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * AC自动机}
+\PYG{c+cm}{ * tr[u][i]: 表示节点u的子节点(\PYGZsq{}a\PYGZsq{}\PYGZhy{}\PYGZsq{}z\PYGZsq{}=\PYGZgt{}0\PYGZhy{}25)编号}
+\PYG{c+cm}{ * cnt: 总节点数/节点编号}
+\PYG{c+cm}{ * fail[u]: 节点u的fail指针指向节点编号}
+\PYG{c+cm}{ * ==\PYGZgt{} fail指针: 指向当前失配的字符串的最长后缀字符串}
+\PYG{c+cm}{ * ==\PYGZgt{} 比如匹配到abcd，d失配，那么c的fail指针指向的就是后缀为abc(或者bc或者c)的最长字符串}
+\PYG{c+cm}{ * val[u]: 以节点u所表示字符串作为结尾的单词数}
+\PYG{c+cm}{ * sum[u]: 以节点u所表示字符串作为前缀的单词数}
+\PYG{c+cm}{ */} 
+\PYG{c+c1}{//插入单词，构建字典树}
+\PYG{k+kt}{void} \PYG{n+nf}{insert}\PYG{p}{(}\PYG{k+kt}{char} \PYG{o}{*}\PYG{n}{s}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{len}\PYG{o}{=}\PYG{n}{strlen}\PYG{p}{(}\PYG{n}{s}\PYG{p}{);}
+    \PYG{k+kt}{int} \PYG{n}{now}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{len}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{id}\PYG{o}{=}\PYG{n}{s}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{l+s+sc}{\PYGZsq{}a\PYGZsq{}}\PYG{p}{;}
+        \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{now}\PYG{p}{][}\PYG{n}{id}\PYG{p}{])\PYGZob{}}
+            \PYG{n}{tr}\PYG{p}{[}\PYG{n}{now}\PYG{p}{][}\PYG{n}{id}\PYG{p}{]}\PYG{o}{=++}\PYG{n}{cnt}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{now}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{now}\PYG{p}{][}\PYG{n}{id}\PYG{p}{];}
+        \PYG{n}{sum}\PYG{p}{[}\PYG{n}{now}\PYG{p}{]}\PYG{o}{++}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{val}\PYG{p}{[}\PYG{n}{now}\PYG{p}{]}\PYG{o}{++}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//使用bfs构造fail指针}
+\PYG{k+kt}{void} \PYG{n+nf}{build}\PYG{p}{()\PYGZob{}}
+    \PYG{n}{queue}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}} \PYG{n}{q}\PYG{p}{;}
+    \PYG{c+c1}{//第一层节点均指向根}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{26}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{tr}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{][}\PYG{n}{i}\PYG{p}{])\PYGZob{}}
+            \PYG{n}{fail}\PYG{p}{[}\PYG{n}{tr}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{][}\PYG{n}{i}\PYG{p}{]]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+            \PYG{n}{q}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{n}{tr}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{][}\PYG{n}{i}\PYG{p}{]);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{while}\PYG{p}{(}\PYG{o}{!}\PYG{n}{q}\PYG{p}{.}\PYG{n}{empty}\PYG{p}{())\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{u}\PYG{o}{=}\PYG{n}{q}\PYG{p}{.}\PYG{n}{front}\PYG{p}{();}
+        \PYG{n}{q}\PYG{p}{.}\PYG{n}{pop}\PYG{p}{();}
+        \PYG{c+c1}{//处理出fail指针或者该节点走一步(fail跳转不算)能到达的节点}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{26}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{i}\PYG{p}{])\PYGZob{}}
+                \PYG{c+c1}{//已经路径压缩，子节点fail直接指向父节点的fail的对应子节点}
+                \PYG{c+c1}{//(无论是否存在，若不存在会自动指向上一级fail)}
+                \PYG{n}{fail}\PYG{p}{[}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{i}\PYG{p}{]]}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{fail}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]][}\PYG{n}{i}\PYG{p}{];}
+                \PYG{n}{q}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{i}\PYG{p}{]);}
+            \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+                \PYG{c+c1}{//预处理该节点走一步(fail跳转不算)能到达的节点}
+                \PYG{c+c1}{//相当于路径压缩，这样下面的节点就不用while(fail[fail[...]])这样跳}
+                \PYG{n}{tr}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{fail}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]][}\PYG{n}{i}\PYG{p}{];}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{query}\PYG{p}{(}\PYG{k+kt}{char} \PYG{o}{*}\PYG{n}{s}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{len}\PYG{o}{=}\PYG{n}{strlen}\PYG{p}{(}\PYG{n}{s}\PYG{p}{);}
+    \PYG{k+kt}{int} \PYG{n}{now}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{len}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{id}\PYG{o}{=}\PYG{n}{s}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{l+s+sc}{\PYGZsq{}a\PYGZsq{}}\PYG{p}{;}
+        \PYG{n}{now}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{now}\PYG{p}{][}\PYG{n}{id}\PYG{p}{];}
+        \PYG{c+c1}{//从当前节点一直往上跳转直到根或者val[t]为\PYGZhy{}1}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{t}\PYG{o}{=}\PYG{n}{now}\PYG{p}{;}\PYG{n}{t}\PYG{o}{\PYGZam{}\PYGZam{}\PYGZti{}}\PYG{n}{val}\PYG{p}{[}\PYG{n}{t}\PYG{p}{];}\PYG{n}{t}\PYG{o}{=}\PYG{n}{fail}\PYG{p}{[}\PYG{n}{t}\PYG{p}{])\PYGZob{}}
+            \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{val}\PYG{p}{[}\PYG{n}{t}\PYG{p}{];}
+            \PYG{c+c1}{//避免重复匹配}
+            \PYG{n}{val}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 01异或字典树}
+\PYG{c+cm}{ */}
+\PYG{k+kt}{void} \PYG{n+nf}{insert}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{rt}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{32}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZgt{}=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//从高位，分解为二进制数位}
+        \PYG{k+kt}{int} \PYG{n}{id}\PYG{o}{=}\PYG{p}{(}\PYG{n}{x}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{n}{i}\PYG{p}{)}\PYG{o}{\PYGZam{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{rt}\PYG{p}{][}\PYG{n}{id}\PYG{p}{])\PYGZob{}}
+            \PYG{n}{tr}\PYG{p}{[}\PYG{n}{rt}\PYG{p}{][}\PYG{n}{id}\PYG{p}{]}\PYG{o}{=++}\PYG{n}{cnt}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{rt}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{rt}\PYG{p}{][}\PYG{n}{id}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//末尾标记原数字}
+    \PYG{n}{val}\PYG{p}{[}\PYG{n}{rt}\PYG{p}{]}\PYG{o}{=}\PYG{n}{x}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{n}{ll} \PYG{n+nf}{query}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{rt}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{32}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZgt{}=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{id}\PYG{o}{=}\PYG{p}{(}\PYG{n}{x}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{n}{i}\PYG{p}{)}\PYG{o}{\PYGZam{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{c+c1}{//不管这一位(id)是1还是0，优先找与这一位不同的节点，这样异或值就会尽量大}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{rt}\PYG{p}{][}\PYG{n}{id}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{])\PYGZob{}}
+            \PYG{n}{rt}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{rt}\PYG{p}{][}\PYG{n}{id}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{n}{rt}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{rt}\PYG{p}{][}\PYG{n}{id}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{val}\PYG{p}{[}\PYG{n}{rt}\PYG{p}{];}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * AC自动机上dp}
+\PYG{c+cm}{ * bzoj1030: 求长度为m且不含有所给n个单词的字符串的个数}
+\PYG{c+cm}{ * dp[i][j]: 长度为i(从trie树根节点走i步)在节点j的满足条件字符串个数}
+\PYG{c+cm}{ * ans=sum(dp[m][i]) i(0\PYGZhy{}cnt)}
+\PYG{c+cm}{ * val[i]: 标记i节点是否可以访问(即对应字符串是否含有所给单词)}
+\PYG{c+cm}{ *         在构建fail指针的时候，也要更新val[u]|=val[fail[u]]}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{int} \PYG{n+nf}{solve}\PYG{p}{()\PYGZob{}}
+    \PYG{n}{dp}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{c+c1}{//枚举步数}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{m}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//枚举所有节点}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}=}\PYG{n}{cnt}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//标记的单词(或是fail指针有标记)都不能经过 }
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{val}\PYG{p}{[}\PYG{n}{j}\PYG{p}{])\PYGZob{}}
+                \PYG{k}{continue}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{k}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{k}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{26}\PYG{p}{;}\PYG{n}{k}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{j}\PYG{p}{][}\PYG{n}{k}\PYG{p}{]]}\PYG{o}{=}\PYG{p}{(}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{j}\PYG{p}{][}\PYG{n}{k}\PYG{p}{]]}\PYG{o}{+}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{n}{j}\PYG{p}{])}\PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{sum}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{m}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{sum}\PYG{o}{=}\PYG{p}{(}\PYG{n}{sum}\PYG{o}{*}\PYG{l+m+mi}{26}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{cnt}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{val}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])\PYGZob{}}
+            \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{m}\PYG{p}{][}\PYG{n}{i}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{p}{((}\PYG{n}{sum}\PYG{o}{\PYGZhy{}}\PYG{n}{ans}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{o}{+}\PYG{n}{MOD}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * AC自动机上数位dp}
+\PYG{c+cm}{ * bzoj3530: 给定整数n和其他m个整数，求0\PYGZhy{}N中，不含有这m个整数子串的数的个数}
+\PYG{c+cm}{ * 先将模式串插入trie树中，跑数位dp模板(不用分解数位了)，dp数组多加一维标记节点位置}
+\PYG{c+cm}{ * 判断下一个节点有效性(即是否含有模式串，注意题目是含有任意一个还是含有全部(状态压缩))}
+\PYG{c+cm}{ * zero: 是否有前导零限制，即zero为true时，该位不能选0}
+\PYG{c+cm}{ * flag: 表示是否含有trie树中的串}
+\PYG{c+cm}{ * dp[i][j][k]: 表示前i位数在u节点上前面是否含有无效串的数的个数}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{int} \PYG{n+nf}{dfs}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{len}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{flag}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{limit}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{zero}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//递归边界，即枚举完一个可能的数，如果没有任何限制就返回1，即一个满足要求的数}
+	\PYG{k}{if}\PYG{p}{(}\PYG{n}{len}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{p}{(}\PYG{o}{!}\PYG{n}{flag} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{o}{!}\PYG{n}{zero}\PYG{p}{)} \PYG{o}{?} \PYG{l+m+mi}{1} \PYG{o}{:} \PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//在没有上限限制和没有前导零限制的情况下直接记忆化搜索}
+	\PYG{k}{if}\PYG{p}{(}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{len}\PYG{p}{][}\PYG{n}{u}\PYG{p}{][}\PYG{n}{flag}\PYG{p}{]}\PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{o}{!}\PYG{n}{limit} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{o}{!}\PYG{n}{zero}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{dp}\PYG{p}{[}\PYG{n}{len}\PYG{p}{][}\PYG{n}{u}\PYG{p}{][}\PYG{n}{flag}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+	\PYG{k+kt}{int} \PYG{n}{up} \PYG{o}{=} \PYG{n}{limit} \PYG{o}{?} \PYG{n}{n}\PYG{p}{[}\PYG{n}{len}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}} \PYG{o}{:} \PYG{l+m+mi}{9}\PYG{p}{;} 
+    \PYG{k+kt}{int} \PYG{n}{ans} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+	\PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{up}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//有前导零限制且当前枚举位为0，相当于这一状态下面递归的所有状态都是无效的}
+        \PYG{c+c1}{//所以直接舍弃掉这一位从下一位开始并从trie树根节点开始}
+        \PYG{c+c1}{//比如1234，枚举最高位的时候0是不可以的，有前导零限制}
+        \PYG{c+c1}{//所以0000,0001,0002等这些数都是无效的}
+        \PYG{c+c1}{//直接从高二位开始算，也就相当于是234，同理这一位枚举到也不行}
+        \PYG{c+c1}{//枚举到1的时候100，101这些就是有效状态}
+    	\PYG{k}{if}\PYG{p}{(}\PYG{n}{i}\PYG{o}{==}\PYG{l+m+mi}{0} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{zero}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{ans}\PYG{o}{=}\PYG{p}{(}\PYG{n}{ans}\PYG{o}{+}\PYG{n}{dfs}\PYG{p}{(}\PYG{n}{len}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{flag}\PYG{p}{,}\PYG{n}{limit} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{i}\PYG{o}{==}\PYG{n}{up}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{))}\PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{c+c1}{//当前节点含有trie树的串或者是下一个节点含有}
+            \PYG{n}{ans}\PYG{o}{=}\PYG{p}{(}\PYG{n}{ans}\PYG{o}{+}\PYG{n}{dfs}\PYG{p}{(}\PYG{n}{len}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{i}\PYG{p}{],}\PYG{n}{flag}\PYG{o}{|}\PYG{n}{val}\PYG{p}{[}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{i}\PYG{p}{]],}\PYG{n}{limit} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{i}\PYG{o}{==}\PYG{n}{up}\PYG{p}{,}\PYG{n}{zero} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{i}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{))}\PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}} 
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{limit} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{o}{!}\PYG{n}{zero}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{dp}\PYG{p}{[}\PYG{n}{len}\PYG{p}{][}\PYG{n}{u}\PYG{p}{][}\PYG{n}{flag}\PYG{p}{]} \PYG{o}{=} \PYG{n}{ans}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+	\PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{solve}\PYG{p}{()\PYGZob{}}
+    \PYG{n}{len}\PYG{o}{=}\PYG{n}{strlen}\PYG{p}{(}\PYG{n}{n}\PYG{p}{);}
+    \PYG{c+c1}{//反转，从高位枚举}
+    \PYG{n}{reverse}\PYG{p}{(}\PYG{n}{n}\PYG{p}{,}\PYG{n}{n}\PYG{o}{+}\PYG{n}{len}\PYG{p}{);}
+    \PYG{n}{memset}\PYG{p}{(}\PYG{n}{dp}\PYG{p}{,}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{dp}\PYG{p}{));}
+    \PYG{k}{return} \PYG{n}{dfs}\PYG{p}{(}\PYG{n}{len}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 矩阵快速幂加速dp(递推)}
+\PYG{c+cm}{ * 有时候推出ac自动机加dp，结果n的范围是1e9，就需要用到矩阵快速幂来优化dp}
+\PYG{c+cm}{ * bzoj1009: 求有多少个n位数不含有所给m位数的子串}
+\PYG{c+cm}{ * 和上面ac自动机上dp是一样的，枚举长度，枚举节点，枚举子节点(0\PYGZhy{}9)，状态转移}
+\PYG{c+cm}{ * 由于n比较大，而m比较小，我们可以把问题转化为求出从trie树根节点走n步的有效路径数}
+\PYG{c+cm}{ * 所以通过构建fail树后，可以计算出trie树初始邻接矩阵(1步能走到的)，注意无效状态}
+\PYG{c+cm}{ * 然后使用矩阵快速幂加速，计算邻接矩阵的n次方，即走n步的路径数矩阵}
+\PYG{c+cm}{ * 枚举i，计算sum(m[0][i])即为答案(从根节点开始到其他各个节点刚好走n步的路径数)}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{int} \PYG{n+nf}{solve}\PYG{p}{()\PYGZob{}}
+    \PYG{n}{Mat} \PYG{n}{tmp}\PYG{p}{,}\PYG{n}{a}\PYG{p}{;}
+    \PYG{n}{memset}\PYG{p}{(}\PYG{n}{tmp}\PYG{p}{.}\PYG{n}{m}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{tmp}\PYG{p}{.}\PYG{n}{m}\PYG{p}{));}
+    \PYG{c+c1}{//dp初始状态}
+    \PYG{n}{tmp}\PYG{p}{.}\PYG{n}{m}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{tot}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{10}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{val}\PYG{p}{[}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]])\PYGZob{}}
+                \PYG{c+c1}{//从i节点到j节点存在可行路径(包括计算fail指针时指向祖先节点的关系)}
+                \PYG{n}{a}\PYG{p}{.}\PYG{n}{m}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]]}\PYG{o}{+=}\PYG{l+m+mi}{1}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//矩阵快速幂求长度为n的路径条数}
+    \PYG{n}{a}\PYG{o}{=}\PYG{n}{tmp}\PYG{o}{*}\PYG{p}{(}\PYG{n}{a}\PYG{o}{\PYGZca{}}\PYG{n}{n}\PYG{p}{);}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{tot}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//所有从根节点到任意节点n步的路径数}
+        \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{a}\PYG{p}{.}\PYG{n}{m}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{][}\PYG{n}{i}\PYG{p}{];}
+        \PYG{n}{ans}\PYG{o}{\PYGZpc{}=}\PYG{n}{k}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

@@ -1,0 +1,72 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 可持久化字典树查询树上某个节点子树的某个数与所给值的最大异或值}
+\PYG{c+cm}{ * 先dfs(1,0)求dfs序}
+\PYG{c+cm}{ * 再对于dfs序的每个节点权值a[mp[i]]，建字典树}
+\PYG{c+cm}{ * rt[i]=newnode();}
+\PYG{c+cm}{ * insert(i\PYGZhy{}1,i,a[mp[i]]);}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{void} \PYG{n+nf}{dfs}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{f}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{in}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=++}\PYG{n}{cnt}\PYG{p}{;}
+    \PYG{n}{mp}\PYG{p}{[}\PYG{n}{cnt}\PYG{p}{]}\PYG{o}{=}\PYG{n}{u}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{siz}\PYG{o}{=}\PYG{n}{g}\PYG{p}{[}\PYG{n}{u}\PYG{p}{].}\PYG{n}{size}\PYG{p}{();}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{siz}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{v}\PYG{o}{=}\PYG{n}{g}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{i}\PYG{p}{];}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{v}\PYG{o}{==}\PYG{n}{f}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{continue}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{dfs}\PYG{p}{(}\PYG{n}{v}\PYG{p}{,}\PYG{n}{u}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//注意这里出树是cnt不是++cnt，这样就不会重复建树}
+    \PYG{c+c1}{//这样in[u] out[u]表示的就是u的子树的范围}
+    \PYG{n}{out}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{n}{cnt}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n}{ch}\PYG{p}{[}\PYG{n}{N}\PYG{o}{*}\PYG{l+m+mi}{100}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{],}\PYG{n}{sz}\PYG{p}{[}\PYG{n}{N}\PYG{o}{*}\PYG{l+m+mi}{100}\PYG{p}{],}\PYG{n}{tot}\PYG{p}{,}\PYG{n}{rt}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{void} \PYG{n+nf}{init}\PYG{p}{()\PYGZob{}}
+    \PYG{c+c1}{//注意初始化}
+    \PYG{n}{cnt}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{n}{tot}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{n}{memset}\PYG{p}{(}\PYG{n}{ch}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{ch}\PYG{p}{));}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{g}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{clear}\PYG{p}{();}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{newnode}\PYG{p}{()\PYGZob{}}
+    \PYG{n}{memset}\PYG{p}{(}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{tot}\PYG{p}{],}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{tot}\PYG{p}{]));}
+    \PYG{n}{sz}\PYG{p}{[}\PYG{n}{tot}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{return} \PYG{n}{tot}\PYG{o}{++}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{insert}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{p}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{val}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{p}\PYG{o}{=}\PYG{n}{rt}\PYG{p}{[}\PYG{n}{p}\PYG{p}{];}
+    \PYG{n}{u}\PYG{o}{=}\PYG{n}{rt}\PYG{p}{[}\PYG{n}{u}\PYG{p}{];}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{30}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZgt{}=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{id}\PYG{o}{=}\PYG{p}{(}\PYG{n}{val}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{n}{i}\PYG{p}{)}\PYG{o}{\PYGZam{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{id}\PYG{p}{])\PYGZob{}}
+            \PYG{n}{ch}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{id}\PYG{p}{]}\PYG{o}{=}\PYG{n}{newnode}\PYG{p}{();}
+            \PYG{n}{ch}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{id}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{=}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{p}\PYG{p}{][}\PYG{n}{id}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{];}
+            \PYG{n}{sz}\PYG{p}{[}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{id}\PYG{p}{]]}\PYG{o}{=}\PYG{n}{sz}\PYG{p}{[}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{p}\PYG{p}{][}\PYG{n}{id}\PYG{p}{]];}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{u}\PYG{o}{=}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{id}\PYG{p}{];}
+        \PYG{n}{p}\PYG{o}{=}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{p}\PYG{p}{][}\PYG{n}{id}\PYG{p}{];}
+        \PYG{n}{sz}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{++}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{query}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//前缀和思想}
+    \PYG{k+kt}{int} \PYG{n}{l}\PYG{o}{=}\PYG{n}{rt}\PYG{p}{[}\PYG{n}{in}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{];}
+    \PYG{k+kt}{int} \PYG{n}{r}\PYG{o}{=}\PYG{n}{rt}\PYG{p}{[}\PYG{n}{out}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]];}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{30}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZgt{}=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{id}\PYG{o}{=}\PYG{p}{(}\PYG{n}{x}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{n}{i}\PYG{p}{)}\PYG{o}{\PYGZam{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{c+c1}{//贪心求异或最大}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{sz}\PYG{p}{[}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{r}\PYG{p}{][}\PYG{n}{id}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{]]}\PYG{o}{\PYGZhy{}}\PYG{n}{sz}\PYG{p}{[}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{l}\PYG{p}{][}\PYG{n}{id}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{]]}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{ans}\PYG{o}{+=}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{n}{i}\PYG{p}{);}
+            \PYG{n}{id}\PYG{o}{\PYGZca{}=}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{l}\PYG{o}{=}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{l}\PYG{p}{][}\PYG{n}{id}\PYG{p}{];}
+        \PYG{n}{r}\PYG{o}{=}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{r}\PYG{p}{][}\PYG{n}{id}\PYG{p}{];}
+        
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

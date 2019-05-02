@@ -1,0 +1,77 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 可持久化字典树查询树上任意两个节点路径间某个数与所给值的最大异或值}
+\PYG{c+cm}{ * rt[i]: i节点对应的trie树的根}
+\PYG{c+cm}{ * ch[][],sz[],tot: 字典树，注意空间开大，sz[i]表示根节点到该节点形成的前缀出现的累计的次数}
+\PYG{c+cm}{ * d[],fa[][]: 倍增求lca}
+\PYG{c+cm}{ */} 
+\PYG{c+c1}{//创建字典树节点}
+\PYG{k+kt}{int} \PYG{n+nf}{newnode}\PYG{p}{()\PYGZob{}}
+    \PYG{n}{memset}\PYG{p}{(}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{tot}\PYG{p}{],}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{tot}\PYG{p}{]));}
+    \PYG{n}{sz}\PYG{p}{[}\PYG{n}{tot}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{return} \PYG{n}{tot}\PYG{o}{++}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{insert}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{p}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{val}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//每个节点对应创建一颗字典树,dfs序对应的根的顺序}
+    \PYG{n}{p}\PYG{o}{=}\PYG{n}{rt}\PYG{p}{[}\PYG{n}{p}\PYG{p}{];}
+    \PYG{n}{u}\PYG{o}{=}\PYG{n}{rt}\PYG{p}{[}\PYG{n}{u}\PYG{p}{];}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{31}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZgt{}=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{id}\PYG{o}{=}\PYG{p}{(}\PYG{n}{val}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{n}{i}\PYG{p}{)}\PYG{o}{\PYGZam{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{id}\PYG{p}{])\PYGZob{}}
+            \PYG{c+c1}{//当前trie树的节点，剩下的指针指向上一棵树的对应节点位置}
+            \PYG{n}{ch}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{id}\PYG{p}{]}\PYG{o}{=}\PYG{n}{newnode}\PYG{p}{();}
+            \PYG{n}{ch}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{id}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{=}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{p}\PYG{p}{][}\PYG{n}{id}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{];}
+            \PYG{c+c1}{//复制上一棵树信息}
+            \PYG{n}{sz}\PYG{p}{[}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{id}\PYG{p}{]]}\PYG{o}{=}\PYG{n}{sz}\PYG{p}{[}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{p}\PYG{p}{][}\PYG{n}{id}\PYG{p}{]];}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{u}\PYG{o}{=}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{id}\PYG{p}{];}
+        \PYG{n}{p}\PYG{o}{=}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{p}\PYG{p}{][}\PYG{n}{id}\PYG{p}{];}
+        \PYG{c+c1}{//u就是当前的trie树特有的节点，所以sz++}
+        \PYG{n}{sz}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{++}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//dfs序建可持久化trie树}
+\PYG{k+kt}{void} \PYG{n+nf}{dfs}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//u的祖先节点信息都已知，所以同时处理出fa[u]}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;(}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{n}{i}\PYG{p}{)}\PYG{o}{\PYGZlt{}=}\PYG{n}{d}\PYG{p}{[}\PYG{n}{u}\PYG{p}{];}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{fa}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]][}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{rt}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{n}{newnode}\PYG{p}{();}
+    \PYG{n}{insert}\PYG{p}{(}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{],}\PYG{n}{u}\PYG{p}{,}\PYG{n}{a}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]);}
+    \PYG{k+kt}{int} \PYG{n}{siz}\PYG{o}{=}\PYG{n}{g}\PYG{p}{[}\PYG{n}{u}\PYG{p}{].}\PYG{n}{size}\PYG{p}{();}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{siz}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{v}\PYG{o}{=}\PYG{n}{g}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{i}\PYG{p}{];}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{v}\PYG{o}{==}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{])\PYGZob{}}
+            \PYG{k}{continue}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{fa}\PYG{p}{[}\PYG{n}{v}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{n}{u}\PYG{p}{;}
+        \PYG{n}{d}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{=}\PYG{n}{d}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{n}{dfs}\PYG{p}{(}\PYG{n}{v}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{lca}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{y}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//lca省略}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{query}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{y}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{val}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{lc}\PYG{o}{=}\PYG{n}{lca}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{);}
+    \PYG{c+c1}{//单独考虑lca的异或值，因为后面减去两倍lca的贡献，等于除去了lca}
+    \PYG{k+kt}{int} \PYG{n}{res}\PYG{o}{=}\PYG{n}{a}\PYG{p}{[}\PYG{n}{lc}\PYG{p}{]}\PYG{o}{\PYGZca{}}\PYG{n}{val}\PYG{p}{;}
+    \PYG{n}{x}\PYG{o}{=}\PYG{n}{rt}\PYG{p}{[}\PYG{n}{x}\PYG{p}{];}
+    \PYG{n}{y}\PYG{o}{=}\PYG{n}{rt}\PYG{p}{[}\PYG{n}{y}\PYG{p}{];}
+    \PYG{n}{lc}\PYG{o}{=}\PYG{n}{rt}\PYG{p}{[}\PYG{n}{lc}\PYG{p}{];}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{31}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZgt{}=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{id}\PYG{o}{=}\PYG{p}{(}\PYG{n}{val}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{n}{i}\PYG{p}{)}\PYG{o}{\PYGZam{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{c+c1}{//类似于求两点间的距离dis[u]+dis[v]\PYGZhy{}2*dis[lca(u,v)]}
+        \PYG{c+c1}{//dis表示到根的距离，而这里sz表示的是点到根的所有字典树的这一位上这个值的前缀和}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{sz}\PYG{p}{[}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{x}\PYG{p}{][}\PYG{n}{id}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{]]}\PYG{o}{+}\PYG{n}{sz}\PYG{p}{[}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{y}\PYG{p}{][}\PYG{n}{id}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{]]}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{sz}\PYG{p}{[}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{lc}\PYG{p}{][}\PYG{n}{id}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{]]}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{ans}\PYG{o}{+=}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{n}{i}\PYG{p}{);}
+            \PYG{n}{id}\PYG{o}{=}\PYG{n}{id}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{x}\PYG{o}{=}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{x}\PYG{p}{][}\PYG{n}{id}\PYG{p}{];}
+        \PYG{n}{y}\PYG{o}{=}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{y}\PYG{p}{][}\PYG{n}{id}\PYG{p}{];}
+        \PYG{n}{lc}\PYG{o}{=}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{lc}\PYG{p}{][}\PYG{n}{id}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{max}\PYG{p}{(}\PYG{n}{ans}\PYG{p}{,}\PYG{n}{res}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

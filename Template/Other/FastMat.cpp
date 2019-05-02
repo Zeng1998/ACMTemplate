@@ -6,8 +6,8 @@ Mat operator * (Mat a, Mat b) {
     Mat ans;
     memset(ans.mat, 0, sizeof(ans.mat));
     for(int i=0; i<n; i++) {
-        for(int k=0; k<n; k++) {
-            for(int j=0; j<n; j++) {
+        for(int j=0; j<n; j++) {
+            for(int k=0; k<n; k++) {
                 ans.mat[i][j] += (a.mat[i][k] % mod) * (b.mat[k][j] % mod) % mod;
                 ans.mat[i][j] %= mod;
             }

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2019.3.4)  25 MAR 2019 09:15
+This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2019.3.4)  12 APR 2019 22:50
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1008,130 +1008,27 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 runsystem(mkdir -p _minted-part)...executed.
 
 
-(/home/keane/texlive/2018/texmf-dist/tex/latex/hyperref/hyperref.sty
-Package: hyperref 2018/02/06 v6.86b Hypertext links for LaTeX
+(/home/keane/texlive/2018/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2018/03/24 v5.7 Page Geometry
 
-(/home/keane/texlive/2018/texmf-dist/tex/generic/oberdiek/hobsub-hyperref.sty
-Package: hobsub-hyperref 2016/05/16 v1.14 Bundle oberdiek, subset hyperref (HO)
-
-
-(/home/keane/texlive/2018/texmf-dist/tex/generic/oberdiek/hobsub-generic.sty
-Package: hobsub-generic 2016/05/16 v1.14 Bundle oberdiek, subset generic (HO)
-Package: hobsub 2016/05/16 v1.14 Construct package bundles (HO)
-Package hobsub Info: Skipping package `infwarerr' (already loaded).
-Package hobsub Info: Skipping package `ltxcmds' (already loaded).
-Package hobsub Info: Skipping package `ifluatex' (already loaded).
+(/home/keane/texlive/2018/texmf-dist/tex/generic/oberdiek/ifvtex.sty
 Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
 Package ifvtex Info: VTeX not detected.
-Package: intcalc 2016/05/16 v1.2 Expandable calculations with integers (HO)
-Package hobsub Info: Skipping package `ifpdf' (already loaded).
-Package hobsub Info: Skipping package `etexcmds' (already loaded).
-Package hobsub Info: Skipping package `kvsetkeys' (already loaded).
-Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
-Package hobsub Info: Skipping package `pdftexcmds' (already loaded).
-Package: pdfescape 2016/05/16 v1.14 Implements pdfTeX's escape features (HO)
-Package: bigintcalc 2016/05/16 v1.4 Expandable calculations on big integers (HO
-)
-Package: bitset 2016/05/16 v1.2 Handle bit-vector datatype (HO)
-Package: uniquecounter 2016/05/16 v1.3 Provide unlimited unique counter (HO)
-)
-Package hobsub Info: Skipping package `hobsub' (already loaded).
-Package: letltxmacro 2016/05/16 v1.5 Let assignment for LaTeX macros (HO)
-Package: hopatch 2016/05/16 v1.3 Wrapper for package hooks (HO)
-Package: xcolor-patch 2016/05/16 xcolor patch
-Package: atveryend 2016/05/16 v1.9 Hooks at the very end of document (HO)
-Package: atbegshi 2016/06/09 v1.18 At begin shipout hook (HO)
-Package: refcount 2016/05/16 v3.5 Data extraction from label references (HO)
-Package: hycolor 2016/05/16 v1.8 Color options for hyperref/bookmark (HO)
 )
 (/home/keane/texlive/2018/texmf-dist/tex/generic/ifxetex/ifxetex.sty
 Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 )
-(/home/keane/texlive/2018/texmf-dist/tex/latex/oberdiek/auxhook.sty
-Package: auxhook 2016/05/16 v1.4 Hooks for auxiliary files (HO)
-)
-\@linkdim=\dimen182
-\Hy@linkcounter=\count290
-\Hy@pagecounter=\count291
-
-(/home/keane/texlive/2018/texmf-dist/tex/latex/hyperref/pd1enc.def
-File: pd1enc.def 2018/02/06 v6.86b Hyperref: PDFDocEncoding definition (HO)
-)
-\Hy@SavedSpaceFactor=\count292
-
-(/home/keane/texlive/2018/texmf-dist/tex/latex/latexconfig/hyperref.cfg
-File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
-)
-Package hyperref Info: Option `colorlinks' set `true' on input line 4383.
-Package hyperref Info: Hyper figures OFF on input line 4509.
-Package hyperref Info: Link nesting OFF on input line 4514.
-Package hyperref Info: Hyper index ON on input line 4517.
-Package hyperref Info: Plain pages OFF on input line 4524.
-Package hyperref Info: Backreferencing OFF on input line 4529.
-Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
-Package hyperref Info: Bookmarks ON on input line 4762.
-\c@Hy@tempcnt=\count293
-
-(/home/keane/texlive/2018/texmf-dist/tex/latex/url/url.sty
-\Urlmuskip=\muskip17
-Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
-)
-LaTeX Info: Redefining \url on input line 5115.
-\XeTeXLinkMargin=\dimen183
-\Fld@menulength=\count294
-\Field@Width=\dimen184
-\Fld@charsize=\dimen185
-Package hyperref Info: Hyper figures OFF on input line 6369.
-Package hyperref Info: Link nesting OFF on input line 6374.
-Package hyperref Info: Hyper index ON on input line 6377.
-Package hyperref Info: backreferencing OFF on input line 6384.
-Package hyperref Info: Link coloring ON on input line 6387.
-Package hyperref Info: Link coloring with OCG OFF on input line 6394.
-Package hyperref Info: PDF/A mode OFF on input line 6399.
-LaTeX Info: Redefining \ref on input line 6439.
-LaTeX Info: Redefining \pageref on input line 6443.
-\Hy@abspage=\count295
-\c@Item=\count296
-\c@Hfootnote=\count297
-)
-Package hyperref Info: Driver (autodetected): hxetex.
-
-(/home/keane/texlive/2018/texmf-dist/tex/latex/hyperref/hxetex.def
-File: hxetex.def 2018/02/06 v6.86b Hyperref driver for XeTeX
-
-(/home/keane/texlive/2018/texmf-dist/tex/latex/hyperref/puenc.def
-File: puenc.def 2018/02/06 v6.86b Hyperref: PDF Unicode definition (HO)
-)
-(/home/keane/texlive/2018/texmf-dist/tex/generic/oberdiek/stringenc.sty
-Package: stringenc 2016/05/16 v1.11 Convert strings between diff. encodings (HO
-)
-)
-\pdfm@box=\box51
-\c@Hy@AnnotLevel=\count298
-\HyField@AnnotCount=\count299
-\Fld@listcount=\count300
-\c@bookmark@seq@number=\count301
-
-(/home/keane/texlive/2018/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
-Package: rerunfilecheck 2016/05/16 v1.8 Rerun checks for auxiliary files (HO)
-Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
-82.
-)
-\Hy@SectionHShift=\skip70
-)
-(/home/keane/texlive/2018/texmf-dist/tex/latex/geometry/geometry.sty
-Package: geometry 2018/03/24 v5.7 Page Geometry
-\Gm@cnth=\count302
-\Gm@cntv=\count303
-\c@Gm@tempcnt=\count304
-\Gm@bindingoffset=\dimen186
-\Gm@wd@mp=\dimen187
-\Gm@odd@mp=\dimen188
-\Gm@even@mp=\dimen189
-\Gm@layoutwidth=\dimen190
-\Gm@layoutheight=\dimen191
-\Gm@layouthoffset=\dimen192
-\Gm@layoutvoffset=\dimen193
+\Gm@cnth=\count290
+\Gm@cntv=\count291
+\c@Gm@tempcnt=\count292
+\Gm@bindingoffset=\dimen182
+\Gm@wd@mp=\dimen183
+\Gm@odd@mp=\dimen184
+\Gm@even@mp=\dimen185
+\Gm@layoutwidth=\dimen186
+\Gm@layoutheight=\dimen187
+\Gm@layouthoffset=\dimen188
+\Gm@layoutvoffset=\dimen189
 \Gm@dimlist=\toks19
 )
 (/home/keane/texlive/2018/texmf-dist/tex/latex/xcolor/xcolor.sty
@@ -1159,33 +1056,29 @@ runsystem(which pygmentize && touch part.aex)...executed.
 runsystem(rm part.aex)...executed.
 
 
-No file part.aux.
+(./part.aux)
 \openout1 = `part.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 21.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 21.
-(/home/keane/texlive/2018/texmf-dist/tex/latex/base/ts1cmr.fd
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 20.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 20.
+ (/home/keane/texlive/2018/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    ... okay on input line 20.
 .................................................
 . fontspec info: "setup-math"
 . 
@@ -1193,77 +1086,57 @@ LaTeX Font Info:    ... okay on input line 21.
 .................................................
 \symlegacymaths=\mathgroup4
 LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
-(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 21.
-LaTeX Font Info:    Redeclaring math accent \acute on input line 21.
-LaTeX Font Info:    Redeclaring math accent \grave on input line 21.
-LaTeX Font Info:    Redeclaring math accent \ddot on input line 21.
-LaTeX Font Info:    Redeclaring math accent \tilde on input line 21.
-LaTeX Font Info:    Redeclaring math accent \bar on input line 21.
-LaTeX Font Info:    Redeclaring math accent \breve on input line 21.
-LaTeX Font Info:    Redeclaring math accent \check on input line 21.
-LaTeX Font Info:    Redeclaring math accent \hat on input line 21.
-LaTeX Font Info:    Redeclaring math accent \dot on input line 21.
-LaTeX Font Info:    Redeclaring math accent \mathring on input line 21.
-LaTeX Font Info:    Redeclaring math symbol \colon on input line 21.
-LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 21.
-LaTeX Font Info:    Redeclaring math symbol \Delta on input line 21.
-LaTeX Font Info:    Redeclaring math symbol \Theta on input line 21.
-LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 21.
-LaTeX Font Info:    Redeclaring math symbol \Xi on input line 21.
-LaTeX Font Info:    Redeclaring math symbol \Pi on input line 21.
-LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 21.
-LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 21.
-LaTeX Font Info:    Redeclaring math symbol \Phi on input line 21.
-LaTeX Font Info:    Redeclaring math symbol \Psi on input line 21.
-LaTeX Font Info:    Redeclaring math symbol \Omega on input line 21.
-LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 21.
-LaTeX Font Info:    Redeclaring symbol font `operators' on input line 21.
+(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 20.
+LaTeX Font Info:    Redeclaring math accent \acute on input line 20.
+LaTeX Font Info:    Redeclaring math accent \grave on input line 20.
+LaTeX Font Info:    Redeclaring math accent \ddot on input line 20.
+LaTeX Font Info:    Redeclaring math accent \tilde on input line 20.
+LaTeX Font Info:    Redeclaring math accent \bar on input line 20.
+LaTeX Font Info:    Redeclaring math accent \breve on input line 20.
+LaTeX Font Info:    Redeclaring math accent \check on input line 20.
+LaTeX Font Info:    Redeclaring math accent \hat on input line 20.
+LaTeX Font Info:    Redeclaring math accent \dot on input line 20.
+LaTeX Font Info:    Redeclaring math accent \mathring on input line 20.
+LaTeX Font Info:    Redeclaring math symbol \colon on input line 20.
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 20.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 20.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 20.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 20.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 20.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 20.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 20.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 20.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 20.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 20.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 20.
+LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 20.
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 20.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 21.
+(Font)              `operators' in the math version `normal' on input line 20.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> TU/lmr/m/n on input line 21.
+(Font)                  OT1/cmr/m/n --> TU/lmr/m/n on input line 20.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 21.
+(Font)              `operators' in the math version `bold' on input line 20.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> TU/lmr/m/n on input line 21.
+(Font)                  OT1/cmr/bx/n --> TU/lmr/m/n on input line 20.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  TU/lmr/m/n --> TU/lmr/m/n on input line 21.
+(Font)                  TU/lmr/m/n --> TU/lmr/m/n on input line 20.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> TU/lmr/m/it on input line 21.
+(Font)                  OT1/cmr/m/it --> TU/lmr/m/it on input line 20.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> TU/lmr/bx/n on input line 21.
+(Font)                  OT1/cmr/bx/n --> TU/lmr/bx/n on input line 20.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 21.
+(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 20.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 21.
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 20.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  TU/lmr/m/n --> TU/lmr/bx/n on input line 21.
+(Font)                  TU/lmr/m/n --> TU/lmr/bx/n on input line 20.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> TU/lmr/bx/it on input line 21.
+(Font)                  OT1/cmr/bx/it --> TU/lmr/bx/it on input line 20.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> TU/lmss/bx/n on input line 21.
+(Font)                  OT1/cmss/bx/n --> TU/lmss/bx/n on input line 20.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> TU/lmtt/bx/n on input line 21.
-\AtBeginShipoutBox=\box52
-Package hyperref Info: Link coloring ON on input line 21.
-
-(/home/keane/texlive/2018/texmf-dist/tex/latex/hyperref/nameref.sty
-Package: nameref 2016/05/21 v2.44 Cross-referencing by name of section
-
-(/home/keane/texlive/2018/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
-Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
-)
-\c@section@level=\count305
-)
-LaTeX Info: Redefining \ref on input line 21.
-LaTeX Info: Redefining \pageref on input line 21.
-LaTeX Info: Redefining \nameref on input line 21.
-\@outlinefile=\write6
-\openout6 = `part.out'.
-
-
-
-Package hyperref Warning: Rerun to get /PageLabels entry.
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/bx/n on input line 20.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -1299,45 +1172,197 @@ Package hyperref Warning: Rerun to get /PageLabels entry.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 23.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 23.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 23.
-(/home/keane/texlive/2018/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
-File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
+(./_minted-part/default-pyg-prefix.pygstyle) (./_minted-part/default.pygstyle)
+(./_minted-part/3444F0C08E3AEA99B1825478A527F1D819F2D05C94E2B02C6A62D231297CEFF
+0.pygtex
+\g__fontspec_family_AdobeFangsongStd-Regular.otf_int=\count293
+.................................................
+. fontspec info: "defining-font"
+. 
+. Font family 'AdobeFangsongStd-Regular.otf(0)' created for font
+. 'AdobeFangsongStd-Regular.otf' with options [Path =
+. fonts/zh_CN-Adobe/,Mapping=tex-text,Script={CJK}].
+.  
+.  This font family consists of the following NFSS series/shapes:
+.  
+. - 'normal' (m/n) with NFSS spec.:
+. <->"[fonts/zh_CN-Adobe/AdobeFangsongStd-Regular.otf]/OT:script=hani;language=
+DFLT;mapping=tex-text;"
+. - 'small caps'  (m/sc) with NFSS spec.: 
+.................................................
 
-)
+
+LaTeX Font Warning: Font shape `TU/AdobeFangsongStd-Regular.otf(0)/m/it' undefi
+ned
+(Font)              using `TU/AdobeFangsongStd-Regular.otf(0)/m/n' instead on i
+nput line 4.
+
 [1
 
-]
-\tf@toc=\write7
-\openout7 = `part.toc'.
+])
+(./_minted-part/8E9AD6CD4DE5098A8C67781E49A4B7D246F78047765CF287B3606814E800787
+5.pygtex
+LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `TU/lmtt/b/n' tried instead on input line 6.
+ [2])
+(./_minted-part/9BD21576125C1297F55171F7A68A173858582606F5B06427333995BB2076B01
+8.pygtex)
+(./_minted-part/EA2BF0C9D59FCC0A0634A23F1898F1E4AF25901CC576E473511741B17BC0265
+5.pygtex [3] [4] [5] [6])
+(./_minted-part/55320FCC11738D69AD425B431804A610800BB60D5AC365BE6B6E2F0CA3451DE
+7.pygtex [7] [8])
+(./_minted-part/B334B05925A4992B1C32E4627B4CCC44B5349B3A7E249385F1F6D2864F721D8
+A.pygtex [9] [10])
+(./_minted-part/3C46B6D78FE4754F21C9E5EFF3A3BDE64B678B2CD02B8B9A4A0810597231EBB
+B.pygtex [11] [12] [13] [14] [15] [16] [17] [18] [19] [20])
+(./_minted-part/40915BF64B7FB273D2A73CE7A9402D459E8FFFB9FD2BA0C7F915DB7E0D56B16
+0.pygtex)
+(./_minted-part/C93B7E3FA0B3CF6B85C93DCBBDDC9081210AFFE14753113CC9CEC7FA4AF6AB5
+6.pygtex [21]) [22]
+(./_minted-part/06D942AAA673435B0BB64FA86ECFCE6E475E105F8A7889A1DD6CB4B3DF06E49
+F.pygtex)
+(./_minted-part/B1162E536EAC8AE7C3F8F2EB3EEB1BD8E72507EE88DA72F6867B2D74C2FCA70
+9.pygtex [23])
+(./_minted-part/B7AF5E946534ACE29BB1A428FEAF4A27A75886ECB833941F65535E318E6E1E1
+5.pygtex [24])
+(./_minted-part/2E16415D84761F229A7715149D35D374F76FB83E364497757133852595C640B
+3.pygtex [25])
+(./_minted-part/9E5756318F0B11513E21ABCBD55F835CC15002B44DAC24E6EABC0F0AF2CE594
+6.pygtex [26])
+(./_minted-part/BF4C73E5132FD3B3317699B2071F7CC8811A72121A2727198015C61E30CDADC
+5.pygtex [27])
+(./_minted-part/432FC3FB8625A93C8A26F2C97DC82E318CCD672D20322638D6BB2A3F3731913
+3.pygtex [28])
+(./_minted-part/DB86D97A0F41D1905A04B862FC4EF02E722F70BBEEEB98122042616DC4219A1
+4.pygtex [29])
+(./_minted-part/A354564FA9698930721CCBCFD2D1A2B374D23E967B5CDC38DF9AC09A8C27CA6
+3.pygtex [30])
+(./_minted-part/0939E9AA22CFD6C3770FCD27DEAE63426A1FF53745640C54E674F4618A7BAAC
+B.pygtex [31])
+(./_minted-part/8A0138366C7588143EF072B440BCB89B987E5DE17CF58CB599D6654FF05D1B7
+4.pygtex [32])
+(./_minted-part/2CC3282F1142E424DF4ACE0BAB84C62820FDDA33D6D2021284C68B07C44EC2C
+D.pygtex [33])
+(./_minted-part/3C8497DF4F86C19D1810C1326773771925D2AD45CCDD9EFE1359046B29E9D8E
+4.pygtex [34]) [35]
+(./_minted-part/F76AE2E69BE42BF64FB06A980FB879788C0CD9DC6F7296AF7AD908091191BE8
+2.pygtex)
+(./_minted-part/35C24F64CD29BA6E5A098943E7C8728BA6C09A3F33F4E40B06AED795FA2E2D9
+0.pygtex [36])
+(./_minted-part/1E9A05EEB6894C9EB60C5C92DF4EB2CDFDA976BE41303227BAE8927DFB1269A
+1.pygtex)
+(./_minted-part/81E251DFB42AFD774EBB690713D5AB11C4502727866F79565CCF63BCC1C30A3
+4.pygtex [37])
+(./_minted-part/4BD29FA63C307179542272894E8ADD6075A2EA6D5080C9B6C6E177AE86C5A6C
+3.pygtex [38])
+(./_minted-part/2CFE7012191D263C91C2E4FBAA17D449A7FEFDDECB66D65721B7A93CECE196D
+7.pygtex)
+(./_minted-part/C9C2CC648189B7851CD6E4C9BC193553696C1D7BD54B8401F2C001A9698ECF0
+5.pygtex [39])
+(./_minted-part/A07576950A8F1D90A9940D4B44722EBF4F3C8921052F9C6FAA667812CA68EE8
+1.pygtex [40])
+(./_minted-part/B76FB43A18EFB878FA9F7834F27D01EFCFCE371C38AD5BB074E78BA3E87BBB9
+5.pygtex [41])
+(./_minted-part/70ACE6CE1FB5A72E97472B2E0E4B928E0E9790189440AFED32A7E2051B1CC26
+B.pygtex) [42]
+(./_minted-part/12D114DB0C87CAD07F1D562B5C57BE96DCEDAF2505FFE9BB9D9DAF824DACC97
+7.pygtex [43])
+(./_minted-part/089D47DFD5DF21BECDFC729ABAFEDD4FB544FE5E57C3F0F9A01B1E573620ED6
+5.pygtex [44])
+(./_minted-part/BD9EF46743C97D60F63927C634BE50367CB1E9A828EA16C9F30402D945DFDC4
+0.pygtex [45])
+(./_minted-part/D05D6DD6DCFA2E0266F9924794E5572063FE9FD07A2C42AB86D2134B19EE8BB
+A.pygtex [46])
+(./_minted-part/BFC517B8C49056033808D2D3E46F5E66259D70B04E514D1FDC04B3F98EE42E3
+C.pygtex [47] [48] [49])
+(./_minted-part/7666CCE9D6C5E231676CC6D301AE45FC2B70105407BE0A4BAC5F12B194785A1
+E.pygtex [50])
+(./_minted-part/9F7A1395FBA98CD3FDD1A62233B1E219235A419DE9C8856D7A5029C68CF35DB
+7.pygtex [51] [52])
+(./_minted-part/9CEE8E539D717EF941A54D540ADEB22255284AA884BE0AA852082E4AC7495C9
+9.pygtex [53] [54])
+(./_minted-part/D365E276666906A96B46459423587438EEB8BCDFF859EB83EE60187E80C302C
+5.pygtex [55] [56])
+(./_minted-part/FEE54E5DF2CD13B5EE6BFC88D8570FFE4673874D9BD0BB18D706892448E5E09
+1.pygtex [57])
+(./_minted-part/F8FDA012216AC207633F14D194115192E4B24F3292EACB373DCD85694939321
+B.pygtex)
+(./_minted-part/10773EF567CB84EFBBF24DB11FC6CB163AFC4A127F2DF4ACE6DEE0A913B1D6F
+4.pygtex [58])
+(./_minted-part/08D285C919C6BB0F5D6C65401F458994766D152B9934B0909461AAEFA49D408
+4.pygtex)
+(./_minted-part/718DD0E8E8556AA5916B873D3A1B3C811527D4670450A439BFE9BDF90114541
+2.pygtex)
+(./_minted-part/6F7F1DDB36F8A6E238E50DAC856A69BAC654650E7025C7B11D035AD735E221C
+2.pygtex [59])
+(./_minted-part/3FAE9588C1E90CB0BC24F34E2EAEBF93528C89240C76C006B5F6B4B056E12BB
+9.pygtex)
+(./_minted-part/E52BC7E0EC4C8B4CA3793D75CB1D761BBA2AEAB288BA425FE2BDC8B1C285A26
+2.pygtex)
+(./_minted-part/541CB1E73E83C40CBCCE7B28E713F751FEC574167FEF204737EBE526D0BA908
+A.pygtex [60] [61])
+(./_minted-part/A95B7B7AF87FAC0FB6EC06C9BDD85B588653C575E8E71DFBF1787AFB9219AE7
+4.pygtex [62] [63])
+(./_minted-part/02183495F8B5FC036785E2AB6F46DB7AC9DC388FDD3CB12051F293BF31AB3B3
+C.pygtex [64] [65] [66] [67])
+(./_minted-part/15EB45BD8868549E385A1692016E6163D1D5E4DF47564DBB756FBEB741E8705
+8.pygtex [68])
+(./_minted-part/88BF250062218D22D29A82EFF96F1D72D9D2E161950E24592BFCE6281C4C1F9
+5.pygtex [69]) [70]
+(./_minted-part/ACB8A07280BC658F2FAC209CA001F4F64DBBC602DB1C8483B215943DA9D8165
+B.pygtex)
+(./_minted-part/E2FC7522EB59054A3B930C0E59E5B384751FD7377754C7C839A494DE0D7949D
+6.pygtex [71])
+(./_minted-part/CA88E72C0E3FCD9160F6EC7C89BC2F67BB905A24AC3D355DB8650E1CDC2EDE7
+C.pygtex)
+(./_minted-part/FD6377775F66947E6A54AAD61C6965E4EE501570E91A1B3D475737EC38B0FF8
+0.pygtex [72])
+(./_minted-part/53F56DAB4F9E2F159A3513261E1FF0171EDB154E3455F6DFE18F28B7CDB3DD3
+4.pygtex [73])
+(./_minted-part/87AABB5A7FCD225E6C7B7340135B60177AAAA0C872D3BC40E965C2B33A6769B
+B.pygtex [74])
+(./_minted-part/22E88488D76EAD51DD8F4732BB727876AD8EBE331846C62D5B110F38CB6B4FB
+9.pygtex [75] [76])
+(./_minted-part/612D2FE0C9B4EA5662F67BB757407FE4B10425B544E777F2EFD71F8C4D9BD61
+3.pygtex)
+(./_minted-part/AEE70AFD567B01B72F74200E44D88975AED5D3EF506EBBDB53C3CD75BC19D81
+4.pygtex [77])
+(./_minted-part/F9D799E8EE2FC565D15405177F6DC7C5A605E47A555A6ED8E72F9DD3284352C
+4.pygtex)
+(./_minted-part/2D09FFA1087A21FC9746977A3CD7CB4CAF06BA4A13867384B398675800096B8
+8.pygtex [78])
+(./_minted-part/FB44BD0CDE2E626DE44A492278AD95CAF6F1765DFEC8633239A5004E436A3A4
+D.pygtex)
+runsystem(pygmentize -l c++ -f latex -P commandprefix=PYG -F tokenmerge -o _min
+ted-part/F28F59B59F245E78CFCFE76005E8765AB9AC79EC09B6E3894B68C5C6686DD05F.pygte
+x Template/Other/bitset.cpp)...executed.
 
- [2]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 28.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 28.
- (./part.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 28.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 28.
 
+(./_minted-part/F28F59B59F245E78CFCFE76005E8765AB9AC79EC09B6E3894B68C5C6686DD05
+F.pygtex [79]) [80]
+(./_minted-part/545D1055EC45FB0B0695E9D362160CF921B9A2C90BDD35100139AA34B87F585
+0.pygtex)
+(./_minted-part/A5F6B9357CDDDFA74CC42F0478F874ABC0061C2DCCB704004BAE7C557269F53
+5.pygtex [81])
+(./_minted-part/FFC20E1B3536AABFBD81E1876E8B1BB38DBEED66A512DEC10C8DECCD1FDB56C
+B.pygtex [82])
+(./_minted-part/F52766D49E0282B4D64DB8A9EC7A281EBAEF1E0B78FAFDF36D2C168D506C7E9
+A.pygtex [83])
+runsystem(rm _minted-part/1D756F0DDC3AE99614D7BD65A220D751B9AC79EC09B6E3894B68C
+5C6686DD05F.pygtex)...executed.
 
-Package rerunfilecheck Warning: File `part.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
+ [84] (./part.aux)
 
-Package rerunfilecheck Info: Checksums for `part.out':
-(rerunfilecheck)             Before: 
-(rerunfilecheck)             After:  D41D8CD98F00B204E9800998ECF8427E.
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
  ) 
 Here is how much of TeX's memory you used:
- 23170 strings out of 492970
- 461531 string characters out of 6133519
- 607331 words of memory out of 5000000
- 27012 multiletter control sequences out of 15000+600000
- 533464 words of font info for 44 fonts, out of 8000000 for 9000
+ 17172 strings out of 492970
+ 408371 string characters out of 6133519
+ 537149 words of memory out of 5000000
+ 20831 multiletter control sequences out of 15000+600000
+ 530424 words of font info for 41 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 46i,11n,73p,10439b,349s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 46i,11n,76p,10439b,464s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on part.pdf (2 pages).
+Output written on part.pdf (84 pages).

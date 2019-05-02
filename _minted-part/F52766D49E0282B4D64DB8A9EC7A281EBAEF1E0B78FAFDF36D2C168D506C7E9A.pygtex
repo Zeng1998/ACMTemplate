@@ -1,0 +1,86 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{k}{typedef} \PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{n}{ll}\PYG{p}{;}
+\PYG{k}{const} \PYG{n}{ll} \PYG{n}{MOD}\PYG{o}{=}\PYG{l+m+mf}{1e9}\PYG{o}{+}\PYG{l+m+mi}{7}\PYG{p}{;}
+\PYG{k}{struct} \PYG{n}{node}\PYG{p}{\PYGZob{}}
+    \PYG{n}{ll} \PYG{n}{cnt}\PYG{p}{;}
+    \PYG{n}{ll} \PYG{n}{sum}\PYG{p}{;}
+    \PYG{n}{ll} \PYG{n}{powsum}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}\PYG{n}{dp}\PYG{p}{[}\PYG{l+m+mi}{30}\PYG{p}{][}\PYG{l+m+mi}{10}\PYG{p}{][}\PYG{l+m+mi}{10}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{a}\PYG{p}{[}\PYG{l+m+mi}{30}\PYG{p}{];}
+\PYG{n}{ll} \PYG{n}{pw}\PYG{p}{[}\PYG{l+m+mi}{30}\PYG{p}{];}
+\PYG{k+kt}{void} \PYG{n+nf}{init}\PYG{p}{()\PYGZob{}}
+    \PYG{n}{pw}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{30}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{pw}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{p}{(}\PYG{n}{pw}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{*}\PYG{l+m+mi}{10}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{30}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{10}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{k}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{k}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{10}\PYG{p}{;}\PYG{n}{k}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{][}\PYG{n}{k}\PYG{p}{]}\PYG{o}{=}\PYG{n}{node}\PYG{p}{\PYGZob{}}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{\PYGZcb{};}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{n}{node} \PYG{n+nf}{dfs}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{pos}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{summod}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{valmod}\PYG{p}{,}\PYG{k+kt}{bool} \PYG{n}{limit}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{pos}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{node} \PYG{n}{tmp}\PYG{p}{;}
+        \PYG{n}{tmp}\PYG{p}{.}\PYG{n}{cnt}\PYG{o}{=}\PYG{p}{(}\PYG{n}{summod}\PYG{o}{!=}\PYG{l+m+mi}{0} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{valmod}\PYG{o}{!=}\PYG{l+m+mi}{0}\PYG{p}{);}
+        \PYG{c+c1}{//只有计数才能在这里返回，其他两个值要在回溯的时候计算}
+        \PYG{c+c1}{//换句话说，递归边界只是为了判断是否存在这个合法的数}
+        \PYG{n}{tmp}\PYG{p}{.}\PYG{n}{sum}\PYG{o}{=}\PYG{n}{tmp}\PYG{p}{.}\PYG{n}{powsum}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{k}{return} \PYG{n}{tmp}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{limit} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{dp}\PYG{p}{[}\PYG{n}{pos}\PYG{p}{][}\PYG{n}{summod}\PYG{p}{][}\PYG{n}{valmod}\PYG{p}{].}\PYG{n}{cnt}\PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{dp}\PYG{p}{[}\PYG{n}{pos}\PYG{p}{][}\PYG{n}{summod}\PYG{p}{][}\PYG{n}{valmod}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{up}\PYG{o}{=}\PYG{n}{limit}\PYG{o}{?}\PYG{n}{a}\PYG{p}{[}\PYG{n}{pos}\PYG{p}{]}\PYG{o}{:}\PYG{l+m+mi}{9}\PYG{p}{;}
+    \PYG{n}{node} \PYG{n}{ans}\PYG{p}{;}
+    \PYG{n}{ans}\PYG{p}{.}\PYG{n}{cnt}\PYG{o}{=}\PYG{n}{ans}\PYG{p}{.}\PYG{n}{sum}\PYG{o}{=}\PYG{n}{ans}\PYG{p}{.}\PYG{n}{powsum}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{up}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{i}\PYG{o}{==}\PYG{l+m+mi}{7}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{continue}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{node} \PYG{n}{tmp}\PYG{o}{=}\PYG{n}{dfs}\PYG{p}{(}\PYG{n}{pos}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,(}\PYG{n}{summod}\PYG{o}{+}\PYG{n}{i}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{l+m+mi}{7}\PYG{p}{,(}\PYG{n}{valmod}\PYG{o}{*}\PYG{l+m+mi}{10}\PYG{o}{+}\PYG{n}{i}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{l+m+mi}{7}\PYG{p}{,}\PYG{n}{limit}\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{p}{(}\PYG{n}{i}\PYG{o}{==}\PYG{n}{up}\PYG{p}{));}
+
+        \PYG{c+c1}{//普通数位dp计数}
+        \PYG{n}{ans}\PYG{p}{.}\PYG{n}{cnt}\PYG{o}{=}\PYG{p}{(}\PYG{n}{ans}\PYG{p}{.}\PYG{n}{cnt}\PYG{o}{+}\PYG{n}{tmp}\PYG{p}{.}\PYG{n}{cnt}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{p}{;}
+        \PYG{c+c1}{//sum计算}
+        \PYG{c+c1}{//比如递归到最后一位是3 4两个符合的数位，当前位是第1位，数位为2}
+        \PYG{c+c1}{//回溯计算就是3+4=7 \PYGZhy{}\PYGZhy{}\PYGZgt{}3+4+23+24=54}
+        \PYG{c+c1}{//也就是加上pw[1]=10乘以i=2乘以递归边界计数tmp.cnt=2}
+        \PYG{n}{ans}\PYG{p}{.}\PYG{n}{sum}\PYG{o}{=}\PYG{p}{(}\PYG{n}{ans}\PYG{p}{.}\PYG{n}{sum}\PYG{o}{+}\PYG{n}{tmp}\PYG{p}{.}\PYG{n}{sum}\PYG{o}{+}\PYG{p}{((}\PYG{n}{pw}\PYG{p}{[}\PYG{n}{pos}\PYG{p}{]}\PYG{o}{*}\PYG{n}{i}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{o}{*}\PYG{n}{tmp}\PYG{p}{.}\PYG{n}{cnt}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{p}{;}
+        \PYG{c+c1}{//powsum计算}
+        \PYG{c+c1}{//同上 3\PYGZca{}2+4\PYGZca{}2=25 \PYGZhy{}\PYGZhy{}\PYGZgt{} 3\PYGZca{}2+4\PYGZca{}2+23\PYGZca{}2+24\PYGZca{}2}
+        \PYG{c+c1}{//也就是加上(20+3)\PYGZca{}2+(20+4)\PYGZca{}2=20\PYGZca{}2+20\PYGZca{}2+3\PYGZca{}2+4\PYGZca{}2+2*10*(3+4)}
+        \PYG{n}{ans}\PYG{p}{.}\PYG{n}{powsum}\PYG{o}{=}\PYG{p}{((}\PYG{n}{ans}\PYG{p}{.}\PYG{n}{powsum}\PYG{o}{+}\PYG{n}{tmp}\PYG{p}{.}\PYG{n}{powsum}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{o}{+}\PYG{p}{((((}\PYG{n}{tmp}\PYG{p}{.}\PYG{n}{cnt}\PYG{o}{*}\PYG{n}{pw}\PYG{p}{[}\PYG{n}{pos}\PYG{p}{])}
+        \PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{o}{*}\PYG{n}{pw}\PYG{p}{[}\PYG{n}{pos}\PYG{p}{])}\PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{o}{*}\PYG{n}{i}\PYG{o}{*}\PYG{n}{i}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{p}{)}\PYG{o}{+}\PYG{p}{(((}\PYG{n}{tmp}\PYG{p}{.}\PYG{n}{sum}\PYG{o}{*}\PYG{n}{pw}\PYG{p}{[}\PYG{n}{pos}\PYG{p}{])}\PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{i}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{p}{))}\PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{limit}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{dp}\PYG{p}{[}\PYG{n}{pos}\PYG{p}{][}\PYG{n}{summod}\PYG{p}{][}\PYG{n}{valmod}\PYG{p}{]}\PYG{o}{=}\PYG{n}{ans}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{n}{ll} \PYG{n+nf}{solve}\PYG{p}{(}\PYG{n}{ll} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{k}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{a}\PYG{p}{[}\PYG{n}{k}\PYG{o}{++}\PYG{p}{]}\PYG{o}{=}\PYG{n}{x}\PYG{o}{\PYGZpc{}}\PYG{l+m+mi}{10}\PYG{p}{;}
+        \PYG{n}{x}\PYG{o}{/=}\PYG{l+m+mi}{10}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{dfs}\PYG{p}{(}\PYG{n}{k}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n+nb}{true}\PYG{p}{).}\PYG{n}{powsum}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n}{t}\PYG{p}{;}
+\PYG{n}{ll} \PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{init}\PYG{p}{();}
+    \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{t}\PYG{p}{);}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{t}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}lld\PYGZpc{}lld\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{l}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{r}\PYG{p}{);}
+        \PYG{n}{ll} \PYG{n}{ansr}\PYG{o}{=}\PYG{n}{solve}\PYG{p}{(}\PYG{n}{r}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{p}{;}
+        \PYG{n}{ll} \PYG{n}{ansl}\PYG{o}{=}\PYG{n}{solve}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{p}{;}
+        \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}lld}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,(}\PYG{n}{ansr}\PYG{o}{\PYGZhy{}}\PYG{n}{ansl}\PYG{o}{+}\PYG{n}{MOD}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{MOD}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

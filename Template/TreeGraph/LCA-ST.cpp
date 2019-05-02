@@ -40,17 +40,12 @@ void RMQ_init(int n){
     }
 } 
 int RMQ(int l,int r){
-    int k=0;
-    while(1<<(k+1)<=r-l+1){
-        k++;
-    }
+    int k = 31 - __builtin_clz(r - l + 1);
     int a=dp[l][k];
     int b=dp[r-(1<<k)+1][k];
     return (dep[a]<dep[b]?a:b);
 }
-/*
- * 找出访问u和v之间(fir[u]...fir[v])深度最小的点的编号idx，由ver映射成节点编号
- */
+// 找出访问u和v之间(fir[u]...fir[v])深度最小的点的编号idx，由ver映射成节点编号
 int LCA(int u,int v){
     int x=fir[u];
     int y=fir[v];

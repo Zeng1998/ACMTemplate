@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt]{article}
+\documentclass[a4paper,9pt]{article}
 \usepackage{zh_CN-Adobefonts_external} % Simplified Chinese Support using external fonts (./fonts/zh_CN-Adobe/)
 \usepackage{fancyhdr}  % 页眉页脚
 \usepackage{minted}    % 代码高亮
@@ -24,6 +24,8 @@
 \tableofcontents % 目录
 \newpage
 \section{字符串}
+\subsection{string类操作}
+\inputminted[]{c++}{Template/String/STL.cpp}
 \subsection{KMP}
 \inputminted[]{c++}{Template/String/KMP.cpp}
 \subsection{Trie树/AC自动机}
@@ -31,9 +33,12 @@
 \subsection{Manacher}
 \inputminted[]{c++}{Template/String/Manacher.cpp}
 \subsection{后缀数组}
+\subsubsection{倍增}
 \inputminted[]{c++}{Template/String/Suffix-Array.cpp}
-% \subsection{后缀数组经典应用}
-% \inputminted[]{c++}{Template/String/SA-usage.cpp}
+\subsubsection{DC3}
+\inputminted[]{c++}{Template/String/Suffix-Array-DC3.cpp}
+\subsubsection{后缀数组经典应用}
+\inputminted[]{c++}{Template/String/SA-usage.cpp}
 \subsection{字符串哈希}
 \inputminted[]{c++}{Template/String/Hash.cpp}
 \subsection{其他}
@@ -47,6 +52,7 @@
 \inputminted[]{c++}{Template/TreeGraph/UnionSetI.cpp}
 \subsubsection{带权并查集}
 \inputminted[]{c++}{Template/TreeGraph/UnionSetII.cpp}
+\subsection{最短路}
 \subsection{最小生成树}
 \subsubsection{Prim}
 \inputminted[]{c++}{Template/TreeGraph/MST-Prim.cpp}
@@ -64,13 +70,30 @@
 \inputminted[]{c++}{Template/TreeGraph/LCA-ST.cpp}
 \subsubsection{Tarjan离线}
 \inputminted[]{c++}{Template/TreeGraph/LCA-Tarjan.cpp}
-\subsection{最短路}
-
-\subsection{网络流}
-\subsubsection{Dinic}
-\inputminted[]{c++}{Template/TreeGraph/Dinic.cpp}
-\subsubsection{上下界网络流}
-\inputminted[]{c++}{Template/TreeGraph/UpDownFlow.cpp}
+\subsection{最小支配集/最小点覆盖/最大独立集}
+\inputminted[]{c++}{Template/TreeGraph/SetPro.cpp}
+\section{网络流}
+\subsection{最大流(Dinic)}
+\inputminted[]{c++}{Template/NetworkFlow/Dinic.cpp}
+\subsection{最小费用最大流}
+\inputminted[]{c++}{Template/NetworkFlow/mcmf.cpp}
+\subsection{上下界网络流}
+\inputminted[]{c++}{Template/NetworkFlow/UpDownFlow.cpp}
+\subsection{常见模型}
+\inputminted[]{c++}{Template/NetworkFlow/FlowModel.cpp}
+\section{二分图}
+\subsection{判断二分图}
+\inputminted[]{c++}{Template/NetworkFlow/BinaryJudge.cpp}
+\subsection{最大匹配}
+\inputminted[]{c++}{Template/NetworkFlow/MaximumMatch.cpp}
+\subsection{完美匹配}
+\inputminted[]{c++}{Template/NetworkFlow/PerfectMatch.cpp}
+\subsection{最优匹配(KM算法)}
+\inputminted[]{c++}{Template/NetworkFlow/KM.cpp}
+\subsection{最小支配集/最小点覆盖/最大独立集/最大团/最小路径覆盖}
+\inputminted[]{c++}{Template/NetworkFlow/SetPro.cpp}
+\subsection{多重匹配}
+\inputminted[]{c++}{Template/NetworkFlow/MultiMatch.cpp}
 \section{动态规划}
 \subsection{子序列/子串}
 \subsubsection{最大连续子序列和}
@@ -87,6 +110,9 @@
 \subsubsection{编辑距离}
 \inputminted[]{c++}{Template/DynamicProgramming/LevenshteinDistance.cpp}
 \section{基础数论}
+\subsection{素数}
+\subsubsection{O(logn)素数判定}
+\inputminted[]{c++}{Template/Math/checkPrime.cpp}
 \subsection{快速幂取模}
 \inputminted[]{c++}{Template/Math/PowMod.cpp}
 \subsection{欧拉函数}
@@ -96,9 +122,10 @@
 \subsection{拓展欧几里得(EXGCD)}
 \inputminted[]{c++}{Template/Math/exgcd.cpp}
 \subsection{中国剩余定理(CRT)}
-
 \subsection{逆元}
 \inputminted[]{c++}{Template/Math/Inverse.cpp}
+\subsection{BSGS}
+\inputminted[]{c++}{Template/Math/bsgs.cpp}
 \subsection{小技巧}
 \subsubsection{求n!位数}
 \inputminted[]{c++}{Template/Math/CountN!.cpp}
@@ -114,7 +141,12 @@
 \subsection{Fibonaci Game}
 \inputminted[]{c++}{Template/Game/Fibonaci.cpp}
 \section{计算几何}
-
+\subsection{注意点}
+\inputminted[]{c++}{Template/ComputingGeometry/Note.cpp}
+\subsection{公式}
+\inputminted[]{c++}{Template/ComputingGeometry/formula.cpp}
+\subsection{模板1}
+\inputminted[]{c++}{Template/ComputingGeometry/template1.cpp}
 \section{区间问题}
 \subsection{线段树}
 
@@ -133,6 +165,7 @@
 \inputminted[]{c++}{Template/Segment/TwoDimTreeArrayI.cpp}
 \subsubsection{二维树状数组--区间更新单点查询}
 \inputminted[]{c++}{Template/Segment/TwoDimTreeArrayII.cpp}
+
 \section{其他}
 \subsection{双指针/尺取法}
 \subsubsection{一维}
@@ -144,6 +177,11 @@
 \inputminted[]{c++}{Template/Other/MonotonicQueueI.cpp}
 \subsubsection{m区间最小值}
 \inputminted[]{c++}{Template/Other/MonotonicQueueII.cpp}
+\subsubsection{作为最大/最小值能延伸的区间}
+\inputminted[]{c++}{Template/Other/MonotonicQueueIII.cpp}
+\subsection{笛卡尔树}
+\inputminted[]{c++}{Template/Other/DescartesTree.cpp}
+
 \subsection{矩阵快速幂}
 \inputminted[]{c++}{Template/Other/FastMat.cpp}
 \subsection{判断重边}
@@ -153,12 +191,20 @@
 \subsection{大数平方数判断}
 \inputminted[]{java}{Template/Other/IsSquare.java}
 \subsection{技巧}
+\subsubsection{Bitset}
+
 \subsubsection{快读}
 \subsubsection{离散化}
 \inputminted[]{c++}{Template/Other/Discretization.cpp}
 \subsection{一些比较有意思的题目}
 \subsubsection{hdu6468——求1-n字典序第m个数}
 \inputminted[]{c++}{Template/Other/hdu6468.cpp}
+\subsubsection{cf1144E——求字符串中位数(26进制模拟)}
+\inputminted[]{c++}{Template/Other/cf1144E.cpp}
+\subsubsection{牛客548B——除法模拟}
+\inputminted[]{c++}{Template/Other/548B.cpp}
+\subsection{hdu4507——数位dp求平方和}
+\inputminted[]{c++}{Template/Other/hdu4507.cpp}
 %\section{Graph Theory} % 一级标题
 %\subsection{Minimum Spanning Tree} % 二级标题
 %\subsubsection{Kruskal} % 三级标题

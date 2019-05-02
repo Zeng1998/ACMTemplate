@@ -1,0 +1,59 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * ver[i]:第i个访问节点的编号}
+\PYG{c+cm}{ * fir[i]:编号为i的节点第一次出现的时间}
+\PYG{c+cm}{ * dep[i]:第i个访问节点的深度}
+\PYG{c+cm}{ * ver,dep注意开两倍空间}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{void} \PYG{n+nf}{dfs}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{f}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{d}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{tot}\PYG{o}{++}\PYG{p}{;}
+    \PYG{n}{ver}\PYG{p}{[}\PYG{n}{tot}\PYG{p}{]}\PYG{o}{=}\PYG{n}{u}\PYG{p}{;}
+    \PYG{n}{fir}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{n}{tot}\PYG{p}{;}
+    \PYG{n}{dep}\PYG{p}{[}\PYG{n}{tot}\PYG{p}{]}\PYG{o}{=}\PYG{n}{d}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{n}{head}\PYG{p}{[}\PYG{n}{u}\PYG{p}{];}\PYG{n}{i}\PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{=}\PYG{n}{edge}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{next}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{v}\PYG{o}{=}\PYG{n}{edge}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{v}\PYG{p}{;}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{v}\PYG{o}{==}\PYG{n}{f}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{continue}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{dfs}\PYG{p}{(}\PYG{n}{v}\PYG{p}{,}\PYG{n}{u}\PYG{p}{,}\PYG{n}{d}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{c+c1}{//回溯再记录一次}
+        \PYG{n}{tot}\PYG{o}{++}\PYG{p}{;}
+        \PYG{n}{ver}\PYG{p}{[}\PYG{n}{tot}\PYG{p}{]}\PYG{o}{=}\PYG{n}{u}\PYG{p}{;}
+        \PYG{n}{dep}\PYG{p}{[}\PYG{n}{tot}\PYG{p}{]}\PYG{o}{=}\PYG{n}{d}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * RMQ初始化}
+\PYG{c+cm}{ * dp[i][j]:从dep[i]起2\PYGZca{}j个数的编号最小值(ver和dep的编号即访问时间)}
+\PYG{c+cm}{ * dp数组注意开两倍空间}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{void} \PYG{n+nf}{RMQ\PYGZus{}init}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{n}{i}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;(}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{n}{j}\PYG{p}{)}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{+}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{n}{j}\PYG{p}{)}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//和普通的rmq不同，这里比较的是深度，但dp保存的是位置}
+            \PYG{k+kt}{int} \PYG{n}{a}\PYG{o}{=}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{];}
+            \PYG{k+kt}{int} \PYG{n}{b}\PYG{o}{=}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{o}{+}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{p}{(}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{))][}\PYG{n}{j}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{];}
+            \PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]}\PYG{o}{=}\PYG{p}{(}\PYG{n}{dep}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{dep}\PYG{p}{[}\PYG{n}{b}\PYG{p}{]}\PYG{o}{?}\PYG{n+nl}{a}\PYG{p}{:}\PYG{n}{b}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}} 
+\PYG{k+kt}{int} \PYG{n+nf}{RMQ}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{k} \PYG{o}{=} \PYG{l+m+mi}{31} \PYG{o}{\PYGZhy{}} \PYG{n}{\PYGZus{}\PYGZus{}builtin\PYGZus{}clz}\PYG{p}{(}\PYG{n}{r} \PYG{o}{\PYGZhy{}} \PYG{n}{l} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{);}
+    \PYG{k+kt}{int} \PYG{n}{a}\PYG{o}{=}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{l}\PYG{p}{][}\PYG{n}{k}\PYG{p}{];}
+    \PYG{k+kt}{int} \PYG{n}{b}\PYG{o}{=}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{r}\PYG{o}{\PYGZhy{}}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{n}{k}\PYG{p}{)}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{n}{k}\PYG{p}{];}
+    \PYG{k}{return} \PYG{p}{(}\PYG{n}{dep}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{dep}\PYG{p}{[}\PYG{n}{b}\PYG{p}{]}\PYG{o}{?}\PYG{n+nl}{a}\PYG{p}{:}\PYG{n}{b}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{// 找出访问u和v之间(fir[u]...fir[v])深度最小的点的编号idx，由ver映射成节点编号}
+\PYG{k+kt}{int} \PYG{n+nf}{LCA}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{v}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{x}\PYG{o}{=}\PYG{n}{fir}\PYG{p}{[}\PYG{n}{u}\PYG{p}{];}
+    \PYG{k+kt}{int} \PYG{n}{y}\PYG{o}{=}\PYG{n}{fir}\PYG{p}{[}\PYG{n}{v}\PYG{p}{];}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{x}\PYG{o}{\PYGZgt{}}\PYG{n}{y}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{swap}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{idx}\PYG{o}{=}\PYG{n}{RMQ}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{);}
+    \PYG{k}{return} \PYG{n}{ver}\PYG{p}{[}\PYG{n}{idx}\PYG{p}{];}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

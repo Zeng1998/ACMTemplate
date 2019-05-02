@@ -1,0 +1,111 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}cstdio\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}algorithm\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{c+cp}{\PYGZsh{}define lson i\PYGZlt{}\PYGZlt{}1}
+\PYG{c+cp}{\PYGZsh{}define rson i\PYGZlt{}\PYGZlt{}1|1}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{N}\PYG{o}{=}\PYG{l+m+mf}{1e4}\PYG{o}{+}\PYG{l+m+mi}{50}\PYG{p}{;}
+\PYG{k}{struct} \PYG{n}{Seg}\PYG{p}{\PYGZob{}}
+    \PYG{c+c1}{//线段的左右端点(x)，上下边(1下 \PYGZhy{}1上)，高(y)}
+    \PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{,}\PYG{n}{d}\PYG{p}{,}\PYG{n}{h}\PYG{p}{;}
+    \PYG{n}{Seg}\PYG{p}{()\PYGZob{}\PYGZcb{}}
+    \PYG{n}{Seg}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{h}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{d}\PYG{p}{)}\PYG{o}{:}\PYG{n}{l}\PYG{p}{(}\PYG{n}{l}\PYG{p}{),}\PYG{n}{r}\PYG{p}{(}\PYG{n}{r}\PYG{p}{),}\PYG{n}{h}\PYG{p}{(}\PYG{n}{h}\PYG{p}{),}\PYG{n}{d}\PYG{p}{(}\PYG{n}{d}\PYG{p}{)\PYGZob{}\PYGZcb{}}
+    \PYG{c+c1}{//从下到上处理线段}
+    \PYG{k+kt}{bool} \PYG{k}{operator} \PYG{o}{\PYGZlt{}}\PYG{p}{(}\PYG{k}{const} \PYG{n}{Seg}\PYG{o}{\PYGZam{}} \PYG{n}{rhs}\PYG{p}{)}\PYG{k}{const}\PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{h}\PYG{o}{\PYGZlt{}}\PYG{n}{rhs}\PYG{p}{.}\PYG{n}{h}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}\PYG{n}{a}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{][}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{le}\PYG{p}{[}\PYG{l+m+mi}{4}\PYG{o}{*}\PYG{n}{N}\PYG{p}{],}\PYG{n}{ri}\PYG{p}{[}\PYG{l+m+mi}{4}\PYG{o}{*}\PYG{n}{N}\PYG{p}{];}
+\PYG{c+c1}{//边的覆盖，线段长度}
+\PYG{k+kt}{int} \PYG{n}{cnt}\PYG{p}{[}\PYG{l+m+mi}{4}\PYG{o}{*}\PYG{n}{N}\PYG{p}{],}\PYG{n}{sum}\PYG{p}{[}\PYG{l+m+mi}{4}\PYG{o}{*}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{all}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{][}\PYG{n}{N}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{l+m+mi}{1}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{xa}\PYG{p}{,}\PYG{n}{ya}\PYG{p}{,}\PYG{n}{xb}\PYG{p}{,}\PYG{n}{yb}\PYG{p}{;}
+\PYG{k+kt}{void} \PYG{n+nf}{PushUp}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{p}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{cnt}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])\PYGZob{}}
+        \PYG{c+c1}{//i有覆盖，那更新覆盖长度}
+        \PYG{n}{sum}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{all}\PYG{p}{[}\PYG{n}{p}\PYG{p}{][}\PYG{n}{ri}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{all}\PYG{p}{[}\PYG{n}{p}\PYG{p}{][}\PYG{n}{le}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]];}
+    \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+        \PYG{n}{sum}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{sum}\PYG{p}{[}\PYG{n}{lson}\PYG{p}{]}\PYG{o}{+}\PYG{n}{sum}\PYG{p}{[}\PYG{n}{rson}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{Build}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{le}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{l}\PYG{p}{;}
+    \PYG{n}{ri}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{r}\PYG{p}{;}
+    \PYG{n}{cnt}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{sum}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{l}\PYG{o}{==}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{mid}\PYG{o}{=}\PYG{p}{(}\PYG{n}{l}\PYG{o}{+}\PYG{n}{r}\PYG{p}{)}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{n}{Build}\PYG{p}{(}\PYG{n}{lson}\PYG{p}{,}\PYG{n}{l}\PYG{p}{,}\PYG{n}{mid}\PYG{p}{);}
+    \PYG{n}{Build}\PYG{p}{(}\PYG{n}{rson}\PYG{p}{,}\PYG{n}{mid}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{r}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{Update}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{p}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{v}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZlt{}=}\PYG{n}{le}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{r}\PYG{o}{\PYGZgt{}=}\PYG{n}{ri}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])\PYGZob{}}
+        \PYG{n}{cnt}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{+=}\PYG{n}{v}\PYG{p}{;}
+        \PYG{c+c1}{//记得pushup，因为扫描线没有query操作，所以也无需懒惰标记，区间更新后直接推到根}
+        \PYG{n}{PushUp}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,}\PYG{n}{i}\PYG{p}{);}
+        \PYG{k}{return}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{mid}\PYG{o}{=}\PYG{p}{(}\PYG{n}{le}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{+}\PYG{n}{ri}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZlt{}=}\PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{Update}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,}\PYG{n}{lson}\PYG{p}{,}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{,}\PYG{n}{v}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{r}\PYG{o}{\PYGZgt{}}\PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{Update}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,}\PYG{n}{rson}\PYG{p}{,}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{,}\PYG{n}{v}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{PushUp}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,}\PYG{n}{i}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{n}\PYG{p}{);}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//矩形左下角和右上角坐标}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{xa}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{ya}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{xb}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{yb}\PYG{p}{);}
+        \PYG{c+c1}{//a[0]保存横边 a[1]保存竖边}
+        \PYG{c+c1}{//all[0]保存离散化的横坐标 all[1]保存纵坐标}
+        \PYG{n}{a}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{][}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{Seg}\PYG{p}{(}\PYG{n}{xa}\PYG{p}{,}\PYG{n}{xb}\PYG{p}{,}\PYG{n}{ya}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{n}{a}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{][}\PYG{n}{i}\PYG{o}{+}\PYG{n}{n}\PYG{p}{]}\PYG{o}{=}\PYG{n}{Seg}\PYG{p}{(}\PYG{n}{xa}\PYG{p}{,}\PYG{n}{xb}\PYG{p}{,}\PYG{n}{yb}\PYG{p}{,}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{n}{all}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{][}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{xa}\PYG{p}{;}
+        \PYG{n}{all}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{][}\PYG{n}{i}\PYG{o}{+}\PYG{n}{n}\PYG{p}{]}\PYG{o}{=}\PYG{n}{xb}\PYG{p}{;}
+        \PYG{n}{a}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{Seg}\PYG{p}{(}\PYG{n}{ya}\PYG{p}{,}\PYG{n}{yb}\PYG{p}{,}\PYG{n}{xa}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{n}{a}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{n}{i}\PYG{o}{+}\PYG{n}{n}\PYG{p}{]}\PYG{o}{=}\PYG{n}{Seg}\PYG{p}{(}\PYG{n}{ya}\PYG{p}{,}\PYG{n}{yb}\PYG{p}{,}\PYG{n}{xb}\PYG{p}{,}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{n}{all}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{ya}\PYG{p}{;}
+        \PYG{n}{all}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{][}\PYG{n}{i}\PYG{o}{+}\PYG{n}{n}\PYG{p}{]}\PYG{o}{=}\PYG{n}{yb}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//别忘记扩大两倍}
+    \PYG{n}{n}\PYG{o}{\PYGZlt{}\PYGZlt{}=}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{c+c1}{//对线段排序}
+    \PYG{n}{sort}\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{a}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{o}{+}\PYG{n}{n}\PYG{p}{);}
+    \PYG{n}{sort}\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{a}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{o}{+}\PYG{n}{n}\PYG{p}{);}
+    \PYG{c+c1}{//对坐标排序，为了离散化}
+    \PYG{n}{sort}\PYG{p}{(}\PYG{n}{all}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{all}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{o}{+}\PYG{n}{n}\PYG{p}{);}
+    \PYG{n}{sort}\PYG{p}{(}\PYG{n}{all}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{all}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{o}{+}\PYG{n}{n}\PYG{p}{);}
+    \PYG{c+c1}{//去重}
+    \PYG{k+kt}{int} \PYG{n}{m}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{];}
+    \PYG{n}{m}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{n}{unique}\PYG{p}{(}\PYG{n}{all}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{all}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{o}{+}\PYG{n}{n}\PYG{p}{)}\PYG{o}{\PYGZhy{}}\PYG{n}{all}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{n}{m}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{=}\PYG{n}{unique}\PYG{p}{(}\PYG{n}{all}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{all}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{o}{+}\PYG{n}{n}\PYG{p}{)}\PYG{o}{\PYGZhy{}}\PYG{n}{all}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{c+c1}{//求周长并需要计算横边和竖边}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{Build}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{m}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+        \PYG{c+c1}{//上一条边长度}
+        \PYG{k+kt}{int} \PYG{n}{last}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//离散化}
+            \PYG{k+kt}{int} \PYG{n}{l}\PYG{o}{=}\PYG{n}{lower\PYGZus{}bound}\PYG{p}{(}\PYG{n}{all}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{all}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{o}{+}\PYG{n}{m}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{].}\PYG{n}{l}\PYG{p}{)}\PYG{o}{\PYGZhy{}}\PYG{n}{all}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+            \PYG{k+kt}{int} \PYG{n}{r}\PYG{o}{=}\PYG{n}{lower\PYGZus{}bound}\PYG{p}{(}\PYG{n}{all}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{all}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{o}{+}\PYG{n}{m}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{].}\PYG{n}{r}\PYG{p}{)}\PYG{o}{\PYGZhy{}}\PYG{n}{all}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZgt{}}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{swap}\PYG{p}{(}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{);}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{c+c1}{//区间更新}
+            \PYG{n}{Update}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{].}\PYG{n}{d}\PYG{p}{);}
+            \PYG{c+c1}{//根节点覆盖的总和即为当前高度的总边长}
+            \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{abs}\PYG{p}{(}\PYG{n}{sum}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{last}\PYG{p}{);}
+            \PYG{c+c1}{//减去前一次已经计算过的周长}
+            \PYG{n}{last}\PYG{o}{=}\PYG{n}{sum}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{ans}\PYG{p}{);}
+    \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

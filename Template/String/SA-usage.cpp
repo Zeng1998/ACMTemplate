@@ -1,134 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
-const int N=1005;
-const int INF=0x3f3f3f3f;
-int n;
-//"banana" 后缀为[banana anana nana ana na a $]
-//sa[i]: 排名第i(从0开始)小的后缀的首字符下标 
-//比如[6 5 3 1 0 4 2]==>[$ a$ ana$ anana$ banana$ na$ nana$]
-//rk[i]: 下标i开始的后缀(不含$)的排名(按字典序从小到大，相当于sa的逆)  
-//[4 3 6 2 5 1]
-//h[i]:排名为i的后缀和排名为i-1的后缀的最长公共前缀  
-//[1(ana$-a$) 3(anana$-ana$) 0 0 2]
-//一些应用:
-//-- 求两个后缀的最长公共前缀
-// 两个后缀的首字符编号为a,b，LCP(a,b)
-//-- 不同字串个数，由于子串一定是某个后缀的前缀，所以h数组就是lcp，也是是相同前缀个数
-//所以ans=n*(n+1)/2-\sum(h)
-//-- 出现次数大于等于k次的最大子串长度
-//二分子串长度，调用check(mid,k) 
-//-- 出现次数大于等于l小于等于r的子串个数
-//RMQ+容斥  RMQ维护h[]数组的区间最小值(省略)  调用solve(l,r)
-//-- 最长不重叠重复出现(2次以上)子串
-//未完待续
-char s[N];
-int sa[N],rk[N],h[N];
-//辅助数组
-int t[N],t2[N],c[N];
-int dp[N][30];
-void build_sa(int n, int m){ 
-    //n为字符串的长度,字符集的值为0~m-1
-    //相当于在后面加一个$
-    n++;
-    int *x=t, *y=t2;
-    //基数排序
-    for(int i=0;i<m;i++){
-        c[i]=0;
-    }
-    for(int i=0;i<n;i++){
-        c[x[i]=s[i]]++;
-    }
-    for(int i=1;i<m;i++){
-        c[i]+=c[i-1];
-    }
-    //或者~i 表示i!=-1
-    for(int i=n-1;i>=0;i--){
-        sa[--c[x[i]]]=i;
-    }
-    for(int k=1; k<=n; k<<=1){ 
-        int p=0;
-        for(int i=n-k;i<n;i++){
-            y[p++]=i;
-        }
-        for(int i=0;i<n;i++){
-            if(sa[i]>=k){
-                y[p++]=sa[i]-k;
-            }
-        }
-        for(int i=0;i<m;i++){
-            c[i]=0;
-        }
-        for(int i=0;i<n;i++){
-            c[x[y[i]]]++;
-        }
-        for(int i=1;i<m;i++){
-            c[i]+=c[i-1];
-        }
-        for(int i=n-1;i>=0;i--){
-            sa[--c[x[y[i]]]]=y[i];
-        }
-        swap(x, y);
-        p=1;
-        x[sa[0]]=0;
-        for(int i=1;i<n;i++){
-            x[sa[i]]=y[sa[i-1]]==y[sa[i]] && y[sa[i-1]+k]==y[sa[i]+k]? p-1 : p++;
-        }
-        if (p>=n){
-            break; 
-        }
-        m = p;
-    }
-    //去掉$
-    n--;
-    for(int i = 0; i <= n; i++){
-        rk[sa[i]] = i;
-    }
-    //计算h
-    int k=0;
-    for(int i = 0; i < n; i++){
-        if(k){
-            k--;
-        }
-        int j = sa[rk[i] - 1];
-        while(s[i + k] == s[j + k]){
-            k++;
-        }
-        h[rk[i]] = k;
-    }
-}
-//判断是否存在长度为mid的子串出现次数大于等于k
-bool check(int mid,int k){
-    int cnt=1;
-    for(int i=1;i<=n;i++){
-        if(h[i]>=mid){
-            cnt++;
-        }else{
-            cnt=1;
-        }
-        if(cnt>=k){
-            return true;
-        }
-    }
-    return false;
-}
-bool check2(int mid){
-    int low=INF,hight=-INF;
-    bool flag=false;
-    for(int i=2;i<=n;i++){
-        if(h[i]<mid){
-            low=INF;
-            hight=-INF;
-        }else{
-            low=min(low,min(sa[i],sa[i-1]));
-            hight=max(hight,max(sa[i],sa[i-1]));
-            if(hight-low>=mid){
-                flag=true;
-                break;
-            }
-        }
-    }
-    return flag;
-}
 /*
  * 预处理 O(nlogn)
  * dp[i][j]:从a[i]开始2^j个数的最小值
@@ -156,10 +25,10 @@ int RMQ(int l,int r){
     return min(dp[l][k],dp[r-(1<<k)+1][k]);
 }
 
-//===========后缀数组应用总结============
-//====任意两个后缀的最长公共前缀长度========
-//转化为求两个后缀对应排名区间的最小h值，即RMQ问题
-/*
+//=====================后缀数组应用总结========================
+//1.任意两个后缀的最长公共前缀长度
+/* 
+ * 转化为求两个后缀对应排名区间的最小h值，即RMQ问题
  * 要先初始化RMQ(n+1)，求回文串时RMQ(2*n+2)
  * 分清查询的是两个后缀首字符还是两个后缀排名
  * l,r为两个后缀的排名
@@ -189,9 +58,11 @@ int solve1(int i,int j){
     //注意h数组是类似差分的表示，区间n其实只有n-1的h数组
     return RMQ(ri+1,rj);
 }
-//====可重叠最长重复子串长度===============
-//重复子串＝最长公共前缀＝区间内min(h)
-//最长重复子串＝所有区间max(min(h))=max(h)
+//2.可重叠最长重复子串长度
+/*
+ * 重复子串＝最长公共前缀＝区间内min(h)
+ * 最长重复子串＝所有区间max(min(h))=max(h)
+ */ 
 int solve2(){
     int ans=0;
     //注意从1开始，排名为0的是无效后缀'$'
@@ -200,13 +71,15 @@ int solve2(){
     }
     return ans;
 }
-//====不可重叠最长重复子串=================
-//先二分答案(子串长度)将问题转化为判定性问题
-//即判断字符串里是否存在长度为mid的重复子串
-//将后缀按排名顺序进行分组，每组后缀间h值>=mid
-//否则单独一个组
-//同一组中判断max(sa[i])和min(sa[i])
-//即最左后缀和最右后缀的差值是否>=mid(即不重叠)
+//3.不可重叠最长重复子串
+/*
+ * 先二分答案(子串长度)将问题转化为判定性问题
+ * 即判断字符串里是否存在长度为mid的重复子串
+ * 将后缀按排名顺序进行分组，每组后缀间h值>=mid
+ * 否则单独一个组
+ * 同一组中判断max(sa[i])和min(sa[i])
+ * 即最左后缀和最右后缀的差值是否>=mid(即不重叠)
+ */ 
 int solve3(){
     int ans=0;
     int l=0,r=n/2;
@@ -243,9 +116,11 @@ int solve3(){
     }
     return ans;
 }
-//====可重叠出现至少k次的最长重复子串========
-//同样是二分答案，后缀分组再进行判断
-//不过这里判断的是组内后缀个数是否>=k
+//4.重叠出现至少k次的最长重复子串
+/* 
+ * 同样是二分答案，后缀分组再进行判断
+ * 不过这里判断的是组内后缀个数是否>=k
+ */
 int solve4(int k){
     int ans=0;
     int l=0,r=n/2;
@@ -273,19 +148,28 @@ int solve4(int k){
     }
     return ans;
 }
-//====不同子串个数==================
-//按排名枚举后缀，对于排名为i的后缀来说，贡献为n-sa[i]+h[i]
-//即后缀长度(从后缀第一个字符到后缀第i个字符算一个子串)减去重复部分
+//5.(长度大于等于k)的不同子串个数
+/*
+ * 按排名枚举后缀，对于排名为i的后缀来说，贡献为n-sa[i]+h[i](k为1的情况)
+ * 即后缀长度(从后缀第一个字符到后缀第i个字符算一个子串)减去重复部分
+ */
 int solve5(){
     int ans=0;
     for(int i=1;i<=n;i++){
-        ans+=(n-sa[i]-h[i]);
+        if(h[i]){
+            h[i]=max(0,h[i]-(k-1));
+        }
+        ans+=max(0,(n-sa[i]-(k-1)-h[i]));
+        //k为1的情况
+        //ans+=(n-sa[i]-h[i]);
     }
     return ans;
 }
-//====最长回文子串=================
-//将字符串反转接在原串后面(中间加入特殊分隔符)，将问题转化为求LCP
-//枚举每一个位置分别求出奇数回文串和偶数回文串长度
+//6.最长回文子串
+/*
+ * 将字符串反转接在原串后面(中间加入特殊分隔符)，将问题转化为求LCP
+ * 枚举每一个位置分别求出奇数回文串和偶数回文串长度
+ */
 int solve6(){
     //要先把字符串反转拼接再求sa
     int ans=0;
@@ -297,9 +181,11 @@ int solve6(){
     }
     return ans;
 }
-//=======出现次数[a,b]/k次(即[k,k])的子串个数=====
-//设cal(k)为出现次数大于等于k的子串个数
-//问题转化为求cal(a)-cal(b+1)
+//7.出现次数[a,b]/k次(即[k,k])的子串个数
+/*
+ * 设cal(k)为出现次数大于等于k的子串个数
+ * 问题转化为求cal(a)-cal(b+1)
+ */ 
 int cal(int k){
     //特判k
     if(k==1){
@@ -326,39 +212,370 @@ int cal(int k){
 int solve7(int a,int b){
     return cal(a)-cal(b+1);
 }
-int main(void){
-    scanf("%s",s);
-    n=strlen(s);
-    s[n]='$';
-    for(int i=0;i<n;i++){
-        s[i+n+1]=s[n-i-1];
+//8.字符串S由字符串T重复Q次得到，求最大Q
+/*
+ * 使用kmp更方便，如果非要用后缀数组请用dc3模板
+ * 枚举T串长度k，先判断len(S)%len(T)==0？
+ * 再判断lcp(suffix(0),suffix(k))==n-k?
+ * suffix(i)指首字符位置为i的后缀
+ * 因为suffix(0)固定，无需预处理出整个RMQ
+ * 只需O(n)求出所有lcp(suffix(0),x)即可
+ */ 
+int solve8(){
+    lcp[rk[0]]=n;
+    for(int i=rk[0]-1;i>=0;i--){
+        lcp[i]=min(lcp[i+1],h[i+1]);
     }
-    build_sa(n*2+1,250);
-    RMQ_init(n*2+2);
-    printf("%s\n",s);
-    for(int i=0;i<=n*2+1;i++){
-        printf("%d ",sa[i]);
+    for(int i=rk[0]+1;i<=n;i++){
+        lcp[i]=min(lcp[i-1],h[i-1]);
     }
-    printf("\n");
-    for(int i=0;i<=n*2+1;i++){
-        printf("%d ",rk[i]);
+    for(int k=1;k<=n;k++){
+        if(n%k==0 && lcp[rk[k]]==n-k){
+            return n/k;
+        }
     }
-    printf("\n");
-    for(int i=0;i<=n*2+1;i++){
-        printf("%d ",h[i]);
-    }
-    printf("\n");
-    // printf("%d\n",check(3,2));
-    // printf("%d\n",check2(3));
-    // int i,j;
-    // RMQ_init(n+1);
-    // while(~scanf("%d%d",&i,&j)){
-    //     printf("%d\n",solve1(i,j));
-    // }
-    // int k;
-    // while(~scanf("%d",&k)){
-    //     printf("%d\n",solve4(k));
-    // }
-    printf("%d\n",solve6());
-    return 0;
 }
+//9.重复次数最多的连续重复子串
+/*
+ * 暂时无法理解,贴个题解板子
+ */ 
+void solve9(){
+    int ans=0,pos=0,lenn;
+    //保证有重复,所以是len/2
+    for(int i=1;i<=len/2;i++){
+        for(int j=0;j<len-i;j+=i){
+            if(str[j]!=str[j+i]){
+                continue;
+            }
+            //通过下标查询
+            int k=solve1(j,j+i);
+            int tol=k/i+1;
+            int r=i-k%i;
+            int p=j;
+            int cnt=0;
+            for(int m=j-1;m>j-i&&str[m]==str[m+i]&&m>=0;m--){
+                cnt++;
+                if(cnt==r){
+                    tol++;
+                    p=m;
+                }
+                else if(rk[p]>rk[m]){
+                    p=m;
+                }
+            }
+            if(ans<tol){
+                ans=tol;
+                pos=p;
+                lenn=tol*i;
+            }else if(ans==tol && rk[pos]>rk[p]){
+                pos=p;
+                lenn=tol*i;
+            }
+        }
+    }
+    //这里，如果字符总长度小于2，那么就在原串中找出一个最小的字符就好
+    if(ans<2){
+        char ch='z';
+        for(int i=0;i<len;i++){
+            if(str[i]<ch){
+                ch=str[i];
+            }
+        }
+        printf("%c\n",ch);
+        return;
+    }
+    for(int i=pos;i<pos+lenn;i++){
+        printf("%c",str[i]);
+    }
+    printf("\n");
+}
+//10.最长公共子串
+/*
+ * 求A和B的最长公共子串即转化为求A和B后缀的最长公共前缀
+ * 将A和B拼接求出h数组，当suffix(sa[i])和suffix(sa[i-1])不在同个字符串时
+ * h[i]才有效，求出最大值即可
+ */ 
+int solve10(){
+    int ans=0;
+    for(int i=1;i<=n;i++){
+        //al为第一个字符串长度
+        if(sa[i]<al && sa[i-1]<al || sa[i]>=al && sa[i-1]>=al){
+            continue;
+        }
+        ans=max(ans,h[i]);
+    }
+    return ans;
+}
+//11.求长度大于等于k的公共子串个数
+/*
+ * 同样是转化为A和B所有后缀的最长公共前缀大于等于k的贡献累加起来
+ * 用常用的处理方法，将两个字符串拼接，中间用分隔符隔开，求出h数组
+ * 然后对h数组分组(把h值大于等于k的分在一组)
+ * 然后在这道题里要使用一个单调栈来维护前面的后缀对后面的后缀的贡献
+ * 单调栈维护一个h值和一个该h值在前面充当lcp的
+ * sta[i][0]: 维护h值 sta[i][1]: 维护这个h值代表前面多少个后缀的lcp贡献(最小h值)
+ * 维护的类似一种前缀和的东西，具体看代码详细注释
+ */
+int solve11(int k){
+    int top=0;
+    int tot=0, ans=0;
+    //对h分组
+    for(int i=1;i<=n;i++){
+        if(h[i]<k){
+            //单独一个后缀的分组，无需考虑
+            top=0;
+            tot=0;
+        }else{
+            //cnt表示h[i]作为lcp的后缀个数
+            int cnt=0;
+            //前一个后缀属于A，计算贡献
+            //即能产生多少个长度大于等于k的公共子串
+            if(sa[i-1]<al){
+                //前面(i-1)必须是属于A的后缀，才能计算这个贡献
+                //所以后面把B的后缀入栈是没毛病的，这里维护的实际上是一个类似前缀和的东西
+                //即栈顶元素已经是累加了栈底所有元素的贡献
+                //但是这个单调栈是动态变化的，所以不能单纯保留栈顶元素
+                cnt++;
+                //比如h[i]=4，例如abcd，那么大于等于k的子串就可以是
+                //ab abc abcd这三个，所以是h[i]-k+1
+                tot+=h[i]-k+1;
+            }
+            //维护单调栈(栈顶到栈底递减)
+            //这里不用考虑h[i]是A的还是B的
+            while(top && h[i]<=sta[top-1][0]){
+                top--;
+                //更新贡献
+                //这里实际上应该是tot(贡献)减去sta[top][0]*sta[top][1]
+                //再加上h[i]*sta[top][1]
+                //相当于就是栈顶被替换了，所以栈顶这个h值之前充当了多少后缀的lcp
+                //都要改成这个新的栈顶h[i]的贡献了
+                tot+=(h[i]-sta[top][0])*sta[top][1];
+                //既然h[i]比sta[top][0]小，那么sta[top][0]能作为lcp(h最小值)的h[i]
+                //肯定也可以，所以累加上即可
+                cnt+=sta[top][1];
+            }
+            //此时栈里的所有h值都小于h[i]
+            //入栈，维持单调性
+            sta[top][0]=h[i];
+            sta[top][1]=cnt;
+            top++;
+            //属于B的后缀，累加A的贡献
+            if(sa[i]>al){
+                ans+=tot;
+            }
+        }
+    }
+    //同理对B串的后缀维护单调栈，累计B的贡献
+    top=tot=0;
+    for(int i=1;i<=n;i++){
+        if(h[i]<k){
+            top=0;
+            tot=0;
+        }else{
+            int cnt=0;
+            if(sa[i-1]>al){
+                cnt++;
+                tot+=h[i]-k+1;
+            }
+            while(top && h[i]<=sta[top-1][0]){
+                top--;
+                tot+=(h[i]-sta[top][0])*sta[top][1];
+                cnt+=sta[top][1];
+            }
+            sta[top][0]=h[i];
+            sta[top][1]=cnt;
+            top++;
+            if(sa[i]<al){
+                ans+=tot;
+            }
+        }
+    }
+    return ans;
+}
+//12.给n个字符串，出现在不少于k个字符串的最长子串
+/*
+ * 同样是拼接字符串对h数组分组，二分答案进行判断
+ */ 
+bool check12(int mid){
+    bool flag=false;
+    for(int i=1;i<len;i++){
+        //不满足要求的组直接不用管
+        if(h[i]<mid){
+            continue;
+        }
+        //组内不同字符串个数
+        int cnt=0;
+        //标记某个字符串是否出现过
+        memset(vis,false,sizeof(vis));
+        while(h[i]>=mid && i<len){
+            if(!vis[idx[sa[i-1]]]){
+                vis[idx[sa[i-1]]]=true;
+                cnt++;
+            }
+            //找到1组
+            i++;
+        }
+        //注意最后一个的判断
+        if(!vis[idx[sa[i-1]]]){
+            vis[idx[sa[i-1]]]=1;
+            cnt++;
+        }
+        //出现在k个不同字符串中
+        if(cnt>k){
+            if(!flag){
+                flag=true;
+                //清空之前的答案
+                //ans存储出现在至少k个不同字符串的后缀sa值
+                ans.clear();
+                ans.push_back(sa[i-1]);
+            }
+            else{
+                //只需加入最后一个满足条件后缀的sa
+                ans.push_back(sa[i-1]);
+            }
+        }
+    }
+    //是否有满足要求的答案
+    return flag;
+}
+void solve12(){
+    ans.clear();
+    int l=1,r=len;
+    while(l<=r){
+        int mid=(l+r)>>1;
+        if(check(mid)){
+            l=mid+1;
+        }
+        else{
+            r=mid-1;
+        }
+    }
+    //输出多个最长公共子串(至少在k个字符串中出现过)
+    for(int i=0;i<ans.size();i++){
+        for(int j=ans[i];j<ans[i]+r;j++)
+            printf("%c",s[j]-1+'a');
+        printf("\n");
+    }
+}
+//13.给n个字符串，在每个字符串中至少出现两次且不重叠的最长子串
+/*
+ * 把每个字符串拼接起来，中间用分隔符分开，求h数组
+ * 二分子串长度，对h数组分组，维护每一个字符串在当前组的最小和最大sa值 
+ * 然后判断不重叠即可(也同时判断了出现2次)
+ */ 
+bool check13(int mid){
+    //后缀起始位置的最大最小值
+    for(int i=0;i<n;i++){
+        mx[i]=0;
+        mn[i]=INF;
+    }
+    for(int i=1;i<=len;i++){
+        if(h[i]<mid){
+            //重置分组
+            for(int i=0;i<n;i++){
+                mx[i]=0;
+                mn[i]=INF;
+            }
+        }else{
+            //一个h值表示两个后缀
+            mx[idx[sa[i]]]=max(mx[idx[sa[i]]],sa[i]);
+            mn[idx[sa[i]]]=min(mn[idx[sa[i]]],sa[i]);
+            mx[idx[sa[i-1]]]=max(mx[idx[sa[i-1]]],sa[i-1]);
+            mn[idx[sa[i-1]]]=min(mn[idx[sa[i-1]]],sa[i-1]);
+            bool flag=true;
+            //需要判断每个字符串(都要出现两次以上，且不重叠)
+            for(int j=0;j<n;j++){
+                if(mx[j]-mn[j]<mid){
+                    flag=false;
+                    break;
+                }
+            }
+            if(flag){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+int solve13(){
+    //len为拼接后的字符串长度
+    int l=0,r=len+1;
+    int ans=0;
+    while(l<=r){
+        int mid=(l+r)>>1;
+        if(check13(mid)){
+            ans=mid;
+            l=mid+1;
+        }else{
+            r=mid-1;
+        }
+    }
+    return ans;
+}
+//14.给n个字符串，正序或逆序出现在每个字符串的最长子串
+/*
+ * 把每个字符串正序和逆序拼接起来，中间用分隔符分开，求h数组
+ * 二分子串长度，对h数组分组，判断是否存在一组h值里面所属n个不同字符串
+ * 所以在拼接字符串的时候要把每个字符串(正序和逆序)的每个字符标记是第几个字符串
+ * for(int j=0;j<siz;j++){
+        idx[len]=i;   
+        //加2*n+1保证不会跟分隔符相同
+        s[len++]=ss[i][j]-'A'+2*n+1;
+    }
+    idx[len]=i;
+    s[len++]=sep++;
+ */ 
+bool check14(int mid){
+    //这里用set来进行组内所属字符串的去重
+    set<int> se;
+    for(int i=1;i<len;i++){
+        if(h[i]>=mid){
+            se.insert(idx[sa[i]]);
+            se.insert(idx[sa[i-1]]);
+        }else{
+            if(se.size()==n){
+                return true;
+            }
+            se.clear();
+        }
+    }
+    //注意最后一个组
+    return se.size()==n;
+}
+int solve14(){
+    if(n==1){
+        return strlen(ss[0]);
+    }
+    int l=1,r=100;
+    //变量记得初始化！！！
+    int ans=0;
+    while(l<=r){
+        int mid=(l+r)>>1;
+        if(check14(mid)){
+            ans=mid;
+            l=mid+1;
+        }else{
+            r=mid-1;
+        }
+    }
+    return ans;
+}
+//几个注意点
+//字符串数组一般可以用一个int数组来表示,特别是需要拼接字符串的题目
+//拼接字符串先设定一个比较大的分隔符,比如300,然后每次分割一次都要+1
+//注意最后一位补0 s[len]=0
+/*
+    len=0;
+    int sep=30;
+    for(int i=0;i<n;i++){
+        scanf("%s",str[i]);
+        siz[i]=strlen(str[i]);
+        for(int j=0;j<siz[i];j++){
+             s[len++]=str[i][j]-'a'+1;
+             idx[len-1]=i;
+        }
+        s[len++]=sep++;
+    }
+    s[len]=0;
+    build_sa(len,250);
+ */ 

@@ -1,0 +1,47 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{    1. 二分图一些性质}
+\PYG{c+cm}{        最小点覆盖数==最大匹配数   ||  最小边覆盖数==最大独立数==顶点数\PYGZhy{}最大匹配数}
+\PYG{c+cm}{        最大独立集==补图的最大团}
+\PYG{c+cm}{        (最大独立集: 一个最大的点的集合，该集合内的任意两点没有边相连) }
+\PYG{c+cm}{        (最大团: 一个最大的点的集合，该集合内的任意两点都有边相连)}
+\PYG{c+cm}{    2. 有向图的最小路径覆盖问题==\PYGZgt{}二分图解决}
+\PYG{c+cm}{        路径覆盖: 通过几条路径(多条边)覆盖有向图所有顶点，一个点也可成为路径覆盖，长度为0}
+\PYG{c+cm}{        2.1 最小不相交路径覆盖：每一条路径经过的顶点各不相同。例如1\PYGZhy{}\PYGZgt{}3\PYGZgt{}4，2，5}
+\PYG{c+cm}{            将有向图的每个点拆成入点和出点，对每一条有向边(u,v)，都在二分图中将u的入点连向v的出点}
+\PYG{c+cm}{            结论: 最小路径覆盖数=|V(G)|\PYGZhy{}二分图最大匹配数}
+\PYG{c+cm}{        2.2 打印出每条路径: }
+\PYG{c+cm}{            在dinic算法的dfs增广中，记录流向}
+\PYG{c+cm}{            if(dis\PYGZgt{}0)\PYGZob{}}
+\PYG{c+cm}{                ......}
+\PYG{c+cm}{                to[u]=v;}
+\PYG{c+cm}{                return dis;}
+\PYG{c+cm}{            \PYGZcb{}}
+\PYG{c+cm}{            枚举所有入点(1\PYGZhy{}n)，当to[i]不为零时，沿着i=to[i]路径输出即可}
+\PYG{c+cm}{            for(int i=1;i\PYGZlt{}=n;i++)\PYGZob{}}
+\PYG{c+cm}{                if(to[i])\PYGZob{}}
+\PYG{c+cm}{                    int t=i;}
+\PYG{c+cm}{                    do\PYGZob{}}
+\PYG{c+cm}{                        if(t\PYGZgt{}n)\PYGZob{}}
+\PYG{c+cm}{                            t\PYGZhy{}=n;}
+\PYG{c+cm}{                        \PYGZcb{}}
+\PYG{c+cm}{                        printf(\PYGZdq{}\PYGZpc{}d \PYGZdq{},t);}
+\PYG{c+cm}{                        int x=to[t];}
+\PYG{c+cm}{                        to[t]=0;}
+\PYG{c+cm}{                        t=x;}
+\PYG{c+cm}{                    \PYGZcb{}while(t);}
+\PYG{c+cm}{                printf(\PYGZdq{}\PYGZbs{}n\PYGZdq{});}
+\PYG{c+cm}{            \PYGZcb{}}
+\PYG{c+cm}{        2.3 最小可相交路径覆盖：每一条路径经过的顶点可以相同。例如1\PYGZhy{}\PYGZgt{}3\PYGZhy{}\PYGZgt{}4，2\PYGZhy{}\PYGZgt{}3\PYGZgt{}5}
+\PYG{c+cm}{            先用floyd求出传递闭包，然后对当前的图求最大匹配(可以直接用邻接矩阵跑匈牙利算法)}
+\PYG{c+cm}{            for(int k=1;k\PYGZlt{}=n;k++)\PYGZob{}}
+\PYG{c+cm}{                for(int i=1;i\PYGZlt{}=n;i++)\PYGZob{}}
+\PYG{c+cm}{                    for(int j=1;j\PYGZlt{}=n;j++)\PYGZob{}}
+\PYG{c+cm}{                        if(a[i][k]\PYGZam{}\PYGZam{}a[k][j])\PYGZob{}}
+\PYG{c+cm}{                            a[i][j]=true;}
+\PYG{c+cm}{                        \PYGZcb{}}
+\PYG{c+cm}{                    \PYGZcb{}}
+\PYG{c+cm}{                \PYGZcb{}}
+\PYG{c+cm}{            \PYGZcb{}}
+\PYG{c+cm}{ */} 
+\end{Verbatim}

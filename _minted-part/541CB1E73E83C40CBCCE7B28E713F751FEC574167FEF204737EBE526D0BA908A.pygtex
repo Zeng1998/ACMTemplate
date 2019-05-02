@@ -1,0 +1,91 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 莫队是一种基于分块思想的离线算法，用于解决区间问题，适用范围如下：}
+\PYG{c+cm}{ * 0. 只有询问没有修改。}
+\PYG{c+cm}{ * 1. 允许离线。}
+\PYG{c+cm}{ * 2. 在已知[l,r]答案的情况下可以O(1)得到[l,r−1],[l,r+1],[l−1,r],[l+1,r]的答案。}
+\PYG{c+cm}{ * }
+\PYG{c+cm}{ * 有n个不同颜色的袜子，多个询问在区间[l,r]里随机抽两个袜子，同一颜色的概率是多少}
+\PYG{c+cm}{ * 对区间长度为n的询问来说，答案为(sum(ai\PYGZca{}2)\PYGZhy{}n)/n*(n\PYGZhy{}1)，其中ai为颜色i在区间内的个数}
+\PYG{c+cm}{ * 分母n*(n\PYGZhy{}1)表示抽的所有可能情况(第一只有n种选择，第二只有n\PYGZhy{}1种)}
+\PYG{c+cm}{ * 分子同理为sum(ai*(ai\PYGZhy{}1))=sum(ai\PYGZca{}2)\PYGZhy{}sum(ai)=sum(ai\PYGZca{}2)\PYGZhy{}n}
+\PYG{c+cm}{ */} 
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{k}{typedef} \PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{n}{ll}\PYG{p}{;}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{N}\PYG{o}{=}\PYG{l+m+mf}{5e4}\PYG{o}{+}\PYG{l+m+mi}{50}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n+nf}{pw}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{x}\PYG{o}{*}\PYG{n}{x}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{,}\PYG{n}{m}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{be}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{n}{ll} \PYG{n}{a}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{sum}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k}{struct} \PYG{n}{Q}\PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{id}\PYG{p}{,}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{;}
+    \PYG{n}{ll} \PYG{n}{zi}\PYG{p}{,}\PYG{n}{mu}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}\PYG{n}{q}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{bool} \PYG{n+nf}{cmp1}\PYG{p}{(}\PYG{n}{Q} \PYG{n}{a}\PYG{p}{,}\PYG{n}{Q} \PYG{n}{b}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//左端点同块按右端点排序，否则按左端点排序}
+    \PYG{k}{return} \PYG{n}{be}\PYG{p}{[}\PYG{n}{a}\PYG{p}{.}\PYG{n}{l}\PYG{p}{]}\PYG{o}{==}\PYG{n}{be}\PYG{p}{[}\PYG{n}{b}\PYG{p}{.}\PYG{n}{l}\PYG{p}{]}\PYG{o}{?}\PYG{n}{a}\PYG{p}{.}\PYG{n}{l}\PYG{o}{\PYGZlt{}}\PYG{n}{b}\PYG{p}{.}\PYG{n+nl}{l}\PYG{p}{:}\PYG{n}{a}\PYG{p}{.}\PYG{n}{r}\PYG{o}{\PYGZlt{}}\PYG{n}{b}\PYG{p}{.}\PYG{n}{r}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{bool} \PYG{n+nf}{cmp2}\PYG{p}{(}\PYG{n}{Q} \PYG{n}{a}\PYG{p}{,}\PYG{n}{Q} \PYG{n}{b}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{a}\PYG{p}{.}\PYG{n}{id}\PYG{o}{\PYGZlt{}}\PYG{n}{b}\PYG{p}{.}\PYG{n}{id}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n}{ans}\PYG{p}{;}
+\PYG{c+c1}{//查询的答案就是(sum(ai\PYGZca{}2)\PYGZhy{}n)/(n(n\PYGZhy{}1))}
+\PYG{k+kt}{void} \PYG{n+nf}{fun}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//更新分子sum(ai\PYGZca{}2)部分}
+    \PYG{n}{ans}\PYG{o}{\PYGZhy{}=}\PYG{n}{pw}\PYG{p}{(}\PYG{n}{sum}\PYG{p}{[}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]);}
+    \PYG{n}{sum}\PYG{p}{[}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]}\PYG{o}{+=}\PYG{n}{x}\PYG{p}{;}
+    \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{pw}\PYG{p}{(}\PYG{n}{sum}\PYG{p}{[}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]);}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{n}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{m}\PYG{p}{);}
+    \PYG{k+kt}{int} \PYG{n}{unit}\PYG{o}{=}\PYG{n}{sqrt}\PYG{p}{(}\PYG{n}{n}\PYG{p}{);}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}lld\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+        \PYG{c+c1}{//分块}
+        \PYG{n}{be}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{i}\PYG{o}{/}\PYG{n}{unit}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{m}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{l}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{r}\PYG{p}{);}
+        \PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{id}\PYG{o}{=}\PYG{n}{i}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//对查询的区间预处理排序}
+    \PYG{n}{sort}\PYG{p}{(}\PYG{n}{q}\PYG{p}{,}\PYG{n}{q}\PYG{o}{+}\PYG{n}{m}\PYG{p}{,}\PYG{n}{cmp1}\PYG{p}{);}
+    \PYG{c+c1}{//上一次查询的区间}
+    \PYG{k+kt}{int} \PYG{n}{l}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{r}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{m}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//左端点移动到当前查询区间左端点，同时更新答案}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZlt{}}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{l}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{fun}\PYG{p}{(}\PYG{n}{l}\PYG{p}{,}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+            \PYG{n}{l}\PYG{o}{++}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//以下同理，但要注意边界问题l l\PYGZhy{}1 r+1 r}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZgt{}}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{l}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{fun}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{);}
+            \PYG{n}{l}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{r}\PYG{o}{\PYGZlt{}}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{fun}\PYG{p}{(}\PYG{n}{r}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{);}
+            \PYG{n}{r}\PYG{o}{++}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{r}\PYG{o}{\PYGZgt{}}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{fun}\PYG{p}{(}\PYG{n}{r}\PYG{p}{,}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+            \PYG{n}{r}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//统计答案}
+        \PYG{n}{ll} \PYG{n}{len}\PYG{o}{=}\PYG{p}{(}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{r}\PYG{o}{\PYGZhy{}}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{l}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{*}\PYG{l+m+mi}{1LL}\PYG{p}{;}
+        \PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{zi}\PYG{o}{=}\PYG{n}{ans}\PYG{o}{\PYGZhy{}}\PYG{n}{len}\PYG{p}{;}
+        \PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{mu}\PYG{o}{=}\PYG{n}{len}\PYG{o}{*}\PYG{p}{(}\PYG{n}{len}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{n}{ll} \PYG{n}{g}\PYG{o}{=}\PYG{n}{\PYGZus{}\PYGZus{}gcd}\PYG{p}{(}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{zi}\PYG{p}{,}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{mu}\PYG{p}{);}
+        \PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{zi}\PYG{o}{/=}\PYG{n}{g}\PYG{p}{;}
+        \PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{mu}\PYG{o}{/=}\PYG{n}{g}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{sort}\PYG{p}{(}\PYG{n}{q}\PYG{p}{,}\PYG{n}{q}\PYG{o}{+}\PYG{n}{m}\PYG{p}{,}\PYG{n}{cmp2}\PYG{p}{);}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{m}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}lld/\PYGZpc{}lld}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{zi}\PYG{p}{,}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{mu}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

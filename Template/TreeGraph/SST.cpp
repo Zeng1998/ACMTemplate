@@ -1,5 +1,4 @@
 /*
- * 最小生成树Prim算法
  * used[i][j]: i-j这条边是否在MST中
  * path[i][j]: <i...j>的路径上的最长边
  * pre[i]: MST中i的前驱节点，即上一步能够更新low[i]的点，即将i加入MST的点
@@ -19,12 +18,10 @@ int Prim(){
     low[0]=0;
     int ans=0;
     for(int i=1;i<n;i++){
-        int k=-1;
-        int Min=INF;
+        int k=-1,Min=INF;
         for(int j=0;j<n;j++){
             if(!vis[j] && low[j]<Min){
-                Min=low[j];
-                k=j;
+                Min=low[j]; k=j;
             }
         }
         if(k==-1){
@@ -41,16 +38,14 @@ int Prim(){
             if(vis[j] && j!=k){
                 path[j][k]=path[k][j]=max(path[j][pre[k]],low[k]);
             }else if(!vis[j] && low[j]>cost[k][j]){
-                low[j]=cost[k][j];
+                low[j]=cost[k][j];   
                 pre[j]=k;
             }
         }
     }
     return ans;
 }
-/*
- * 先求出MST，再枚举不在MST中的边求出SST
- */ 
+//先求出MST，再枚举不在MST中的边求出SST
 int solve(){
     int ans=Prim();
     for(int i=0;i<n;i++){

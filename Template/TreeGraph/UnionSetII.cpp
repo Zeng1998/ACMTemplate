@@ -46,11 +46,6 @@ bool unit(int a,int b,int q){
         //已在同一集合
         //同样通过画图，此时a,b有相同根f
         //r[a]+q即b->a(q) a->f(r[a])==r[b]，若不符合，即矛盾
-        if((r[a]+q)%3!=r[b]){
-            //矛盾
-            return true;
-        }else{
-
-        }
+        return (r[a]+q)%3!=r[b];
     }
 }

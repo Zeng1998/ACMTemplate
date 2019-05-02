@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 树状数组(加强版1): 区间更新，单点查询(sum(i))}
+\PYG{c+cm}{ * 设d[i]=a[i]\PYGZhy{}a[i\PYGZhy{}1] 所以a[i]=d[1]+d[2]+...+d[i]}
+\PYG{c+cm}{ * 树状数组c维护d的前缀和，也相当于变相维护了a[i]，所以单点查询是查询sum}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{void} \PYG{n+nf}{update}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{add}\PYG{p}{(}\PYG{n}{l}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{);}
+    \PYG{n}{add}\PYG{p}{(}\PYG{n}{r}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

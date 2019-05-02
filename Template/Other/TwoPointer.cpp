@@ -21,9 +21,6 @@ struct window{
         }
     }
 };
-/*
- * 尺取法
- */
 void solve(char s[],int n,int k){
 	window w;
     int n=strlen(s);

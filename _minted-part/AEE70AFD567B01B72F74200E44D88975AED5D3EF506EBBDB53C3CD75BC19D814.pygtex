@@ -1,0 +1,26 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{namespace} \PYG{n}{IO}\PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{char} \PYG{n}{buf}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{l+m+mi}{15}\PYG{p}{],}\PYG{o}{*}\PYG{n}{S}\PYG{p}{,}\PYG{o}{*}\PYG{n}{T}\PYG{p}{;}
+    \PYG{k+kr}{inline} \PYG{k+kt}{char} \PYG{n+nf}{gc}\PYG{p}{()\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{S}\PYG{o}{==}\PYG{n}{T}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{T}\PYG{o}{=}\PYG{p}{(}\PYG{n}{S}\PYG{o}{=}\PYG{n}{buf}\PYG{p}{)}\PYG{o}{+}\PYG{n}{fread}\PYG{p}{(}\PYG{n}{buf}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{l+m+mi}{15}\PYG{p}{,}\PYG{n}{stdin}\PYG{p}{);}
+            \PYG{k}{if} \PYG{p}{(}\PYG{n}{S}\PYG{o}{==}\PYG{n}{T}\PYG{p}{)}\PYG{k}{return} \PYG{n}{EOF}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{o}{*}\PYG{n}{S}\PYG{o}{++}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kr}{inline} \PYG{k+kt}{int} \PYG{n+nf}{read}\PYG{p}{()\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{;}\PYG{k+kt}{bool} \PYG{n}{f}\PYG{p}{;}\PYG{k+kt}{char} \PYG{n}{c}\PYG{p}{;}
+        \PYG{k}{for}\PYG{p}{(}\PYG{n}{f}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;(}\PYG{n}{c}\PYG{o}{=}\PYG{n}{gc}\PYG{p}{())}\PYG{o}{\PYGZlt{}}\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{o}{||}\PYG{n}{c}\PYG{o}{\PYGZgt{}}\PYG{l+s+sc}{\PYGZsq{}9\PYGZsq{}}\PYG{p}{;}\PYG{n}{f}\PYG{o}{=}\PYG{n}{c}\PYG{o}{==}\PYG{l+s+sc}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}\PYG{p}{);}
+        \PYG{k}{for}\PYG{p}{(}\PYG{n}{x}\PYG{o}{=}\PYG{n}{c}\PYG{o}{\PYGZca{}}\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{p}{;(}\PYG{n}{c}\PYG{o}{=}\PYG{n}{gc}\PYG{p}{())}\PYG{o}{\PYGZgt{}=}\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{n}{c}\PYG{o}{\PYGZlt{}=}\PYG{l+s+sc}{\PYGZsq{}9\PYGZsq{}}\PYG{p}{;}\PYG{n}{x}\PYG{o}{=}\PYG{p}{(}\PYG{n}{x}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{l+m+mi}{3}\PYG{p}{)}\PYG{o}{+}\PYG{p}{(}\PYG{n}{x}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{+}\PYG{p}{(}\PYG{n}{c}\PYG{o}{\PYGZca{}}\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{p}{));}
+        \PYG{k}{return} \PYG{n}{f}\PYG{o}{?\PYGZhy{}}\PYG{n+nl}{x}\PYG{p}{:}\PYG{n}{x}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kr}{inline} \PYG{n}{ll} \PYG{n+nf}{readll}\PYG{p}{()\PYGZob{}}
+        \PYG{n}{ll} \PYG{n}{x}\PYG{p}{;}\PYG{k+kt}{bool} \PYG{n}{f}\PYG{p}{;}\PYG{k+kt}{char} \PYG{n}{c}\PYG{p}{;}
+        \PYG{k}{for}\PYG{p}{(}\PYG{n}{f}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;(}\PYG{n}{c}\PYG{o}{=}\PYG{n}{gc}\PYG{p}{())}\PYG{o}{\PYGZlt{}}\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{o}{||}\PYG{n}{c}\PYG{o}{\PYGZgt{}}\PYG{l+s+sc}{\PYGZsq{}9\PYGZsq{}}\PYG{p}{;}\PYG{n}{f}\PYG{o}{=}\PYG{n}{c}\PYG{o}{==}\PYG{l+s+sc}{\PYGZsq{}\PYGZhy{}\PYGZsq{}}\PYG{p}{);}
+        \PYG{k}{for}\PYG{p}{(}\PYG{n}{x}\PYG{o}{=}\PYG{n}{c}\PYG{o}{\PYGZca{}}\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{p}{;(}\PYG{n}{c}\PYG{o}{=}\PYG{n}{gc}\PYG{p}{())}\PYG{o}{\PYGZgt{}=}\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{n}{c}\PYG{o}{\PYGZlt{}=}\PYG{l+s+sc}{\PYGZsq{}9\PYGZsq{}}\PYG{p}{;}\PYG{n}{x}\PYG{o}{=}\PYG{p}{(}\PYG{n}{x}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{l+m+mi}{3}\PYG{p}{)}\PYG{o}{+}\PYG{p}{(}\PYG{n}{x}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{+}\PYG{p}{(}\PYG{n}{c}\PYG{o}{\PYGZca{}}\PYG{l+s+sc}{\PYGZsq{}0\PYGZsq{}}\PYG{p}{));}
+        \PYG{k}{return} \PYG{n}{f}\PYG{o}{?\PYGZhy{}}\PYG{n+nl}{x}\PYG{p}{:}\PYG{n}{x}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k}{using} \PYG{n}{IO}\PYG{o}{::}\PYG{n}{read}\PYG{p}{;}
+\PYG{k}{using} \PYG{n}{IO}\PYG{o}{::}\PYG{n}{readll}\PYG{p}{;}
+\end{Verbatim}

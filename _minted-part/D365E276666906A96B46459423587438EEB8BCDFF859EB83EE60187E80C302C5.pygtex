@@ -1,0 +1,107 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/**}
+\PYG{c+cm}{ * 线段树维护最大连续区间}
+\PYG{c+cm}{ */}
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{c+cp}{\PYGZsh{}define lson i\PYGZlt{}\PYGZlt{}1}
+\PYG{c+cp}{\PYGZsh{}define rson i\PYGZlt{}\PYGZlt{}1|1}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{N}\PYG{o}{=}\PYG{l+m+mf}{5e4}\PYG{o}{+}\PYG{l+m+mi}{50}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{,}\PYG{n}{m}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{le}\PYG{p}{[}\PYG{l+m+mi}{4}\PYG{o}{*}\PYG{n}{N}\PYG{p}{],}\PYG{n}{ri}\PYG{p}{[}\PYG{l+m+mi}{4}\PYG{o}{*}\PYG{n}{N}\PYG{p}{];}
+\PYG{c+c1}{//左最大连续区间 右最大连续区间 总最大连续区间}
+\PYG{k+kt}{int} \PYG{n}{lm}\PYG{p}{[}\PYG{l+m+mi}{4}\PYG{o}{*}\PYG{n}{N}\PYG{p}{],}\PYG{n}{rm}\PYG{p}{[}\PYG{l+m+mi}{4}\PYG{o}{*}\PYG{n}{N}\PYG{p}{],}\PYG{n}{mx}\PYG{p}{[}\PYG{l+m+mi}{4}\PYG{o}{*}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{void} \PYG{n+nf}{PushUp}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{lm}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{lm}\PYG{p}{[}\PYG{n}{lson}\PYG{p}{];}
+    \PYG{n}{rm}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{rm}\PYG{p}{[}\PYG{n}{rson}\PYG{p}{];}
+    \PYG{n}{mx}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{n}{max}\PYG{p}{(}\PYG{n}{mx}\PYG{p}{[}\PYG{n}{lson}\PYG{p}{],}\PYG{n}{mx}\PYG{p}{[}\PYG{n}{rson}\PYG{p}{]),}\PYG{n}{rm}\PYG{p}{[}\PYG{n}{lson}\PYG{p}{]}\PYG{o}{+}\PYG{n}{lm}\PYG{p}{[}\PYG{n}{rson}\PYG{p}{]);}
+    \PYG{c+c1}{//左儿子区间满，父节点左区间要加上右儿子左区间}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{mx}\PYG{p}{[}\PYG{n}{lson}\PYG{p}{]}\PYG{o}{==}\PYG{n}{ri}\PYG{p}{[}\PYG{n}{lson}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{le}\PYG{p}{[}\PYG{n}{lson}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{lm}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{+=}\PYG{n}{lm}\PYG{p}{[}\PYG{n}{rson}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//右儿子区间满，父节点右区间要加上左儿子右区间}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{mx}\PYG{p}{[}\PYG{n}{rson}\PYG{p}{]}\PYG{o}{==}\PYG{n}{ri}\PYG{p}{[}\PYG{n}{rson}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{le}\PYG{p}{[}\PYG{n}{rson}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{rm}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{+=}\PYG{n}{rm}\PYG{p}{[}\PYG{n}{lson}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{Build}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{le}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{l}\PYG{p}{;}
+    \PYG{n}{ri}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{r}\PYG{p}{;}
+    \PYG{n}{lm}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{rm}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{mx}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{r}\PYG{o}{\PYGZhy{}}\PYG{n}{l}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}   
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{l}\PYG{o}{==}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{mid}\PYG{o}{=}\PYG{p}{(}\PYG{n}{l}\PYG{o}{+}\PYG{n}{r}\PYG{p}{)}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{n}{Build}\PYG{p}{(}\PYG{n}{lson}\PYG{p}{,}\PYG{n}{l}\PYG{p}{,}\PYG{n}{mid}\PYG{p}{);}
+    \PYG{n}{Build}\PYG{p}{(}\PYG{n}{rson}\PYG{p}{,}\PYG{n}{mid}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{r}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{Update}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{v}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{le}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{==}\PYG{n}{ri}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])\PYGZob{}}
+        \PYG{c+c1}{//修复1 破坏0}
+        \PYG{n}{lm}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{rm}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{mx}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{v}\PYG{p}{;}
+        \PYG{k}{return}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{mid}\PYG{o}{=}\PYG{p}{(}\PYG{n}{le}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{+}\PYG{n}{ri}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZlt{}=}\PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{Update}\PYG{p}{(}\PYG{n}{lson}\PYG{p}{,}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{,}\PYG{n}{v}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{r}\PYG{o}{\PYGZgt{}}\PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{Update}\PYG{p}{(}\PYG{n}{rson}\PYG{p}{,}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{,}\PYG{n}{v}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{PushUp}\PYG{p}{(}\PYG{n}{i}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n}{ans}\PYG{p}{;}
+\PYG{k+kt}{void} \PYG{n+nf}{Query}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{t}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//叶子 最大连续区间为空 最大连续区间为整段 }
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{le}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{==}\PYG{n}{ri}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{||} \PYG{n}{mx}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{==}\PYG{l+m+mi}{0} \PYG{o}{||} \PYG{n}{mx}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{==}\PYG{n}{ri}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{le}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{mx}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+        \PYG{k}{return}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{mid}\PYG{o}{=}\PYG{p}{(}\PYG{n}{le}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{+}\PYG{n}{ri}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{c+c1}{//看左子树}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{t}\PYG{o}{\PYGZlt{}=}\PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{t}\PYG{o}{\PYGZgt{}=}\PYG{n}{ri}\PYG{p}{[}\PYG{n}{lson}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{rm}\PYG{p}{[}\PYG{n}{lson}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//t在左子树的右区间内}
+            \PYG{n}{Query}\PYG{p}{(}\PYG{n}{lson}\PYG{p}{,}\PYG{n}{t}\PYG{p}{);}
+            \PYG{n}{Query}\PYG{p}{(}\PYG{n}{rson}\PYG{p}{,}\PYG{n}{mid}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{c+c1}{//t不在左子树的右区间内}
+            \PYG{n}{Query}\PYG{p}{(}\PYG{n}{lson}\PYG{p}{,}\PYG{n}{t}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{t}\PYG{o}{\PYGZlt{}=}\PYG{n}{le}\PYG{p}{[}\PYG{n}{rson}\PYG{p}{]}\PYG{o}{+}\PYG{n}{lm}\PYG{p}{[}\PYG{n}{rson}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//t在右子树的左区间内}
+            \PYG{n}{Query}\PYG{p}{(}\PYG{n}{rson}\PYG{p}{,}\PYG{n}{t}\PYG{p}{);}
+            \PYG{n}{Query}\PYG{p}{(}\PYG{n}{lson}\PYG{p}{,}\PYG{n}{mid}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{c+c1}{//t不在左子树的右区间内}
+            \PYG{n}{Query}\PYG{p}{(}\PYG{n}{rson}\PYG{p}{,}\PYG{n}{t}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{while}\PYG{p}{(}\PYG{o}{\PYGZti{}}\PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{n}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{m}\PYG{p}{))\PYGZob{}}
+        \PYG{k+kt}{char} \PYG{n}{s}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{];}
+        \PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{;}
+        \PYG{n}{Build}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{n}\PYG{p}{);}
+        \PYG{n}{stack}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}} \PYG{n}{sta}\PYG{p}{;}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{m}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}s\PYGZdq{}}\PYG{p}{,}\PYG{n}{s}\PYG{p}{);}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{s}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{==}\PYG{l+s+sc}{\PYGZsq{}D\PYGZsq{}}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{x}\PYG{p}{);}
+                \PYG{n}{sta}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+                \PYG{n}{Update}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{x}\PYG{p}{,}\PYG{n}{x}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{);}
+            \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{s}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{==}\PYG{l+s+sc}{\PYGZsq{}Q\PYGZsq{}}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{x}\PYG{p}{);}
+                \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+                \PYG{n}{Query}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{x}\PYG{p}{);}
+                \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{ans}\PYG{p}{);}
+            \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{s}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{==}\PYG{l+s+sc}{\PYGZsq{}R\PYGZsq{}}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{x}\PYG{o}{=}\PYG{n}{sta}\PYG{p}{.}\PYG{n}{top}\PYG{p}{();}
+                \PYG{n}{sta}\PYG{p}{.}\PYG{n}{pop}\PYG{p}{();}
+                \PYG{n}{Update}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{x}\PYG{p}{,}\PYG{n}{x}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{);}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

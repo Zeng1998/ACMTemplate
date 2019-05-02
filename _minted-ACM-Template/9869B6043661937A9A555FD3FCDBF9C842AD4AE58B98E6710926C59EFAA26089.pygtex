@@ -1,0 +1,23 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{* 1. 注意舍入方式(0.5的舍入方向);防止输出\PYGZhy{}0.}
+\PYG{c+cm}{* 2. 几何题注意多测试不对称数据.}
+\PYG{c+cm}{* 3. 整数几何注意xmult和dmult是否会出界;}
+\PYG{c+cm}{*    符点几何注意eps的使用.}
+\PYG{c+cm}{* 4. 避免使用斜率;注意除数是否会为0.}
+\PYG{c+cm}{* 5. 公式一定要化简后再代入.}
+\PYG{c+cm}{* 6. 判断同一个2*PI域内两角度差应该是}
+\PYG{c+cm}{*    abs(a1\PYGZhy{}a2)\PYGZlt{}beta||abs(a1\PYGZhy{}a2)\PYGZgt{}pi+pi\PYGZhy{}beta;}
+\PYG{c+cm}{*    相等应该是}
+\PYG{c+cm}{*    abs(a1\PYGZhy{}a2)\PYGZlt{}eps||abs(a1\PYGZhy{}a2)\PYGZgt{}pi+pi\PYGZhy{}eps;}
+\PYG{c+cm}{* 7. 需要的话尽量使用atan2,注意:atan2(0,0)=0,}
+\PYG{c+cm}{*    atan2(1,0)=pi/2,atan2(\PYGZhy{}1,0)=\PYGZhy{}pi/2,atan2(0,1)=0,atan2(0,\PYGZhy{}1)=pi.}
+\PYG{c+cm}{* 8. cross product = |u|*|v|*sin(a)}
+\PYG{c+cm}{*    dot product = |u|*|v|*cos(a)}
+\PYG{c+cm}{* 9. (P1\PYGZhy{}P0)x(P2\PYGZhy{}P0)结果的意义:}
+\PYG{c+cm}{*    正: \PYGZlt{}P0,P1\PYGZgt{}在\PYGZlt{}P0,P2\PYGZgt{}顺时针(0,pi)内}
+\PYG{c+cm}{*    负: \PYGZlt{}P0,P1\PYGZgt{}在\PYGZlt{}P0,P2\PYGZgt{}逆时针(0,pi)内}
+\PYG{c+cm}{*    0 : \PYGZlt{}P0,P1\PYGZgt{},\PYGZlt{}P0,P2\PYGZgt{}共线,夹角为0或pi}
+\PYG{c+cm}{* 10. 误差限缺省使用1e\PYGZhy{}8!}
+\PYG{c+cm}{*/}
+\end{Verbatim}

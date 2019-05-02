@@ -1,0 +1,67 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{char*}
+\PYG{c+cm}{    任意进制转换:}
+\PYG{c+cm}{        //将10进制n转换为r进制并赋给s}
+\PYG{c+cm}{        itoa(int n,char* s,int r)   }
+\PYG{c+cm}{string:}
+\PYG{c+cm}{    迭代器:}
+\PYG{c+cm}{        //创建名为it的迭代器}
+\PYG{c+cm}{        string::iterator it         }
+\PYG{c+cm}{    反转:}
+\PYG{c+cm}{        //原地反转}
+\PYG{c+cm}{        reverse(s.begin(), s.end());  }
+\PYG{c+cm}{        //反转并赋给s1      }
+\PYG{c+cm}{        s1.assign(s.rbegin(), s.rend());    }
+\PYG{c+cm}{    大小写转换:}
+\PYG{c+cm}{        transform(s.begin(), s.end(), s.begin(), ::toupper);}
+\PYG{c+cm}{        transform(s.begin(), s.end(), s.begin(), ::tolower);}
+\PYG{c+cm}{    类型转换:}
+\PYG{c+cm}{        string \PYGZhy{}\PYGZgt{}int : }
+\PYG{c+cm}{            string s(\PYGZdq{}123\PYGZdq{});}
+\PYG{c+cm}{            int i = atoi(s.c\PYGZus{}str());}
+\PYG{c+cm}{        int \PYGZhy{}\PYGZgt{} string: }
+\PYG{c+cm}{            int a;}
+\PYG{c+cm}{            stringstream(s) \PYGZgt{}\PYGZgt{} a;}
+\PYG{c+cm}{    子串:}
+\PYG{c+cm}{        //返回pos开始的n个字符组成的字符串}
+\PYG{c+cm}{        string substr(int pos = 0,int n = npos)   }
+\PYG{c+cm}{    插入:}
+\PYG{c+cm}{        //在p0位置插入字符串s}
+\PYG{c+cm}{        s.insert(int p0,string s)    }
+\PYG{c+cm}{    更改:}
+\PYG{c+cm}{        s.assign(str);   }
+\PYG{c+cm}{        //如果str是”iamangel” 就是把”ama”赋给字符串}
+\PYG{c+cm}{        s.assign(str,1,3);   }
+\PYG{c+cm}{        //把字符串str从索引值2开始到结尾赋给s}
+\PYG{c+cm}{        s.assign(str,2,string::npos);  }
+\PYG{c+cm}{        s.assign(“gaint”);}
+\PYG{c+cm}{        //把’n’ ‘I’ ‘c’ ‘o’ ‘\PYGZbs{}0’赋给字符串}
+\PYG{c+cm}{        s.assign(“nico”,5);   }
+\PYG{c+cm}{        //把五个x赋给字符串}
+\PYG{c+cm}{        s.assign(5,’x’);   }
+\PYG{c+cm}{    删除:}
+\PYG{c+cm}{        //从索引13开始往后全删除}
+\PYG{c+cm}{        s.erase(13);  }
+\PYG{c+cm}{        //从索引7开始往后删5个}
+\PYG{c+cm}{        s.erase(7,5);  }
+\PYG{c+cm}{        //删除it指向的字符，返回删除后迭代器的位置  }
+\PYG{c+cm}{        iterator erase(iterator it);}
+\PYG{c+cm}{        //删除[first，last）之间的所有字符，返回删除后迭代器的位置}
+\PYG{c+cm}{        iterator erase(iterator first, iterator last);}
+\PYG{c+cm}{    查找:}
+\PYG{c+cm}{        //从pos开始查找字符c在当前字符串的位置}
+\PYG{c+cm}{        int find(char c, int pos = 0)}
+\PYG{c+cm}{        //从pos开始查找字符串s在当前串中的位置}
+\PYG{c+cm}{        int find(const char *s, int pos = 0)}
+\PYG{c+cm}{        //从pos开始查找字符串s中前n个字符在当前串中的位置}
+\PYG{c+cm}{        int find(const char *s, int pos, int n) }
+\PYG{c+cm}{        //从pos开始查找字符串s在当前串中的位置}
+\PYG{c+cm}{        int find(const string \PYGZam{}s, int pos = 0)   }
+\PYG{c+cm}{    删除所有特定字符:}
+\PYG{c+cm}{        str.erase(std::remove(str.begin(), str.end(), \PYGZsq{}a\PYGZsq{}), str.end());}
+\PYG{c+cm}{    删除所有重复字符:}
+\PYG{c+cm}{        //要求对象有序O(n+n)，如果先排序O(nlogn+n+n)    }
+\PYG{c+cm}{        str.erase(unique(str.begin(),str.end(),str.end())  }
+\PYG{c+cm}{ */} 
+\end{Verbatim}
