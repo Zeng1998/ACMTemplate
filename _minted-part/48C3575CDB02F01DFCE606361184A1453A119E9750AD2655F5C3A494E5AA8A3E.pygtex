@@ -1,0 +1,53 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{给定一颗树, 和每个节点的权值.有7个经典的关于dfs序的问题:}
+\PYG{c+cm}{1. 对某个节点X权值加上一个数W, 查询某个子树X里所有点权的和.}
+\PYG{c+cm}{由于X的子树在DFS序中是连续的一段, 只需要维护一个dfs序列,用树状数组实现:单点修改和区间查询.}
+
+\PYG{c+cm}{2. 对节点X到Y的最短路上所有点权都加一个数W, 查询某个点的权值.}
+\PYG{c+cm}{这个操作等价于}
+\PYG{c+cm}{a. 对X到根节点路径上所有点权加W}
+\PYG{c+cm}{b. 对Y到根节点路径上所有点权加W}
+\PYG{c+cm}{c. 对LCA(x, y)到根节点路径上所有点权值减W}
+\PYG{c+cm}{d. 对LCA(x,y)的父节点 fa(LCA(x, y))到根节点路径上所有权值减W}
+\PYG{c+cm}{当单点更新X时,X实现了对X到根的路径上所有点贡献了W.}
+\PYG{c+cm}{于是只需要更新四个点(单点更新),查询一个点的子树内所有点权的和(区间求和)即可.}
+\PYG{c+cm}{用树状数组维护差分前缀和}
+\PYG{c+cm}{add(st[u], w, cnt);}
+\PYG{c+cm}{add(st[v], w, cnt);}
+\PYG{c+cm}{add(lca, \PYGZhy{}w, cnt);}
+\PYG{c+cm}{add(parent[lca], \PYGZhy{}w, cnt);}
+
+\PYG{c+cm}{3. 对节点X到Y的最短路上所有点权都加一个数W, 查询某个点子树的权值之和.}
+\PYG{c+cm}{同问题2中的修改方法, 转化为修改某点到根节点的权值加/减W}
+\PYG{c+cm}{当修改某个节点A, 查询另一节点B时}
+\PYG{c+cm}{只有A在B的子树内, Y的值会增加}
+\PYG{c+cm}{W*(dep[A]\PYGZhy{}dep[B]+1)=\PYGZgt{}W*(dep[A]+1)\PYGZhy{}W*dep[B]}
+\PYG{c+cm}{那么我们处理两个数组就可以实现:}
+\PYG{c+cm}{处理出数组sum1,每次更新W*(dep[A]+1),和数组sum2,每次更新W.}
+\PYG{c+cm}{每次查询结果为sum1(R[B])–sum1(L[B]\PYGZhy{}1)\PYGZhy{}(sum2(R[B])–sum2(L[B]\PYGZhy{}1))*dep[B].}
+
+
+\PYG{c+cm}{4. 对某个点X权值加上一个数W, 查询X到Y路径上所有点权之和.}
+\PYG{c+cm}{求X到Y路径上所有的点权之和, 和前面X到Y路径上所有点权加一个数相似}
+\PYG{c+cm}{这个问题转化为}
+\PYG{c+cm}{X到根节点的和+Y到根节点的和\PYGZhy{}LCA(x, y)到根节点的和\PYGZhy{}fa(LCA(x,y))到根节点的和}
+\PYG{c+cm}{更新某个点x的权值时,只会对它的子树产生影响,对x的子树的每个点到根的距离都加了W.}
+\PYG{c+cm}{那么我们用差分前缀和,更新一个子树的权值.给L[x]加上W,给R[x]+1减去W}
+\PYG{c+cm}{那么sum(1\PYGZti{}L[k])就是k到根的路径点权和.}
+
+\PYG{c+cm}{5.对节点X的子树所有节点加上一个值W, 查询X到Y的路径上所有点的权值和}
+\PYG{c+cm}{同问题4把路径上求和转化为四个点到根节点的和}
+\PYG{c+cm}{X到根节点的和+Y到根节点的和\PYGZhy{}LCA(x,y)到根节点的和\PYGZhy{}parent(LCA(x,y))到根节点的}
+\PYG{c+cm}{修改一点A, 查询某点B到根节点时, 只有B在A的子树内, A对B才有贡献.}
+\PYG{c+cm}{贡献为W*(dep[B]\PYGZhy{}dep[A]+1)=\PYGZgt{}W*(1\PYGZhy{}dep[A])+W*dep[B]}
+\PYG{c+cm}{和第三题一样, 用两个sum1,sum2维护 W*(dep[A]+1),和W.}
+\PYG{c+cm}{最后答案就是sum2*dep[B]\PYGZhy{}sum1.}
+
+\PYG{c+cm}{6.对子树X里所有节点加上一个值W, 查询某个点的值.}
+\PYG{c+cm}{对DFS序来说, 子树内所有节点加W, 就是一段区间加W，即区间修改,单点查询.}
+
+\PYG{c+cm}{7.对子树X里所有节点加上一个值W, 查询某个子树的权值和.}
+\PYG{c+cm}{子树所有节点加W, 就是某段区间加W, 查询某个子树的权值和, 就是查询某段区间的和}
+\PYG{c+cm}{*/}
+\end{Verbatim}

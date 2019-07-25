@@ -1,4 +1,4 @@
-//"banana" 后缀为[banana anana nana ana na a $]
+//"banana" 后缀为[banana$ anana$ nana$ ana$ na$ a$ $]
 //sa[i]: 排名第i(从0开始)小的后缀的首字符下标 
 //比如[6 5 3 1 0 4 2]==>[$ a$ ana$ anana$ banana$ na$ nana$]
 //rk[i]: 下标i开始的后缀(不含$)的排名(按字典序从小到大，相当于sa的逆)  

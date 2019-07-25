@@ -3,11 +3,11 @@
  * dp[i][j]:从a[i]开始2^j个数的最小值
  */
 void RMQ_init(int n){
-    for(int i=0;i<n;i++){
+    for(int i=0;i<=n;i++){
         dp[i][0]=h[i];
     }
     for(int j=1;(1<<j)<=n;j++){
-	    for(int i=0;i+(1<<j)-1<n;i++){
+	    for(int i=0;i+(1<<(j-1)<n;i++){
 	        //两段重叠部分小区间
 	        dp[i][j]=min(dp[i][j-1],dp[i+(1<<(j-1))][j-1]);
 	    }
@@ -557,6 +557,28 @@ int solve14(){
         }else{
             r=mid-1;
         }
+    }
+    return ans;
+}
+//15.求两个字符串的公共子串，且只能在母串中出现一次，求满足的最短子串
+/*
+ * 两字符串拼接，按求最长公共子串的方法，不过要判断是否重复出现，重复出现的话，
+ * 其对应后缀一定是相邻的，所以要判断相邻的是否有可能重复出现，要枚举从h[i]到1
+ */
+int solve(int n){
+    int ans=0x3f3f3f3f;
+    for(int i=1;i<=n;i++){
+        if(h[i]==0 || sa[i]<len1 && sa[i-1]<len1 || sa[i]>=len1 && sa[i-1]>=len1){
+            continue;
+        }
+        for(int j=h[i];j>=1;j--){
+            if(j>h[i-1] && j>h[i+1]){
+                ans=min(ans,j);
+            }
+        }
+    }
+    if(ans==0x3f3f3f3f){
+        ans=-1;
     }
     return ans;
 }

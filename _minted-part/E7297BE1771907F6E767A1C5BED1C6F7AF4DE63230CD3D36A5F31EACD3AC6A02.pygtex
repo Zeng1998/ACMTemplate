@@ -1,0 +1,362 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{//莫队核心就是如何从[l,r]的答案推出[l\PYGZhy{}1,r],[l+1,r],[l,r\PYGZhy{}1],[l,r+1]的答案}
+\PYG{c+c1}{//复杂度O(n*sqrt(n)*区间移动操作)}
+\PYG{c+c1}{//分块}
+\PYG{n}{bel}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{p}{(}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{/}\PYG{n}{block}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{c+c1}{//询问的排序}
+\PYG{k}{struct} \PYG{n}{Q}\PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{id}\PYG{p}{,}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{,}\PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}\PYG{n}{que}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{bool} \PYG{n+nf}{cmp1}\PYG{p}{(}\PYG{n}{Q} \PYG{n}{a}\PYG{p}{,}\PYG{n}{Q} \PYG{n}{b}\PYG{p}{)\PYGZob{}} 
+    \PYG{k}{return} \PYG{n}{bel}\PYG{p}{[}\PYG{n}{a}\PYG{p}{.}\PYG{n}{l}\PYG{p}{]}\PYG{o}{==}\PYG{n}{bel}\PYG{p}{[}\PYG{n}{b}\PYG{p}{.}\PYG{n}{l}\PYG{p}{]}\PYG{o}{?}\PYG{n}{a}\PYG{p}{.}\PYG{n}{r}\PYG{o}{\PYGZlt{}}\PYG{n}{b}\PYG{p}{.}\PYG{n+nl}{r}\PYG{p}{:}\PYG{n}{a}\PYG{p}{.}\PYG{n}{l}\PYG{o}{\PYGZlt{}}\PYG{n}{b}\PYG{p}{.}\PYG{n}{l}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//奇偶排序优化}
+\PYG{k+kt}{bool} \PYG{n+nf}{cmp1}\PYG{p}{(}\PYG{n}{Q} \PYG{n}{a}\PYG{p}{,}\PYG{n}{Q} \PYG{n}{b}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{return} \PYG{p}{(}\PYG{n}{bel}\PYG{p}{[}\PYG{n}{a}\PYG{p}{.}\PYG{n}{l}\PYG{p}{])}\PYG{o}{\PYGZca{}}\PYG{p}{(}\PYG{n}{bel}\PYG{p}{[}\PYG{n}{b}\PYG{p}{.}\PYG{n}{l}\PYG{p}{])}\PYG{o}{?}\PYG{n}{a}\PYG{p}{.}\PYG{n}{l}\PYG{o}{\PYGZlt{}}\PYG{n}{b}\PYG{p}{.}\PYG{n+nl}{l}\PYG{p}{:(((}\PYG{n}{bel}\PYG{p}{[}\PYG{n}{a}\PYG{p}{.}\PYG{n}{l}\PYG{p}{])}\PYG{o}{\PYGZam{}}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{?}\PYG{n}{a}\PYG{p}{.}\PYG{n}{r}\PYG{o}{\PYGZlt{}}\PYG{n}{b}\PYG{p}{.}\PYG{n+nl}{r}\PYG{p}{:}\PYG{n}{a}\PYG{p}{.}\PYG{n}{r}\PYG{o}{\PYGZgt{}}\PYG{n}{b}\PYG{p}{.}\PYG{n}{r}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//询问区间移动}
+\PYG{k+kt}{int} \PYG{n}{l}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{r}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{q}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZlt{}}\PYG{n}{que}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{l}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{del}\PYG{p}{(}\PYG{n}{l}\PYG{o}{++}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{r}\PYG{o}{\PYGZgt{}}\PYG{n}{que}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{del}\PYG{p}{(}\PYG{n}{r}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZgt{}}\PYG{n}{que}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{l}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{add}\PYG{p}{(}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{n}{l}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{r}\PYG{o}{\PYGZlt{}}\PYG{n}{que}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{add}\PYG{p}{(}\PYG{o}{++}\PYG{n}{r}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{que}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{ans}\PYG{o}{=}\PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//add和del函数}
+\PYG{c+c1}{//1. 区间不同数个数}
+\PYG{k+kt}{void} \PYG{n}{add}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{o}{++}\PYG{n}{cnt}\PYG{p}{[}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]}\PYG{o}{==}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{ans}\PYG{o}{++}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n}{del}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{n}{cnt}\PYG{p}{[}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{ans}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//2. 异或值为K的子区间个数}
+\PYG{k+kt}{void} \PYG{n}{add}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{ans}\PYG{o}{+=}\PYG{l+m+mi}{1ll}\PYG{o}{*}\PYG{n}{cnt}\PYG{p}{[}\PYG{n}{pre}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZca{}}\PYG{n}{k}\PYG{p}{];}
+    \PYG{n}{cnt}\PYG{p}{[}\PYG{n}{pre}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]}\PYG{o}{++}\PYG{p}{;}
+
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n}{del}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{cnt}\PYG{p}{[}\PYG{n}{pre}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+    \PYG{n}{ans}\PYG{o}{\PYGZhy{}=}\PYG{l+m+mi}{1ll}\PYG{o}{*}\PYG{n}{cnt}\PYG{p}{[}\PYG{n}{pre}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZca{}}\PYG{n}{k}\PYG{p}{];}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//3. 维护区间公式}
+\PYG{c+c1}{//区间内选的两个数相同的概率，需要维护每个数出现次数平方和}
+\PYG{k+kt}{void} \PYG{n}{add}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{zi}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+    \PYG{n}{zi}\PYG{o}{+=}\PYG{p}{(}\PYG{l+m+mi}{2ll}\PYG{o}{*}\PYG{n}{cnt}\PYG{p}{[}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{);}
+    \PYG{n}{cnt}\PYG{p}{[}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]}\PYG{o}{++}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n}{del}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{zi}\PYG{o}{++}\PYG{p}{;}
+    \PYG{n}{zi}\PYG{o}{\PYGZhy{}=}\PYG{p}{(}\PYG{l+m+mi}{2ll}\PYG{o}{*}\PYG{n}{cnt}\PYG{p}{[}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+    \PYG{n}{cnt}\PYG{p}{[}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//4. 询问区间存在性答案}
+\PYG{c+c1}{//是否存在a+b=k b\PYGZhy{}a=k a*b=k}
+\PYG{c+c1}{//两个bitset一个维护x一个维护N\PYGZhy{}x的存在性}
+\PYG{k+kt}{void} \PYG{n}{add}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{o}{++}\PYG{n}{cnt}\PYG{p}{[}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]}\PYG{o}{==}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{forw}\PYG{p}{[}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{n}{rev}\PYG{p}{[}\PYG{n}{N}\PYG{o}{\PYGZhy{}}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n}{del}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{n}{cnt}\PYG{p}{[}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{forw}\PYG{p}{[}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{n}{rev}\PYG{p}{[}\PYG{n}{N}\PYG{o}{\PYGZhy{}}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//统计答案}
+\PYG{k+kt}{int} \PYG{n}{x}\PYG{o}{=}\PYG{n}{que}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{x}\PYG{p}{;}
+\PYG{k}{if}\PYG{p}{(}\PYG{n}{que}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{opt}\PYG{o}{==}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//有任意a和a+x同时存在}
+    \PYG{k}{if}\PYG{p}{((}\PYG{n}{forw} \PYG{o}{\PYGZam{}} \PYG{p}{(}\PYG{n}{forw} \PYG{o}{\PYGZlt{}\PYGZlt{}} \PYG{n}{x}\PYG{p}{)).}\PYG{n}{any}\PYG{p}{())\PYGZob{}}
+        \PYG{n}{que}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{que}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{opt}\PYG{o}{==}\PYG{l+m+mi}{2}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//求a+b=x即N\PYGZhy{}b\PYGZhy{}a=N\PYGZhy{}x}
+    \PYG{c+c1}{//即有任意a和N\PYGZhy{}b\PYGZhy{}(N\PYGZhy{}x)同时存在，即forw \PYGZam{} rev \PYGZgt{}\PYGZgt{} N\PYGZhy{}x}
+    \PYG{k}{if}\PYG{p}{((}\PYG{n}{forw} \PYG{o}{\PYGZam{}}\PYG{p}{(}\PYG{n}{rev} \PYG{o}{\PYGZgt{}\PYGZgt{}} \PYG{n}{N}\PYG{o}{\PYGZhy{}}\PYG{n}{x}\PYG{p}{)).}\PYG{n}{any}\PYG{p}{())\PYGZob{}}
+        \PYG{n}{que}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+    \PYG{c+c1}{//暴力枚举因子}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}=}\PYG{p}{(}\PYG{k+kt}{int}\PYG{p}{)}\PYG{n}{sqrt}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{x}\PYG{o}{\PYGZpc{}}\PYG{n}{j}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{forw}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{forw}\PYG{p}{[}\PYG{n}{x}\PYG{o}{/}\PYG{n}{j}\PYG{p}{])\PYGZob{}}
+                \PYG{n}{que}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+                \PYG{k}{break}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//5. 询问区间区间逆序数(莫队+树状数组)}
+\PYG{k+kt}{void} \PYG{n}{add}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n}{query}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{)\PYGZob{}\PYGZcb{}}
+\PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{m}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+	\PYG{k}{while}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZlt{}}\PYG{n}{que}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{l}\PYG{p}{)\PYGZob{}}
+		\PYG{n}{add}\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{n}{l}\PYG{p}{],}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{n}{ans}\PYG{o}{\PYGZhy{}=}\PYG{n}{query}\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{n}{l}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{n}{l}\PYG{o}{++}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+	\PYG{k}{while}\PYG{p}{(}\PYG{n}{r}\PYG{o}{\PYGZgt{}}\PYG{n}{que}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+		\PYG{n}{add}\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{n}{r}\PYG{p}{],}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{n}{ans}\PYG{o}{\PYGZhy{}=}\PYG{n}{r}\PYG{o}{\PYGZhy{}}\PYG{n}{l}\PYG{o}{\PYGZhy{}}\PYG{n}{query}\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{n}{r}\PYG{p}{]);}
+        \PYG{n}{r}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+	\PYG{k}{while}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZgt{}}\PYG{n}{que}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{l}\PYG{p}{)\PYGZob{}}
+		\PYG{n}{l}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+        \PYG{n}{add}\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{n}{l}\PYG{p}{],}\PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{query}\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{n}{l}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+	\PYG{k}{while}\PYG{p}{(}\PYG{n}{r}\PYG{o}{\PYGZlt{}}\PYG{n}{que}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+		\PYG{n}{r}\PYG{o}{++}\PYG{p}{;}
+        \PYG{n}{add}\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{n}{r}\PYG{p}{],}\PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{n}{now}\PYG{o}{+=}\PYG{n}{r}\PYG{o}{\PYGZhy{}}\PYG{n}{l}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{o}{\PYGZhy{}}\PYG{n}{query}\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{n}{r}\PYG{p}{]);}
+    \PYG{p}{\PYGZcb{}}
+	\PYG{n}{que}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{ans}\PYG{o}{=}\PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//带修莫队，多了时序的表示}
+\PYG{k}{struct} \PYG{n}{Q}\PYG{p}{\PYGZob{}}
+    \PYG{c+c1}{//tim表示发生在第几次修改之后的询问}
+    \PYG{k+kt}{int} \PYG{n}{id}\PYG{p}{,}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{,}\PYG{n}{tim}\PYG{p}{,}\PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}\PYG{n}{que}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{bool} \PYG{n+nf}{cmp1}\PYG{p}{(}\PYG{n}{Q} \PYG{n}{a}\PYG{p}{,}\PYG{n}{Q} \PYG{n}{b}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{bel}\PYG{p}{[}\PYG{n}{a}\PYG{p}{.}\PYG{n}{l}\PYG{p}{]}\PYG{o}{==}\PYG{n}{bel}\PYG{p}{[}\PYG{n}{b}\PYG{p}{.}\PYG{n}{l}\PYG{p}{]}\PYG{o}{?}\PYG{p}{(}\PYG{n}{bel}\PYG{p}{[}\PYG{n}{a}\PYG{p}{.}\PYG{n}{r}\PYG{p}{]}\PYG{o}{==}\PYG{n}{bel}\PYG{p}{[}\PYG{n}{b}\PYG{p}{.}\PYG{n}{r}\PYG{p}{]}\PYG{o}{?}\PYG{n}{a}\PYG{p}{.}\PYG{n}{tim}\PYG{o}{\PYGZlt{}}\PYG{n}{b}\PYG{p}{.}\PYG{n+nl}{tim}\PYG{p}{:}\PYG{n}{a}\PYG{p}{.}\PYG{n}{r}\PYG{o}{\PYGZlt{}}\PYG{n}{b}\PYG{p}{.}\PYG{n}{r}\PYG{p}{)}\PYG{o}{:}\PYG{n}{a}\PYG{p}{.}\PYG{n}{l}\PYG{o}{\PYGZlt{}}\PYG{n}{b}\PYG{p}{.}\PYG{n}{l}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//修改，当前时刻将a[x]修改为d}
+\PYG{k+kt}{void} \PYG{n+nf}{going}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{d}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//修改的位置影响当前询问区间}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{x}\PYG{o}{\PYGZgt{}=}\PYG{n}{l} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{x}\PYG{o}{\PYGZlt{}=}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{del}\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]);}
+        \PYG{n}{add}\PYG{p}{(}\PYG{n}{d}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{a}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{=}\PYG{n}{d}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//先维护时间顺序}
+\PYG{k+kt}{int} \PYG{n}{T}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{qcnt}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//维护时间}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{T}\PYG{o}{\PYGZlt{}}\PYG{n}{que}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{tim}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{going}\PYG{p}{(}\PYG{n}{c}\PYG{p}{[}\PYG{n}{T}\PYG{p}{].}\PYG{n}{pos}\PYG{p}{,}\PYG{n}{c}\PYG{p}{[}\PYG{n}{T}\PYG{p}{].}\PYG{n}{New}\PYG{p}{);}
+        \PYG{n}{T}\PYG{o}{++}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{T}\PYG{o}{\PYGZgt{}}\PYG{n}{que}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{tim}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//T当前的修改还未执行(初始化T=0，但T为0时的修改并未执行，所以无需抵消T的修改)}
+        \PYG{n}{T}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+        \PYG{n}{going}\PYG{p}{(}\PYG{n}{c}\PYG{p}{[}\PYG{n}{T}\PYG{p}{].}\PYG{n}{pos}\PYG{p}{,}\PYG{n}{c}\PYG{p}{[}\PYG{n}{T}\PYG{p}{].}\PYG{n}{Old}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//...}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//树上带修莫队}
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 给一棵树，树上每个节点有一个糖果，一共有m种糖果美味度分别为vi，每个游客第i次吃同种糖果的新奇度wi}
+\PYG{c+cm}{ * 多组询问: l到r路径上的sum(vi*wi) (注意wi是会随着同种糖果的多次访问而变化)}
+\PYG{c+cm}{ */} 
+\PYG{c+cp}{\PYGZsh{}include}\PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{k}{typedef} \PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{n}{ll}\PYG{p}{;}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{N}\PYG{o}{=}\PYG{l+m+mf}{1e5}\PYG{o}{+}\PYG{l+m+mi}{50}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{,}\PYG{n}{m}\PYG{p}{,}\PYG{n}{q}\PYG{p}{,}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{,}\PYG{n}{t}\PYG{p}{,}\PYG{n}{cnt1}\PYG{p}{,}\PYG{n}{cnt2}\PYG{p}{,}\PYG{n}{tot}\PYG{p}{,}\PYG{n}{clk}\PYG{p}{;}
+\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}} \PYG{n}{g}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{be}\PYG{p}{[}\PYG{n}{N}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{l+m+mi}{1}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{pw}\PYG{p}{[}\PYG{l+m+mi}{25}\PYG{p}{];}
+\PYG{c+c1}{//用于倍增求lca f[u][i]表示从u往上跳2\PYGZca{}i格可以到达的点}
+\PYG{k+kt}{int} \PYG{n}{fa}\PYG{p}{[}\PYG{n}{N}\PYG{p}{][}\PYG{l+m+mi}{17}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{c}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{d}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{v}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{w}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{now}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{c+c1}{//表示第几次访问这个糖果，从而间接访问了wi}
+\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{c+c1}{//标记是否访问，每次访问就\PYGZca{}1，这样子树的节点一进一出最后就不会影响结果的贡献}
+\PYG{c+c1}{//(因为l和r的路径是不含有l或r的子树的，但是dfs序有)}
+\PYG{k+kt}{bool} \PYG{n}{vis}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k}{struct} \PYG{n}{Q}\PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{id}\PYG{p}{,}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{,}\PYG{n}{tim}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}\PYG{n}{a}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k}{struct} \PYG{n}{Change}\PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{pos}\PYG{p}{,}\PYG{n}{New}\PYG{p}{,}\PYG{n}{Old}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{n}{ll} \PYG{n}{ans}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{sum}\PYG{p}{;}
+\PYG{c+c1}{//dfs序}
+\PYG{k+kt}{int} \PYG{n}{id}\PYG{p}{[}\PYG{n}{N}\PYG{o}{\PYGZlt{}\PYGZlt{}}\PYG{l+m+mi}{1}\PYG{p}{],}\PYG{n}{in}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{out}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{void} \PYG{n+nf}{dfs}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//双向映射}
+    \PYG{n}{in}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=++}\PYG{n}{clk}\PYG{p}{;}
+    \PYG{n}{id}\PYG{p}{[}\PYG{n}{clk}\PYG{p}{]}\PYG{o}{=}\PYG{n}{u}\PYG{p}{;}
+    \PYG{c+c1}{//倍增}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{pw}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZlt{}=}\PYG{n}{d}\PYG{p}{[}\PYG{n}{u}\PYG{p}{];}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{fa}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]][}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{g}\PYG{p}{[}\PYG{n}{u}\PYG{p}{].}\PYG{n}{size}\PYG{p}{();}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{v}\PYG{o}{=}\PYG{n}{g}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{i}\PYG{p}{];}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{v}\PYG{o}{!=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{])\PYGZob{}}
+            \PYG{c+c1}{//fa[v][0]即v往上跳1即v的父节点}
+            \PYG{n}{fa}\PYG{p}{[}\PYG{n}{v}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{n}{u}\PYG{p}{;}
+            \PYG{c+c1}{//深度}
+            \PYG{n}{d}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{=}\PYG{n}{d}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+            \PYG{n}{dfs}\PYG{p}{(}\PYG{n}{v}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{out}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=++}\PYG{n}{clk}\PYG{p}{;}
+    \PYG{n}{id}\PYG{p}{[}\PYG{n}{clk}\PYG{p}{]}\PYG{o}{=}\PYG{n}{u}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{lca}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{y}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{d}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{d}\PYG{p}{[}\PYG{n}{y}\PYG{p}{])\PYGZob{}}
+        \PYG{n}{swap}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{tmp}\PYG{o}{=}\PYG{n}{d}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{d}\PYG{p}{[}\PYG{n}{y}\PYG{p}{];}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{pw}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZlt{}=}\PYG{n}{tmp}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//往上跳}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{tmp}\PYG{o}{\PYGZam{}}\PYG{n}{pw}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])\PYGZob{}}
+            \PYG{n}{x}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{x}\PYG{p}{][}\PYG{n}{i}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//跳到刚好，即y=lca(x,y)}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{x}\PYG{o}{==}\PYG{n}{y}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{x}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{16}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZgt{}=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//x和y一起跳}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{x}\PYG{p}{][}\PYG{n}{i}\PYG{p}{]}\PYG{o}{!=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{y}\PYG{p}{][}\PYG{n}{i}\PYG{p}{])\PYGZob{}}
+            \PYG{n}{x}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{x}\PYG{p}{][}\PYG{n}{i}\PYG{p}{];}
+            \PYG{n}{y}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{y}\PYG{p}{][}\PYG{n}{i}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{fa}\PYG{p}{[}\PYG{n}{x}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{];}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{bool} \PYG{n+nf}{cmp}\PYG{p}{(}\PYG{n}{Q} \PYG{n}{x}\PYG{p}{,}\PYG{n}{Q} \PYG{n}{y}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{be}\PYG{p}{[}\PYG{n}{x}\PYG{p}{.}\PYG{n}{l}\PYG{p}{]}\PYG{o}{==}\PYG{n}{be}\PYG{p}{[}\PYG{n}{y}\PYG{p}{.}\PYG{n}{l}\PYG{p}{]}\PYG{o}{?}\PYG{p}{(}\PYG{n}{be}\PYG{p}{[}\PYG{n}{x}\PYG{p}{.}\PYG{n}{r}\PYG{p}{]}\PYG{o}{==}\PYG{n}{be}\PYG{p}{[}\PYG{n}{y}\PYG{p}{.}\PYG{n}{r}\PYG{p}{]}\PYG{o}{?}\PYG{n}{x}\PYG{p}{.}\PYG{n}{tim}\PYG{o}{\PYGZlt{}}\PYG{n}{y}\PYG{p}{.}\PYG{n+nl}{tim}\PYG{p}{:}\PYG{n}{x}\PYG{p}{.}\PYG{n}{r}\PYG{o}{\PYGZlt{}}\PYG{n}{y}\PYG{p}{.}\PYG{n}{r}\PYG{p}{)}\PYG{o}{:}\PYG{n}{x}\PYG{p}{.}\PYG{n}{l}\PYG{o}{\PYGZlt{}}\PYG{n}{y}\PYG{p}{.}\PYG{n}{l}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//修改节点，即修改答案贡献}
+\PYG{k+kt}{void} \PYG{n+nf}{revise}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{vis}\PYG{p}{[}\PYG{n}{x}\PYG{p}{])\PYGZob{}}
+        \PYG{c+c1}{//之前访问过，那再修改的话，就要把前面计算的贡献减去}
+        \PYG{n}{sum}\PYG{o}{\PYGZhy{}=}\PYG{l+m+mi}{1ll}\PYG{o}{*}\PYG{n}{v}\PYG{p}{[}\PYG{n}{c}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]]}\PYG{o}{*}\PYG{n}{w}\PYG{p}{[}\PYG{n}{u}\PYG{p}{[}\PYG{n}{c}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]]}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+        \PYG{c+c1}{//反之加上贡献}
+        \PYG{n}{sum}\PYG{o}{+=}\PYG{l+m+mi}{1ll}\PYG{o}{*}\PYG{n}{v}\PYG{p}{[}\PYG{n}{c}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]]}\PYG{o}{*}\PYG{n}{w}\PYG{p}{[}\PYG{o}{++}\PYG{n}{u}\PYG{p}{[}\PYG{n}{c}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]]];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//标记访问一次，状态反转}
+    \PYG{n}{vis}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{\PYGZca{}=}\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//在这个时间点，把节点x修改为颜色y}
+\PYG{k+kt}{void} \PYG{n+nf}{going}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{y}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//这个点访问过，这个时刻的修改会影响到当前询问区间}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{vis}\PYG{p}{[}\PYG{n}{x}\PYG{p}{])\PYGZob{}}
+        \PYG{c+c1}{//之前访问过的，必须修改贡献}
+        \PYG{n}{revise}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+        \PYG{c+c1}{//先减贡献，修改节点值，再加贡献}
+        \PYG{n}{c}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{=}\PYG{n}{y}\PYG{p}{;}
+        \PYG{n}{revise}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+        \PYG{c+c1}{//之前没访问过的直接修改}
+        \PYG{n}{c}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{=}\PYG{n}{y}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{()\PYGZob{}}
+    \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{n}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{m}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{q}\PYG{p}{);}
+    \PYG{n}{pw}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{l+m+mi}{17}\PYG{p}{;}\PYG{o}{++}\PYG{n}{i}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{pw}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{pw}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{m}\PYG{p}{;}\PYG{o}{++}\PYG{n}{i}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{v}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{o}{++}\PYG{n}{i}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{w}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//建树}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{o}{++}\PYG{n}{i}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{;}\PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{l}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{r}\PYG{p}{);}
+        \PYG{n}{g}\PYG{p}{[}\PYG{n}{l}\PYG{p}{].}\PYG{n}{push\PYGZus{}back}\PYG{p}{(}\PYG{n}{r}\PYG{p}{);}
+        \PYG{n}{g}\PYG{p}{[}\PYG{n}{r}\PYG{p}{].}\PYG{n}{push\PYGZus{}back}\PYG{p}{(}\PYG{n}{l}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{o}{++}\PYG{n}{i}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{c}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+        \PYG{c+c1}{//now记录当前状态用于修改和恢复}
+        \PYG{n}{now}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{c}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//分块单位}
+    \PYG{k+kt}{int} \PYG{n}{unit}\PYG{o}{=}\PYG{n}{pow}\PYG{p}{(}\PYG{n}{n}\PYG{p}{,}\PYG{l+m+mf}{2.0}\PYG{o}{/}\PYG{l+m+mi}{3}\PYG{p}{);}
+    \PYG{c+c1}{//构造dfs序，将树结构转化为序列}
+    \PYG{n}{dfs}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{);}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{clk}\PYG{p}{;}\PYG{o}{++}\PYG{n}{i}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//分块}
+        \PYG{n}{be}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{i}\PYG{o}{/}\PYG{n}{unit}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{q}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{t}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{l}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{r}\PYG{p}{);}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{t}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//询问}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{in}\PYG{p}{[}\PYG{n}{l}\PYG{p}{]}\PYG{o}{\PYGZgt{}}\PYG{n}{in}\PYG{p}{[}\PYG{n}{r}\PYG{p}{])\PYGZob{}}
+                \PYG{n}{swap}\PYG{p}{(}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{);}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{c+c1}{//如果l就是lca(l,r)，起点就是in[l]，否则起点就是out[l]}
+            \PYG{n}{a}\PYG{p}{[}\PYG{o}{++}\PYG{n}{cnt1}\PYG{p}{]}\PYG{o}{=}\PYG{n}{Q}\PYG{p}{\PYGZob{}}\PYG{n}{cnt1}\PYG{p}{,(}\PYG{n}{lca}\PYG{p}{(}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{)}\PYG{o}{==}\PYG{n}{l}\PYG{p}{)}\PYG{o}{?}\PYG{n}{in}\PYG{p}{[}\PYG{n}{l}\PYG{p}{]}\PYG{o}{:}\PYG{n}{out}\PYG{p}{[}\PYG{n}{l}\PYG{p}{],}\PYG{n}{in}\PYG{p}{[}\PYG{n}{r}\PYG{p}{],}\PYG{n}{cnt2}\PYG{p}{\PYGZcb{};}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{c+c1}{//修改，把l的值修改成r，原来的值是now[l]}
+            \PYG{n}{ch}\PYG{p}{[}\PYG{o}{++}\PYG{n}{cnt2}\PYG{p}{]}\PYG{o}{=}\PYG{n}{Change}\PYG{p}{\PYGZob{}}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{,}\PYG{n}{now}\PYG{p}{[}\PYG{n}{l}\PYG{p}{]\PYGZcb{};}
+            \PYG{n}{now}\PYG{p}{[}\PYG{n}{l}\PYG{p}{]}\PYG{o}{=}\PYG{n}{r}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{sort}\PYG{p}{(}\PYG{n}{a}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{a}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{o}{+}\PYG{n}{cnt1}\PYG{p}{,}\PYG{n}{cmp}\PYG{p}{);}
+    \PYG{c+c1}{//初始化空区间 l=1 r=0}
+    \PYG{n}{l}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{r}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{t}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{cnt1}\PYG{p}{;}\PYG{o}{++}\PYG{n}{i}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//同普通带修莫队，先处理时序}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{t}\PYG{o}{\PYGZlt{}}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{tim}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{t}\PYG{o}{++}\PYG{p}{;}
+            \PYG{n}{going}\PYG{p}{(}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{t}\PYG{p}{].}\PYG{n}{pos}\PYG{p}{,}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{t}\PYG{p}{].}\PYG{n}{New}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{t}\PYG{o}{\PYGZgt{}}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{tim}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{going}\PYG{p}{(}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{t}\PYG{p}{].}\PYG{n}{pos}\PYG{p}{,}\PYG{n}{ch}\PYG{p}{[}\PYG{n}{t}\PYG{p}{].}\PYG{n}{Old}\PYG{p}{);}
+            \PYG{n}{t}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//再处理空间，注意要用id映射，同普通带修莫队}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZlt{}}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{l}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{revise}\PYG{p}{(}\PYG{n}{id}\PYG{p}{[}\PYG{n}{l}\PYG{p}{]);}
+            \PYG{n}{l}\PYG{o}{++}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{r}\PYG{o}{\PYGZgt{}}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{revise}\PYG{p}{(}\PYG{n}{id}\PYG{p}{[}\PYG{n}{r}\PYG{p}{]);}
+            \PYG{n}{r}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZgt{}}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{l}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{l}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+            \PYG{n}{revise}\PYG{p}{(}\PYG{n}{id}\PYG{p}{[}\PYG{n}{l}\PYG{p}{]);}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{r}\PYG{o}{\PYGZlt{}}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{r}\PYG{o}{++}\PYG{p}{;}
+            \PYG{n}{revise}\PYG{p}{(}\PYG{n}{id}\PYG{p}{[}\PYG{n}{r}\PYG{p}{]);}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//树上莫队特殊处理}
+        \PYG{k+kt}{int} \PYG{n}{x}\PYG{o}{=}\PYG{n}{id}\PYG{p}{[}\PYG{n}{l}\PYG{p}{],}\PYG{n}{y}\PYG{o}{=}\PYG{n}{id}\PYG{p}{[}\PYG{n}{r}\PYG{p}{],}\PYG{n}{tmp}\PYG{o}{=}\PYG{n}{lca}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{);}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{x}\PYG{o}{!=}\PYG{n}{tmp}\PYG{o}{\PYGZam{}\PYGZam{}}\PYG{n}{y}\PYG{o}{!=}\PYG{n}{tmp}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//xy分别在lca两边，则lca这个点只算了一次}
+            \PYG{c+c1}{//(可以写个dfs看下，lca的dfs出序刚好是区间右端点+1)，需要再更新一次贡献}
+            \PYG{n}{revise}\PYG{p}{(}\PYG{n}{tmp}\PYG{p}{);}
+            \PYG{n}{revise}\PYG{p}{(}\PYG{n}{tmp}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//x或y是lca(x,y)，直接记录答案}
+        \PYG{n}{ans}\PYG{p}{[}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{id}\PYG{p}{]}\PYG{o}{=}\PYG{n}{sum}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{cnt1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}lld}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{ans}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

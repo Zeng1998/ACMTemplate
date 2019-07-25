@@ -1,0 +1,250 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{N}\PYG{o}{=}\PYG{l+m+mf}{1e6}\PYG{o}{+}\PYG{l+m+mi}{50}\PYG{p}{;}
+\PYG{c+c1}{//树结构}
+\PYG{k+kt}{int} \PYG{n}{tr}\PYG{p}{[}\PYG{n}{N}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{],}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{c+c1}{//节点值}
+\PYG{k+kt}{int} \PYG{n}{val}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{c+c1}{//节点值重复次数}
+\PYG{k+kt}{int} \PYG{n}{cnt}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{c+c1}{//子树大小(包括重复元素,非节点数)}
+\PYG{k+kt}{int} \PYG{n}{siz}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{c+c1}{//根节点}
+\PYG{k+kt}{int} \PYG{n}{rt}\PYG{p}{;}
+\PYG{c+c1}{//节点个数}
+\PYG{k+kt}{int} \PYG{n}{tot}\PYG{p}{;}
+\PYG{c+c1}{//更新信息}
+\PYG{k+kt}{void} \PYG{n+nf}{update}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{siz}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{=}\PYG{n}{siz}\PYG{p}{[}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{x}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]]}\PYG{o}{+}\PYG{n}{siz}\PYG{p}{[}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{x}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]]}\PYG{o}{+}\PYG{n}{cnt}\PYG{p}{[}\PYG{n}{x}\PYG{p}{];}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//查找x值位置}
+\PYG{k+kt}{int} \PYG{n+nf}{find}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{now}\PYG{o}{=}\PYG{n}{rt}\PYG{p}{;}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{x}\PYG{o}{!=}\PYG{n}{val}\PYG{p}{[}\PYG{n}{now}\PYG{p}{])\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{x}\PYG{o}{\PYGZlt{}}\PYG{n}{val}\PYG{p}{[}\PYG{n}{now}\PYG{p}{])\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{now}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+                \PYG{k}{break}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{now}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{now}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{now}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+                \PYG{k}{break}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{now}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{now}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{now}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//同时更新父节点和子节点连接}
+\PYG{k+kt}{void} \PYG{n+nf}{connect}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{f}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{son}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{fa}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{=}\PYG{n}{f}\PYG{p}{;}
+    \PYG{n}{tr}\PYG{p}{[}\PYG{n}{f}\PYG{p}{][}\PYG{n}{son}\PYG{p}{]}\PYG{o}{=}\PYG{n}{x}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//创建节点}
+\PYG{k+kt}{void} \PYG{n+nf}{newnode}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{v}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{f}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{tot}\PYG{o}{++}\PYG{p}{;}
+    \PYG{n}{val}\PYG{p}{[}\PYG{n}{tot}\PYG{p}{]}\PYG{o}{=}\PYG{n}{v}\PYG{p}{;}
+    \PYG{n}{siz}\PYG{p}{[}\PYG{n}{tot}\PYG{p}{]}\PYG{o}{=}\PYG{n}{cnt}\PYG{p}{[}\PYG{n}{tot}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{n}{tr}\PYG{p}{[}\PYG{n}{tot}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{tot}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{n}{connect}\PYG{p}{(}\PYG{n}{tot}\PYG{p}{,}\PYG{n}{f}\PYG{p}{,}\PYG{n}{v}\PYG{o}{\PYGZgt{}}\PYG{n}{val}\PYG{p}{[}\PYG{n}{f}\PYG{p}{]);}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//获取是父节点的左儿子还是右儿子}
+\PYG{k+kt}{int} \PYG{n+nf}{get}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{tr}\PYG{p}{[}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]][}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{==}\PYG{n}{x}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//单旋转,x上旋}
+\PYG{k+kt}{void} \PYG{n+nf}{rotate}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{y}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{x}\PYG{p}{];}
+    \PYG{k+kt}{int} \PYG{n}{yy}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{y}\PYG{p}{];}
+    \PYG{k+kt}{int} \PYG{n}{xs}\PYG{o}{=}\PYG{n}{get}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+    \PYG{k+kt}{int} \PYG{n}{ys}\PYG{o}{=}\PYG{n}{get}\PYG{p}{(}\PYG{n}{y}\PYG{p}{);}
+    \PYG{k+kt}{int} \PYG{n}{b}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{x}\PYG{p}{][}\PYG{n}{xs}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{];}
+    \PYG{c+c1}{//右旋,x的右儿子变成y的左二子;左旋,x的左儿子变成y的右儿子}
+    \PYG{n}{connect}\PYG{p}{(}\PYG{n}{b}\PYG{p}{,}\PYG{n}{y}\PYG{p}{,}\PYG{n}{xs}\PYG{p}{);}
+    \PYG{c+c1}{//右旋,父节点y变成右儿子,左旋,父节点y变成左二子}
+    \PYG{n}{connect}\PYG{p}{(}\PYG{n}{y}\PYG{p}{,}\PYG{n}{x}\PYG{p}{,(}\PYG{n}{xs}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{));}
+    \PYG{c+c1}{//x顶替y的位置,连接yy}
+    \PYG{n}{connect}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{yy}\PYG{p}{,}\PYG{n}{ys}\PYG{p}{);}
+    \PYG{c+c1}{//x和y发生变动,更新信息}
+    \PYG{c+c1}{//注意这里要先更新y的信息,再更新x的信息!!}
+    \PYG{n}{update}\PYG{p}{(}\PYG{n}{y}\PYG{p}{);}
+    \PYG{n}{update}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//伸展,通过多次旋转将x旋转到to的儿子}
+\PYG{k+kt}{void} \PYG{n+nf}{splay}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{to}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{!=}\PYG{n}{to}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{f}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{x}\PYG{p}{];}
+        \PYG{k+kt}{int} \PYG{n}{ff}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{f}\PYG{p}{];}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{ff}\PYG{o}{!=}\PYG{n}{to}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//分两种情况,x,y,yy成一条链的,直接单旋y}
+            \PYG{c+c1}{//yy左儿子是y,y右儿子是x,或者yy右儿子是y,y左儿子是z,单旋x}
+            \PYG{n}{rotate}\PYG{p}{(}\PYG{n}{get}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}\PYG{o}{==}\PYG{n}{get}\PYG{p}{(}\PYG{n}{f}\PYG{p}{)}\PYG{o}{?}\PYG{n+nl}{f}\PYG{p}{:}\PYG{n}{x}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{rotate}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//旋转到根则更新根}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{to}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{rt}\PYG{o}{=}\PYG{n}{x}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//插入元素}
+\PYG{k+kt}{void} \PYG{n+nf}{insert}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//特判插入第一个节点}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{rt}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{newnode}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{);}
+        \PYG{n}{rt}\PYG{o}{=}\PYG{n}{tot}\PYG{p}{;}
+        \PYG{k}{return}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//找到x位置}
+    \PYG{k+kt}{int} \PYG{n}{ip}\PYG{o}{=}\PYG{n}{find}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{val}\PYG{p}{[}\PYG{n}{ip}\PYG{p}{]}\PYG{o}{==}\PYG{n}{x}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//找到,重复次数直接+1}
+        \PYG{n}{cnt}\PYG{p}{[}\PYG{n}{ip}\PYG{p}{]}\PYG{o}{++}\PYG{p}{;}
+        \PYG{c+c1}{//更新信息}
+        \PYG{n}{update}\PYG{p}{(}\PYG{n}{ip}\PYG{p}{);}
+        \PYG{c+c1}{//旋转到根}
+        \PYG{n}{splay}\PYG{p}{(}\PYG{n}{ip}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+        \PYG{c+c1}{//找不到,创建节点}
+        \PYG{n}{newnode}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{ip}\PYG{p}{);}
+        \PYG{c+c1}{//更新信息,旋转到根}
+        \PYG{n}{update}\PYG{p}{(}\PYG{n}{ip}\PYG{p}{);}
+        \PYG{n}{splay}\PYG{p}{(}\PYG{n}{tot}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//删除元素}
+\PYG{k+kt}{void} \PYG{n+nf}{del}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{ip}\PYG{o}{=}\PYG{n}{find}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+    \PYG{c+c1}{//旋转到根}
+    \PYG{n}{splay}\PYG{p}{(}\PYG{n}{ip}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{);}
+    \PYG{c+c1}{//找不到}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{val}\PYG{p}{[}\PYG{n}{ip}\PYG{p}{]}\PYG{o}{!=}\PYG{n}{x}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//此时已旋转到根}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{cnt}\PYG{p}{[}\PYG{n}{ip}\PYG{p}{]}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//存在不止一个值}
+        \PYG{n}{cnt}\PYG{p}{[}\PYG{n}{ip}\PYG{p}{]}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+        \PYG{n}{update}\PYG{p}{(}\PYG{n}{ip}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{ip}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{==}\PYG{l+m+mi}{0} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{tr}\PYG{p}{[}\PYG{n}{ip}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//剩一个节点,删除即为空树}
+        \PYG{n}{rt}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{n}{tot}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{c+c1}{//清空子树}
+        \PYG{n}{tr}\PYG{p}{[}\PYG{n}{rt}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{rt}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{ip}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{!=}\PYG{l+m+mi}{0} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{tr}\PYG{p}{[}\PYG{n}{ip}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//只有左子树,删除后左子树即为根}
+        \PYG{n}{rt}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{ip}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{];}
+        \PYG{n}{fa}\PYG{p}{[}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{ip}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{ip}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{==}\PYG{l+m+mi}{0} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{tr}\PYG{p}{[}\PYG{n}{ip}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{!=}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//只有右子树}
+        \PYG{n}{rt}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{ip}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{];}
+        \PYG{n}{fa}\PYG{p}{[}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{ip}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+        \PYG{c+c1}{//有左右子树}
+        \PYG{c+c1}{//找到左子树的最右节点}
+        \PYG{k+kt}{int} \PYG{n}{p}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{ip}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{];}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{p}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{!=}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{p}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{p}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//旋转到ip的子树,不能直接旋转到根,因为后面还要用到ip的信息}
+        \PYG{n}{splay}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,}\PYG{n}{ip}\PYG{p}{);}
+        \PYG{c+c1}{//成为新的根}
+        \PYG{n}{rt}\PYG{o}{=}\PYG{n}{p}\PYG{p}{;}
+        \PYG{n}{fa}\PYG{p}{[}\PYG{n}{p}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{n}{fa}\PYG{p}{[}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{ip}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]]}\PYG{o}{=}\PYG{n}{p}\PYG{p}{;}
+        \PYG{n}{tr}\PYG{p}{[}\PYG{n}{p}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{ip}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{];}
+        \PYG{n}{update}\PYG{p}{(}\PYG{n}{p}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//获取v的排名(第几小)}
+\PYG{k+kt}{int} \PYG{n+nf}{rnk}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//找到元素位置}
+    \PYG{k+kt}{int} \PYG{n}{ip}\PYG{o}{=}\PYG{n}{find}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+    \PYG{c+c1}{//旋转到根}
+    \PYG{n}{splay}\PYG{p}{(}\PYG{n}{ip}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{);}
+    \PYG{c+c1}{//排名即左儿子大小+1}
+    \PYG{k}{return} \PYG{n}{siz}\PYG{p}{[}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{ip}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//获取第k小元素,排名的逆操作}
+\PYG{k+kt}{int} \PYG{n+nf}{kth}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{k}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{now}\PYG{o}{=}\PYG{n}{rt}\PYG{p}{;}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n+nb}{true}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{k}\PYG{o}{\PYGZlt{}=}\PYG{n}{siz}\PYG{p}{[}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{now}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]])\PYGZob{}}
+            \PYG{c+c1}{//左儿子}
+            \PYG{n}{now}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{now}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{k}\PYG{o}{\PYGZgt{}}\PYG{n}{cnt}\PYG{p}{[}\PYG{n}{now}\PYG{p}{]}\PYG{o}{+}\PYG{n}{siz}\PYG{p}{[}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{now}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]])\PYGZob{}}
+            \PYG{c+c1}{//右儿子}
+            \PYG{n}{k}\PYG{o}{\PYGZhy{}=}\PYG{n}{cnt}\PYG{p}{[}\PYG{n}{now}\PYG{p}{]}\PYG{o}{+}\PYG{n}{siz}\PYG{p}{[}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{now}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]];}
+            \PYG{n}{now}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{now}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{c+c1}{//当前节点}
+            \PYG{k}{break}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{val}\PYG{p}{[}\PYG{n}{now}\PYG{p}{];}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{pre}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//先将x插入,splay到根,直接找左子树的最右节点,再删除x}
+    \PYG{n}{insert}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+    \PYG{k+kt}{int} \PYG{n}{now}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{rt}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{];}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{p}{;}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{now}\PYG{p}{)\PYGZob{}}   
+        \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{now}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{])\PYGZob{}}
+             \PYG{n}{ans}\PYG{o}{=}\PYG{n}{val}\PYG{p}{[}\PYG{n}{now}\PYG{p}{];} 
+             \PYG{k}{break}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{now}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{now}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{del}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{nxt}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}} 
+    \PYG{c+c1}{//同理,找到右子树的最左节点}
+    \PYG{n}{insert}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+    \PYG{k+kt}{int} \PYG{n}{now}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{rt}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{];}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{p}{;}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{now}\PYG{p}{)\PYGZob{}}   
+        \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{now}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{])\PYGZob{}}
+             \PYG{n}{ans}\PYG{o}{=}\PYG{n}{val}\PYG{p}{[}\PYG{n}{now}\PYG{p}{];} 
+             \PYG{k}{break}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{now}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{now}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{del}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n}{m}\PYG{p}{,}\PYG{n}{o}\PYG{p}{,}\PYG{n}{x}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{m}\PYG{p}{);}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{m}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{o}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{x}\PYG{p}{);}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{o}\PYG{o}{==}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{insert}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{o}\PYG{o}{==}\PYG{l+m+mi}{2}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{del}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{o}\PYG{o}{==}\PYG{l+m+mi}{3}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{rnk}\PYG{p}{(}\PYG{n}{x}\PYG{p}{));}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{o}\PYG{o}{==}\PYG{l+m+mi}{4}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{kth}\PYG{p}{(}\PYG{n}{x}\PYG{p}{));}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{o}\PYG{o}{==}\PYG{l+m+mi}{5}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{pre}\PYG{p}{(}\PYG{n}{x}\PYG{p}{));}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{o}\PYG{o}{==}\PYG{l+m+mi}{6}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{nxt}\PYG{p}{(}\PYG{n}{x}\PYG{p}{));}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//如果是简单的求前驱后继，用set即可}
+        \PYG{c+cm}{/**}
+\PYG{c+cm}{         * auto it=s.upper\PYGZus{}bound(x)}
+\PYG{c+cm}{         * if(it!=s.end())\PYGZob{}}
+\PYG{c+cm}{         *      *it为后继}
+\PYG{c+cm}{         * \PYGZcb{}}
+\PYG{c+cm}{         * if(it!=s.begin())\PYGZob{}}
+\PYG{c+cm}{         *      it++;}
+\PYG{c+cm}{         *      *it为前驱}
+\PYG{c+cm}{         * \PYGZcb{}}
+\PYG{c+cm}{         */} 
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

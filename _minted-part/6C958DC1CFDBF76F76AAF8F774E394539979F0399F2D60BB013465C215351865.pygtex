@@ -1,0 +1,114 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{k}{typedef} \PYG{n}{pair}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{p}{,}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}} \PYG{n}{pii}\PYG{p}{;}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{N}\PYG{o}{=}\PYG{l+m+mf}{1e5}\PYG{o}{+}\PYG{l+m+mi}{50}\PYG{p}{;}
+\PYG{c+c1}{//三维LIS(偏序),第一维排序,第二维cdq分治,第三维树状数组}
+\PYG{k}{struct} \PYG{n}{node}\PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{,}\PYG{n}{z}\PYG{p}{,}\PYG{n}{id}\PYG{p}{;}
+    \PYG{k+kt}{bool} \PYG{k}{operator} \PYG{o}{\PYGZlt{}}\PYG{p}{(}\PYG{k}{const} \PYG{n}{node} \PYG{o}{\PYGZam{}}\PYG{n}{r}\PYG{p}{)}\PYG{k}{const}\PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{x}\PYG{o}{!=}\PYG{n}{r}\PYG{p}{.}\PYG{n}{x}\PYG{o}{?}\PYG{n}{x}\PYG{o}{\PYGZlt{}}\PYG{n}{r}\PYG{p}{.}\PYG{n+nl}{x}\PYG{p}{:}\PYG{n}{y}\PYG{o}{!=}\PYG{n}{r}\PYG{p}{.}\PYG{n}{y}\PYG{o}{?}\PYG{n}{y}\PYG{o}{\PYGZlt{}}\PYG{n}{r}\PYG{p}{.}\PYG{n+nl}{y}\PYG{p}{:}\PYG{n}{z}\PYG{o}{\PYGZlt{}}\PYG{n}{r}\PYG{p}{.}\PYG{n}{z}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}\PYG{n}{q}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{tmp}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{c+c1}{//维护一个二维的权值bit(i表示z坐标 x表示dp状态) first表示长度 second表示大小}
+\PYG{c+c1}{//普通bit表示前缀和,这里的bit表示前i个三维点的LIS(长度和方案数)}
+\PYG{n}{pii} \PYG{n}{dp}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{c}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{n}{pii} \PYG{n+nf}{zero}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{);}
+\PYG{k+kt}{int} \PYG{n+nf}{lowbit}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{x}\PYG{o}{\PYGZam{}}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{n}{x}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//实现一个pii的dp状态的相加}
+\PYG{k+kt}{void} \PYG{n+nf}{update}\PYG{p}{(}\PYG{n}{pii} \PYG{o}{\PYGZam{}}\PYG{n}{a}\PYG{p}{,}\PYG{n}{pii} \PYG{o}{\PYGZam{}}\PYG{n}{b}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{a}\PYG{p}{.}\PYG{n}{first}\PYG{o}{\PYGZlt{}}\PYG{n}{b}\PYG{p}{.}\PYG{n}{first}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{a}\PYG{o}{=}\PYG{n}{b}\PYG{p}{;}  \PYG{c+c1}{//长度大于当前的,更新长度}
+    \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{a}\PYG{p}{.}\PYG{n}{first}\PYG{o}{==}\PYG{n}{b}\PYG{p}{.}\PYG{n}{first}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{a}\PYG{p}{.}\PYG{n}{second}\PYG{o}{+=}\PYG{n}{b}\PYG{p}{.}\PYG{n}{second}\PYG{p}{;}  \PYG{c+c1}{//长度相等的,更新方案数}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{add}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{,}\PYG{n}{pii} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{update}\PYG{p}{(}\PYG{n}{c}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],}\PYG{n}{x}\PYG{p}{);} \PYG{c+c1}{//bit里维护的是一个pair,所以这里不是简单的c[i]+=x}
+        \PYG{n}{i}\PYG{o}{+=}\PYG{n}{lowbit}\PYG{p}{(}\PYG{n}{i}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{n}{pii} \PYG{n+nf}{sum}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{pii} \PYG{n}{ans}\PYG{o}{=}\PYG{n}{zero}\PYG{p}{;}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{i}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{update}\PYG{p}{(}\PYG{n}{ans}\PYG{p}{,}\PYG{n}{c}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+        \PYG{n}{i}\PYG{o}{\PYGZhy{}=}\PYG{n}{lowbit}\PYG{p}{(}\PYG{n}{i}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{clr}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{c}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{zero}\PYG{p}{;}
+        \PYG{n}{i}\PYG{o}{+=}\PYG{n}{lowbit}\PYG{p}{(}\PYG{n}{i}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{cdq}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZgt{}=}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{mid}\PYG{o}{=}\PYG{p}{(}\PYG{n}{l}\PYG{o}{+}\PYG{n}{r}\PYG{p}{)}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{;}
+    \PYG{n}{cdq}\PYG{p}{(}\PYG{n}{l}\PYG{p}{,}\PYG{n}{mid}\PYG{p}{);}  \PYG{c+c1}{//单独处理左区间,即处理出前半部分的dp状态}
+    \PYG{c+c1}{//利用左区间信息更新右区间}
+    \PYG{c+c1}{//tmp临时记录这个区间内的操作}
+    \PYG{k+kt}{int} \PYG{n}{k}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{n}{l}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{r}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{tmp}\PYG{p}{[}\PYG{n}{k}\PYG{p}{]}\PYG{o}{=}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+        \PYG{n}{tmp}\PYG{p}{[}\PYG{n}{k}\PYG{o}{++}\PYG{p}{].}\PYG{n}{x}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}  \PYG{c+c1}{//第一维x已经降掉}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{sort}\PYG{p}{(}\PYG{n}{tmp}\PYG{p}{,}\PYG{n}{tmp}\PYG{o}{+}\PYG{n}{k}\PYG{p}{);}  \PYG{c+c1}{//对y和z排序}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{k}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{node}\PYG{o}{\PYGZam{}} \PYG{n}{t}\PYG{o}{=}\PYG{n}{tmp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+        \PYG{c+c1}{//这里tmp是排好序的,所以先出来的y和z肯定小}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{t}\PYG{p}{.}\PYG{n}{id}\PYG{o}{\PYGZlt{}=}\PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//属于左区间的操作,已经在cdq(l,mid)中处理完毕}
+            \PYG{c+c1}{//加入权值bit,表示t.z累加上dp[t.id]个}
+            \PYG{n}{add}\PYG{p}{(}\PYG{n}{t}\PYG{p}{.}\PYG{n}{z}\PYG{p}{,}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{t}\PYG{p}{.}\PYG{n}{id}\PYG{p}{]);}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{c+c1}{//属于右区间的操作(未操作),查询t.z前面的dp状态前缀和}
+            \PYG{c+c1}{//并累加到当前id的dp状态}
+            \PYG{n}{pii} \PYG{n}{a}\PYG{o}{=}\PYG{n}{sum}\PYG{p}{(}\PYG{n}{t}\PYG{p}{.}\PYG{n}{z}\PYG{p}{);}
+            \PYG{n}{a}\PYG{p}{.}\PYG{n}{first}\PYG{o}{++}\PYG{p}{;}
+            \PYG{n}{update}\PYG{p}{(}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{t}\PYG{p}{.}\PYG{n}{id}\PYG{p}{],}\PYG{n}{a}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//处理右区间前把属于左区间的操作的bit清空}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{k}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{tmp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{id}\PYG{o}{\PYGZlt{}=}\PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{clr}\PYG{p}{(}\PYG{n}{tmp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{z}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{cdq}\PYG{p}{(}\PYG{n}{mid}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{r}\PYG{p}{);}  \PYG{c+c1}{//单独处理右区间}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{T}\PYG{p}{;}
+    \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{T}\PYG{p}{);}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{T}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{n}\PYG{p}{);}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{x}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{y}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{z}\PYG{p}{);}
+            \PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{node}\PYG{p}{\PYGZob{}}\PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{,}\PYG{n}{z}\PYG{p}{,}\PYG{n}{i}\PYG{p}{\PYGZcb{};}
+            \PYG{n}{Z}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{z}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{sort}\PYG{p}{(}\PYG{n}{q}\PYG{p}{,}\PYG{n}{q}\PYG{o}{+}\PYG{n}{n}\PYG{p}{);}
+        \PYG{n}{sort}\PYG{p}{(}\PYG{n}{Z}\PYG{p}{,}\PYG{n}{Z}\PYG{o}{+}\PYG{n}{n}\PYG{p}{);}  \PYG{c+c1}{//离散化z}
+        \PYG{n}{kn}\PYG{o}{=}\PYG{n}{unique}\PYG{p}{(}\PYG{n}{Z}\PYG{p}{,}\PYG{n}{Z}\PYG{o}{+}\PYG{n}{n}\PYG{p}{)}\PYG{o}{\PYGZhy{}}\PYG{n}{Z}\PYG{p}{;}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{z}\PYG{o}{=}\PYG{n}{lower\PYGZus{}bound}\PYG{p}{(}\PYG{n}{Z}\PYG{p}{,}\PYG{n}{Z}\PYG{o}{+}\PYG{n}{kn}\PYG{p}{,}\PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{z}\PYG{p}{)}\PYG{o}{\PYGZhy{}}\PYG{n}{Z}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+            \PYG{n}{q}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{id}\PYG{o}{=}\PYG{n}{i}\PYG{p}{;}  \PYG{c+c1}{//注意是排序后的id}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{first}\PYG{o}{=}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{second}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{cdq}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{n}{pii} \PYG{n}{ans}\PYG{o}{=}\PYG{n}{zero}\PYG{p}{;}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{update}\PYG{p}{(}\PYG{n}{ans}\PYG{p}{,}\PYG{n}{dp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}  \PYG{c+c1}{//直接update累加,同时更新LIS和方案数}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d \PYGZpc{}d}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{ans}\PYG{p}{.}\PYG{n}{first}\PYG{p}{,}\PYG{n}{ans}\PYG{p}{.}\PYG{n}{second}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

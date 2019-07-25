@@ -1,5 +1,5 @@
 \begin{Verbatim}[commandchars=\\\{\}]
-\PYG{c+c1}{//\PYGZdq{}banana\PYGZdq{} 后缀为[banana anana nana ana na a \PYGZdl{}]}
+\PYG{c+c1}{//\PYGZdq{}banana\PYGZdq{} 后缀为[banana\PYGZdl{} anana\PYGZdl{} nana\PYGZdl{} ana\PYGZdl{} na\PYGZdl{} a\PYGZdl{} \PYGZdl{}]}
 \PYG{c+c1}{//sa[i]: 排名第i(从0开始)小的后缀的首字符下标 }
 \PYG{c+c1}{//比如[6 5 3 1 0 4 2]==\PYGZgt{}[\PYGZdl{} a\PYGZdl{} ana\PYGZdl{} anana\PYGZdl{} banana\PYGZdl{} na\PYGZdl{} nana\PYGZdl{}]}
 \PYG{c+c1}{//rk[i]: 下标i开始的后缀(不含\PYGZdl{})的排名(按字典序从小到大，相当于sa的逆)  }

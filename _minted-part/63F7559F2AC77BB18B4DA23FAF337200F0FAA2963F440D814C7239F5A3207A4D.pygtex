@@ -1,0 +1,123 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{N}\PYG{o}{=}\PYG{l+m+mf}{1e6}\PYG{o}{+}\PYG{l+m+mi}{50}\PYG{p}{;}
+\PYG{c+c1}{//因为是维护序列问题,所以splay里存的是下标而不是权值}
+\PYG{k+kt}{int} \PYG{n}{tr}\PYG{p}{[}\PYG{n}{N}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{],}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{val}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{siz}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{rt}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{tot}\PYG{p}{;}
+\PYG{c+c1}{//懒惰标记数组(该子树是否需要旋转)}
+\PYG{k+kt}{bool} \PYG{n}{lazy}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{void} \PYG{n+nf}{pushup}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{c+c1}{//这里节点维护的不是权值,所以直接+1,而不是加重复次数cnt[i]}
+    \PYG{n}{siz}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{=}\PYG{n}{siz}\PYG{p}{[}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{x}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]]}\PYG{o}{+}\PYG{n}{siz}\PYG{p}{[}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{x}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{pushdown}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//左右子树互换并下传标记}
+    \PYG{k}{if} \PYG{p}{(}\PYG{n}{lazy}\PYG{p}{[}\PYG{n}{x}\PYG{p}{])\PYGZob{}}
+        \PYG{n}{swap}\PYG{p}{(}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{x}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{],} \PYG{n}{tr}\PYG{p}{[}\PYG{n}{x}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]);}
+        \PYG{n}{lazy}\PYG{p}{[}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{x}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]]}\PYG{o}{\PYGZca{}=}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{n}{lazy}\PYG{p}{[}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{x}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{]]}\PYG{o}{\PYGZca{}=}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{n}{lazy}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{\PYGZca{}=}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{get}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{return} \PYG{n}{tr}\PYG{p}{[}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]][}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{==}\PYG{n}{x}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{connect}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{f}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{son}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{fa}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{=}\PYG{n}{f}\PYG{p}{;}
+    \PYG{n}{tr}\PYG{p}{[}\PYG{n}{f}\PYG{p}{][}\PYG{n}{son}\PYG{p}{]}\PYG{o}{=}\PYG{n}{x}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{rotate}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{y}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{x}\PYG{p}{];}
+    \PYG{k+kt}{int} \PYG{n}{yy}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{y}\PYG{p}{];}
+    \PYG{k+kt}{int} \PYG{n}{ys}\PYG{o}{=}\PYG{n}{get}\PYG{p}{(}\PYG{n}{y}\PYG{p}{);}
+    \PYG{k+kt}{int} \PYG{n}{xs}\PYG{o}{=}\PYG{n}{get}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+    \PYG{c+c1}{//比普通splay多了pushdown的操作}
+    \PYG{n}{pushdown}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+    \PYG{n}{pushdown}\PYG{p}{(}\PYG{n}{y}\PYG{p}{);}
+    \PYG{k+kt}{int} \PYG{n}{b}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{x}\PYG{p}{][}\PYG{n}{xs}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{];}
+    \PYG{n}{connect}\PYG{p}{(}\PYG{n}{b}\PYG{p}{,}\PYG{n}{y}\PYG{p}{,}\PYG{n}{xs}\PYG{p}{);}
+    \PYG{n}{connect}\PYG{p}{(}\PYG{n}{y}\PYG{p}{,}\PYG{n}{x}\PYG{p}{,(}\PYG{n}{xs}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{));}
+    \PYG{n}{connect}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{yy}\PYG{p}{,}\PYG{n}{ys}\PYG{p}{);}
+    \PYG{n}{pushup}\PYG{p}{(}\PYG{n}{y}\PYG{p}{);}
+    \PYG{n}{pushup}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//x旋转到to的儿子}
+\PYG{k+kt}{void} \PYG{n+nf}{splay}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{to}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{!=}\PYG{n}{to}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{f}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{x}\PYG{p}{];}
+        \PYG{k+kt}{int} \PYG{n}{ff}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{f}\PYG{p}{];}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{ff}\PYG{o}{!=}\PYG{n}{to}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{rotate}\PYG{p}{(}\PYG{n}{get}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}\PYG{o}{==}\PYG{n}{get}\PYG{p}{(}\PYG{n}{f}\PYG{p}{)}\PYG{o}{?}\PYG{n+nl}{f}\PYG{p}{:}\PYG{n}{x}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{rotate}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{to}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{rt}\PYG{o}{=}\PYG{n}{x}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{kth}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{k}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{now}\PYG{o}{=}\PYG{n}{rt}\PYG{p}{;}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n+nb}{true}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{pushdown}\PYG{p}{(}\PYG{n}{now}\PYG{p}{);}
+        \PYG{k+kt}{int} \PYG{n}{t}\PYG{o}{=}\PYG{n}{siz}\PYG{p}{[}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{now}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{k}\PYG{o}{\PYGZlt{}}\PYG{n}{t}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{now}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{now}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{k}\PYG{o}{\PYGZgt{}}\PYG{n}{t}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{k}\PYG{o}{\PYGZhy{}=}\PYG{n}{t}\PYG{p}{;}
+            \PYG{n}{now}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{now}\PYG{p}{][}\PYG{l+m+mi}{1}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{k}{break}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//返回节点位置}
+    \PYG{k}{return} \PYG{n}{now}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//解决区间最重要的就是提取区间}
+\PYG{c+c1}{//提取区间[l,r]的方法就是将节点l\PYGZhy{}1旋转到根节点,将节点r+1旋转到根节点的右儿子}
+\PYG{c+c1}{//此时根节点的右儿子的左子树就是提取的区间}
+\PYG{c+c1}{//然后为了能够提取区间[1,n],我们设立两个哨兵节点1和n+1,把下标都+1}
+\PYG{c+c1}{//所以要提取区间[l,r]也就是要旋转l\PYGZhy{}1和r+1,+1之后就是l和r+2}
+\PYG{k+kt}{void} \PYG{n+nf}{reverse}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,} \PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{x}\PYG{o}{=}\PYG{n}{kth}\PYG{p}{(}\PYG{n}{l}\PYG{p}{);}
+    \PYG{k+kt}{int} \PYG{n}{y}\PYG{o}{=}\PYG{n}{kth}\PYG{p}{(}\PYG{n}{r}\PYG{o}{+}\PYG{l+m+mi}{2}\PYG{p}{);}
+    \PYG{n}{splay}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{);}
+    \PYG{n}{splay}\PYG{p}{(}\PYG{n}{y}\PYG{p}{,}\PYG{n}{x}\PYG{p}{);}
+    \PYG{n}{pushdown}\PYG{p}{(}\PYG{n}{rt}\PYG{p}{);}
+    \PYG{c+c1}{//根节点的右儿子的左儿子,标记翻转一次}
+    \PYG{n}{lazy}\PYG{p}{[}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{y}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]]}\PYG{o}{\PYGZca{}=}\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{Build}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{f}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZgt{}}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{mid}\PYG{o}{=}\PYG{p}{(}\PYG{n}{l}\PYG{o}{+}\PYG{n}{r}\PYG{p}{)}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{;}
+    \PYG{n}{Build}\PYG{p}{(}\PYG{n}{l}\PYG{p}{,}\PYG{n}{mid}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{mid}\PYG{p}{);}
+    \PYG{n}{Build}\PYG{p}{(}\PYG{n}{mid}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{r}\PYG{p}{,}\PYG{n}{mid}\PYG{p}{);}
+    \PYG{n}{fa}\PYG{p}{[}\PYG{n}{mid}\PYG{p}{]}\PYG{o}{=}\PYG{n}{f}\PYG{p}{;}
+    \PYG{c+c1}{//本题,下标和权值一样}
+    \PYG{n}{val}\PYG{p}{[}\PYG{n}{mid}\PYG{p}{]}\PYG{o}{=}\PYG{n}{mid}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{n}{pushup}\PYG{p}{(}\PYG{n}{mid}\PYG{p}{);}
+    \PYG{n}{tr}\PYG{p}{[}\PYG{n}{f}\PYG{p}{][}\PYG{n}{mid}\PYG{o}{\PYGZgt{}}\PYG{n}{f}\PYG{p}{]}\PYG{o}{=}\PYG{n}{mid}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{,}\PYG{n}{m}\PYG{p}{,}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{n}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{m}\PYG{p}{);}
+    \PYG{c+c1}{//增加两个哨兵节点}
+    \PYG{n}{Build}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{n}\PYG{o}{+}\PYG{l+m+mi}{2}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{);}
+    \PYG{c+c1}{//中间的点即为根}
+    \PYG{n}{rt}\PYG{o}{=}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{o}{+}\PYG{n}{n}\PYG{o}{+}\PYG{l+m+mi}{2}\PYG{p}{)}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{m}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{l}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{r}\PYG{p}{);}
+        \PYG{n}{reverse}\PYG{p}{(}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//维护的是下标,最后映射成权值}
+        \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d \PYGZdq{}}\PYG{p}{,} \PYG{n}{val}\PYG{p}{[}\PYG{n}{kth}\PYG{p}{(}\PYG{n}{i}\PYG{p}{)]);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

@@ -1,0 +1,57 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/**}
+\PYG{c+cm}{ * 数列分块6：动态插值，单点查询}
+\PYG{c+cm}{ */} 
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{N}\PYG{o}{=}\PYG{l+m+mf}{1e5}\PYG{o}{+}\PYG{l+m+mi}{50}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{a}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{bel}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{,}\PYG{n}{block}\PYG{p}{,}\PYG{n}{o}\PYG{p}{,}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{,}\PYG{n}{c}\PYG{p}{;}
+\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}} \PYG{n}{vec}\PYG{p}{[}\PYG{l+m+mi}{400}\PYG{p}{];}
+\PYG{c+c1}{//a[i]前面插入值x}
+\PYG{k+kt}{void} \PYG{n+nf}{insert}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{v}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//找到要插入的块}
+    \PYG{k+kt}{int} \PYG{n}{now}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{whi}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{siz}\PYG{o}{=}\PYG{n}{vec}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{size}\PYG{p}{();}
+        \PYG{n}{now}\PYG{o}{+=}\PYG{n}{siz}\PYG{p}{;}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{now}\PYG{o}{\PYGZgt{}=}\PYG{n}{x}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{whi}\PYG{o}{=}\PYG{n}{i}\PYG{p}{;}
+            \PYG{n}{x}\PYG{o}{\PYGZhy{}=}\PYG{p}{(}\PYG{n}{now}\PYG{o}{\PYGZhy{}}\PYG{n}{siz}\PYG{p}{);}
+            \PYG{k}{break}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{vec}\PYG{p}{[}\PYG{n}{whi}\PYG{p}{].}\PYG{n}{insert}\PYG{p}{(}\PYG{n}{vec}\PYG{p}{[}\PYG{n}{whi}\PYG{p}{].}\PYG{n}{begin}\PYG{p}{()}\PYG{o}{+}\PYG{n}{x}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{v}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//查询a[x]}
+\PYG{k+kt}{int} \PYG{n+nf}{pos}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{now}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{siz}\PYG{o}{=}\PYG{n}{vec}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{size}\PYG{p}{();}
+        \PYG{n}{now}\PYG{o}{+=}\PYG{n}{siz}\PYG{p}{;}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{now}\PYG{o}{\PYGZgt{}=}\PYG{n}{x}\PYG{p}{)\PYGZob{}}
+            \PYG{k+kt}{int} \PYG{n}{iii}\PYG{o}{=}\PYG{n}{x}\PYG{o}{\PYGZhy{}}\PYG{p}{(}\PYG{n}{now}\PYG{o}{\PYGZhy{}}\PYG{n}{siz}\PYG{p}{);}
+            \PYG{k}{return} \PYG{n}{vec}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{iii}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{n}\PYG{p}{);}
+    \PYG{n}{block}\PYG{o}{=}\PYG{n}{sqrt}\PYG{p}{(}\PYG{n}{n}\PYG{p}{);}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+        \PYG{n}{bel}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{p}{(}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{/}\PYG{n}{block}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{n}{vec}\PYG{p}{[}\PYG{n}{bel}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]].}\PYG{n}{push\PYGZus{}back}\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{o}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{l}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{r}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{c}\PYG{p}{);}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{o}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{insert}\PYG{p}{(}\PYG{n}{l}\PYG{p}{,}\PYG{n}{r}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{pos}\PYG{p}{(}\PYG{n}{r}\PYG{p}{));}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

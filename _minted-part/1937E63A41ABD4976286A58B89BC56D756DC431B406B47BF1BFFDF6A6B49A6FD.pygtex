@@ -1,0 +1,84 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/**}
+\PYG{c+cm}{ * 权值线段树可以求全局第k大，而主席树就是可持久化权值线段树，}
+\PYG{c+cm}{ * 因此可以求区间第k大，以及由此延伸出的各种应用}
+\PYG{c+cm}{ * 1. 静态区间第k大}
+\PYG{c+cm}{ * 2. 区间内在某个范围数的个数}
+\PYG{c+cm}{ * 3. 区间内不同数的个数}
+\PYG{c+cm}{ */}
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{c+cp}{\PYGZsh{}define mid (l+r)/2}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{N}\PYG{o}{=}\PYG{l+m+mf}{1e6}\PYG{o}{+}\PYG{l+m+mi}{50}\PYG{p}{;}
+\PYG{c+c1}{//记录多少个根，每棵树根的编号}
+\PYG{k+kt}{int} \PYG{n}{cnt}\PYG{p}{,}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{c+c1}{//左右子树根的编号(不再是i\PYGZlt{}\PYGZlt{}1和i\PYGZlt{}\PYGZlt{}1|1)}
+\PYG{k+kt}{int} \PYG{n}{lr}\PYG{p}{[}\PYG{l+m+mi}{40}\PYG{o}{*}\PYG{n}{N}\PYG{p}{],}\PYG{n}{rr}\PYG{p}{[}\PYG{l+m+mi}{40}\PYG{o}{*}\PYG{n}{N}\PYG{p}{];}
+\PYG{c+c1}{//普通权值线段树sum[i]保存的就是值在[le[i],ri[i]]之间的数的个数}
+\PYG{c+c1}{//同理,主席树保存到就是值在[le[i],ri[i]]之间数的个数,但是由于静态主席树每棵树的结构都是一样的}
+\PYG{k+kt}{int} \PYG{n}{sum}\PYG{p}{[}\PYG{l+m+mi}{40}\PYG{o}{*}\PYG{n}{N}\PYG{p}{];}
+\PYG{c+c1}{//建树，返回根节点编号}
+\PYG{k+kt}{int} \PYG{n+nf}{build}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{rt}\PYG{o}{=++}\PYG{n}{cnt}\PYG{p}{;}
+    \PYG{n}{sum}\PYG{p}{[}\PYG{n}{rt}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{l}\PYG{o}{==}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{rt}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{lr}\PYG{p}{[}\PYG{n}{rt}\PYG{p}{]}\PYG{o}{=}\PYG{n}{build}\PYG{p}{(}\PYG{n}{l}\PYG{p}{,}\PYG{n}{mid}\PYG{p}{);}
+    \PYG{n}{rr}\PYG{p}{[}\PYG{n}{rt}\PYG{p}{]}\PYG{o}{=}\PYG{n}{build}\PYG{p}{(}\PYG{n}{mid}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{r}\PYG{p}{);}
+    \PYG{k}{return} \PYG{n}{rt}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//插入一个节点(一颗新树)}
+\PYG{c+c1}{//pre: 上一个线段树的根}
+\PYG{c+c1}{//l,r: 线段树区间范围}
+\PYG{c+c1}{//x: 插入的值}
+\PYG{k+kt}{int} \PYG{n+nf}{update}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{pre}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{rt}\PYG{o}{=++}\PYG{n}{cnt}\PYG{p}{;}
+    \PYG{n}{lr}\PYG{p}{[}\PYG{n}{rt}\PYG{p}{]}\PYG{o}{=}\PYG{n}{lr}\PYG{p}{[}\PYG{n}{pre}\PYG{p}{];} 
+    \PYG{n}{rr}\PYG{p}{[}\PYG{n}{rt}\PYG{p}{]}\PYG{o}{=}\PYG{n}{rr}\PYG{p}{[}\PYG{n}{pre}\PYG{p}{];}
+    \PYG{c+c1}{//比上一时刻的树多了一个数x，所以sum+1}
+    \PYG{n}{sum}\PYG{p}{[}\PYG{n}{rt}\PYG{p}{]}\PYG{o}{=}\PYG{n}{sum}\PYG{p}{[}\PYG{n}{pre}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{c+c1}{//递归下去，只修改一条链}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZlt{}}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{x}\PYG{o}{\PYGZlt{}=}\PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{lr}\PYG{p}{[}\PYG{n}{rt}\PYG{p}{]}\PYG{o}{=}\PYG{n}{update}\PYG{p}{(}\PYG{n}{lr}\PYG{p}{[}\PYG{n}{pre}\PYG{p}{],} \PYG{n}{l}\PYG{p}{,} \PYG{n}{mid}\PYG{p}{,} \PYG{n}{x}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{n}{rr}\PYG{p}{[}\PYG{n}{rt}\PYG{p}{]}\PYG{o}{=}\PYG{n}{update}\PYG{p}{(}\PYG{n}{rr}\PYG{p}{[}\PYG{n}{pre}\PYG{p}{],} \PYG{n}{mid}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{r}\PYG{p}{,} \PYG{n}{x}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{rt}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//查询区间[u,v]第k大/小，注意这里l,r是线段的范围}
+\PYG{k+kt}{int} \PYG{n+nf}{query}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{v}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{k}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//递归边界}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZgt{}=}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{l}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//相减就是左子树大小(左子树对应区间数的个数)}
+    \PYG{k+kt}{int} \PYG{n}{x}\PYG{o}{=}\PYG{n}{sum}\PYG{p}{[}\PYG{n}{lr}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]]}\PYG{o}{\PYGZhy{}}\PYG{n}{sum}\PYG{p}{[}\PYG{n}{lr}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]];}
+    \PYG{c+c1}{//同全局第k大/小，注意两颗线段树要同时走左子树或右子树，保证结构相同才能前缀和}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{k}\PYG{o}{\PYGZlt{}=}\PYG{n}{x}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{query}\PYG{p}{(}\PYG{n}{lr}\PYG{p}{[}\PYG{n}{u}\PYG{p}{],} \PYG{n}{lr}\PYG{p}{[}\PYG{n}{v}\PYG{p}{],} \PYG{n}{l}\PYG{p}{,} \PYG{n}{mid}\PYG{p}{,} \PYG{n}{k}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{query}\PYG{p}{(}\PYG{n}{rr}\PYG{p}{[}\PYG{n}{u}\PYG{p}{],} \PYG{n}{rr}\PYG{p}{[}\PYG{n}{v}\PYG{p}{],} \PYG{n}{mid}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{r}\PYG{p}{,} \PYG{n}{k}\PYG{o}{\PYGZhy{}}\PYG{n}{x}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//查询主席树区间[u,v]在线段树区间[l,r]值在区间[x,y]的个数}
+\PYG{k+kt}{int} \PYG{n+nf}{query}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{v}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{y}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{x}\PYG{o}{\PYGZgt{}}\PYG{n}{y}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//整个区间的数都满足条件}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{x}\PYG{o}{\PYGZlt{}=}\PYG{n}{l} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{r}\PYG{o}{\PYGZlt{}=}\PYG{n}{y}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{sum}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{sum}\PYG{p}{[}\PYG{n}{u}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{x}\PYG{o}{\PYGZlt{}=}\PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{query}\PYG{p}{(}\PYG{n}{lr}\PYG{p}{[}\PYG{n}{u}\PYG{p}{],}\PYG{n}{lr}\PYG{p}{[}\PYG{n}{v}\PYG{p}{],}\PYG{n}{l}\PYG{p}{,}\PYG{n}{mid}\PYG{p}{,}\PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{y}\PYG{o}{\PYGZgt{}}\PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{query}\PYG{p}{(}\PYG{n}{rr}\PYG{p}{[}\PYG{n}{u}\PYG{p}{],}\PYG{n}{rr}\PYG{p}{[}\PYG{n}{v}\PYG{p}{],}\PYG{n}{mid}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{r}\PYG{p}{,}\PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
