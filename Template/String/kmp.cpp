@@ -1,7 +1,4 @@
-/*
- * 初始化nex数组
- × nex[i]：表示前i个字符的最长相同前后缀长度
- */
+//nex[i]：表示前i个字符的最长相同前后缀长度
 void getNext(char s[],int n){
     int i=0,j=-1;
     nex[0]=-1;
@@ -13,12 +10,7 @@ void getNext(char s[],int n){
         }
     }
 }
-/*
- * KMP匹配(位置/个数(可重叠/不可重叠))
- * 循环节:
- *     前i个字符的最小循环节长度: i-nex[i]
- *     循环节个数: i/(i-nex[i])
- */
+//前i个字符的最小循环节长度: i-nex[i]，个数: i/(i-nex[i])
 int kmp(char s[],int n,char p[],int m){
     int i=0,j=0;
     // int cnt=0;

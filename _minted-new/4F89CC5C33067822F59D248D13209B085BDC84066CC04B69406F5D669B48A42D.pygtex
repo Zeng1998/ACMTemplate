@@ -1,0 +1,39 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{//nex[i]：表示前i个字符的最长相同前后缀长度}
+\PYG{k+kt}{void} \PYG{n+nf}{getNext}\PYG{p}{(}\PYG{k+kt}{char} \PYG{n}{s}\PYG{p}{[],}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{j}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{n}{nex}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{j}\PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o}{||} \PYG{n}{s}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{==}\PYG{n}{s}\PYG{p}{[}\PYG{n}{j}\PYG{p}{])\PYGZob{}}
+            \PYG{n}{nex}\PYG{p}{[}\PYG{o}{++}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=++}\PYG{n}{j}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{n}{j}\PYG{o}{=}\PYG{n}{nex}\PYG{p}{[}\PYG{n}{j}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//前i个字符的最小循环节长度: i\PYGZhy{}nex[i]，个数: i/(i\PYGZhy{}nex[i])}
+\PYG{k+kt}{int} \PYG{n+nf}{kmp}\PYG{p}{(}\PYG{k+kt}{char} \PYG{n}{s}\PYG{p}{[],}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{,}\PYG{k+kt}{char} \PYG{n}{p}\PYG{p}{[],}\PYG{k+kt}{int} \PYG{n}{m}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{c+c1}{// int cnt=0;}
+    \PYG{n}{getNext}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,}\PYG{n}{m}\PYG{p}{);}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{n}{m}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{j}\PYG{o}{==\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o}{||} \PYG{n}{s}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{==}\PYG{n}{p}\PYG{p}{[}\PYG{n}{j}\PYG{p}{])\PYGZob{}}
+            \PYG{n}{i}\PYG{o}{++}\PYG{p}{;}
+            \PYG{n}{j}\PYG{o}{++}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{n}{j}\PYG{o}{=}\PYG{n}{nex}\PYG{p}{[}\PYG{n}{j}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{j}\PYG{o}{==}\PYG{n}{m}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//匹配位置}
+            \PYG{k}{return} \PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{n}{j}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+            \PYG{c+c1}{//匹配个数}
+            \PYG{c+c1}{//cnt++;}
+            \PYG{c+c1}{//不可重叠}
+            \PYG{c+c1}{//j=0;}
+            \PYG{c+c1}{//可重叠}
+            \PYG{c+c1}{//j=nex[j];}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//return cnt;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

@@ -1,0 +1,33 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{//ma[]:新字符串(ma,mp都注意要开两倍空间!)}
+\PYG{c+c1}{//mp[i]:表示以i为中心的回文子串的半径(包括特殊字符)}
+\PYG{c+c1}{//mx:能延伸到最右端的位置 }
+\PYG{c+c1}{//id:能延伸到最右端的回文串中心位置}
+\PYG{k+kt}{void} \PYG{n+nf}{manacher}\PYG{p}{(}\PYG{k+kt}{char} \PYG{n}{s}\PYG{p}{[],}\PYG{k+kt}{int} \PYG{n}{len}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//构造新字符串,两个字符之间插入一个其他字符,第0个字符忽略(即加入另一种字符)}
+    \PYG{k+kt}{int} \PYG{n}{l}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{n}{ma}\PYG{p}{[}\PYG{n}{l}\PYG{o}{++}\PYG{p}{]}\PYG{o}{=}\PYG{l+s+sc}{\PYGZsq{}\PYGZdl{}\PYGZsq{}}\PYG{p}{;}
+    \PYG{n}{ma}\PYG{p}{[}\PYG{n}{l}\PYG{o}{++}\PYG{p}{]}\PYG{o}{=}\PYG{l+s+sc}{\PYGZsq{}\PYGZsh{}\PYGZsq{}}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{len}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{ma}\PYG{p}{[}\PYG{n}{l}\PYG{o}{++}\PYG{p}{]}\PYG{o}{=}\PYG{n}{s}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+        \PYG{n}{ma}\PYG{p}{[}\PYG{n}{l}\PYG{o}{++}\PYG{p}{]}\PYG{o}{=}\PYG{l+s+sc}{\PYGZsq{}\PYGZsh{}\PYGZsq{}}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{ma}\PYG{p}{[}\PYG{n}{l}\PYG{p}{]}\PYG{o}{=}\PYG{l+s+sc}{\PYGZsq{}\PYGZbs{}0\PYGZsq{}}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{mx}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{id}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{l}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//若mx\PYGZgt{}i: mp[2*id\PYGZhy{}i]表示i关于id的对称点的最长回文半径}
+        \PYG{c+c1}{//不能超出mx，所以和mx\PYGZhy{}i取min}
+        \PYG{c+c1}{//若mx\PYGZlt{}i: mp[i]=1}
+        \PYG{n}{mp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{mx}\PYG{o}{\PYGZgt{}}\PYG{n}{i}\PYG{o}{?}\PYG{n}{min}\PYG{p}{(}\PYG{n}{mp}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{id}\PYG{o}{\PYGZhy{}}\PYG{n}{i}\PYG{p}{],}\PYG{n}{mx}\PYG{o}{\PYGZhy{}}\PYG{n}{i}\PYG{p}{)}\PYG{o}{:}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{c+c1}{//往两边更新}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{ma}\PYG{p}{[}\PYG{n}{i}\PYG{o}{+}\PYG{n}{mp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]}\PYG{o}{==}\PYG{n}{ma}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{n}{mp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]])\PYGZob{}}
+            \PYG{n}{mp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{++}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//更新全局mx和id}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{i}\PYG{o}{+}\PYG{n}{mp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZgt{}}\PYG{n}{mx}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{mx}\PYG{o}{=}\PYG{n}{i}\PYG{o}{+}\PYG{n}{mp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+            \PYG{n}{id}\PYG{o}{=}\PYG{n}{i}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

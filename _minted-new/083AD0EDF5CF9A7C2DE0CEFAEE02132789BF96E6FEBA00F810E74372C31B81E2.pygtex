@@ -1,0 +1,24 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{//单哈希很容易卡；取模很慢}
+\PYG{n}{ull} \PYG{n}{seeds}\PYG{p}{[]}\PYG{o}{=}\PYG{p}{\PYGZob{}}\PYG{l+m+mi}{27}\PYG{p}{,}\PYG{l+m+mi}{146527}\PYG{p}{,}\PYG{l+m+mi}{19260817}\PYG{p}{,}\PYG{l+m+mi}{91815541}\PYG{p}{\PYGZcb{};}
+\PYG{n}{ull} \PYG{n}{mods}\PYG{p}{[]}\PYG{o}{=}\PYG{p}{\PYGZob{}}\PYG{l+m+mi}{1000000009}\PYG{p}{,}\PYG{l+m+mi}{998244353}\PYG{p}{,}\PYG{l+m+mi}{4294967291ull}\PYG{p}{,}\PYG{l+m+mi}{212370440130137957ll}\PYG{p}{\PYGZcb{};}
+\PYG{k}{struct} \PYG{n}{Hash}\PYG{p}{\PYGZob{}}
+    \PYG{n}{ull} \PYG{n}{seed}\PYG{p}{,}\PYG{n}{mod}\PYG{p}{;}
+    \PYG{n}{ull} \PYG{n}{bas}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+    \PYG{n}{ull} \PYG{n}{sum}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+    \PYG{k+kt}{void} \PYG{n+nf}{init}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{sidx}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{midx}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{len}\PYG{p}{,}\PYG{k+kt}{char} \PYG{o}{*}\PYG{n}{s}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{seed}\PYG{o}{=}\PYG{n}{seeds}\PYG{p}{[}\PYG{n}{sidx}\PYG{p}{];}
+        \PYG{n}{mod}\PYG{o}{=}\PYG{n}{mods}\PYG{p}{[}\PYG{n}{midx}\PYG{p}{];}
+        \PYG{n}{bas}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{len}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+           \PYG{n}{bas}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{bas}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{*}\PYG{n}{seed}\PYG{o}{\PYGZpc{}}\PYG{n}{mod}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{len}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{sum}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{p}{(}\PYG{n}{sum}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{*}\PYG{n}{seed}\PYG{o}{\PYGZpc{}}\PYG{n}{mod}\PYG{o}{+}\PYG{n}{s}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])}\PYG{o}{\PYGZpc{}}\PYG{n}{mod}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{ull} \PYG{n+nf}{getHash}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{p}{(}\PYG{n}{sum}\PYG{p}{[}\PYG{n}{r}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{sum}\PYG{p}{[}\PYG{n}{l}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{*}\PYG{n}{bas}\PYG{p}{[}\PYG{n}{r}\PYG{o}{\PYGZhy{}}\PYG{n}{l}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{\PYGZpc{}}\PYG{n}{mod}\PYG{o}{+}\PYG{n}{mod}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{n}{mod}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}\PYG{n}{hs}\PYG{p}{;}
+\end{Verbatim}

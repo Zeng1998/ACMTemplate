@@ -1,0 +1,94 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{zh_CN-Adobefonts_external} % Simplified Chinese Support using external fonts (./fonts/zh_CN-Adobe/)
+\usepackage{fancyhdr}  % 页眉页脚
+\usepackage{minted}    % 代码高亮
+\usepackage[colorlinks,linkcolor=black,anchorcolor=black,citecolor=black]{hyperref}  % 目录可跳转
+\setlength{\headheight}{15pt}
+\usepackage{geometry}
+\usepackage{framed} 
+\geometry{a4paper,scale=0.8}
+
+% 定义页眉页脚
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{ACM Template By Zeng Xiaocan}
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+
+\author{Zeng Xiaocan}   
+\title{ACM Template}
+
+\begin{document} 
+\maketitle % 封面
+\newpage % 换页
+\tableofcontents % 目录
+\newpage
+\section{String}
+\subsection{STL}
+\begin{framed}
+	\noindent reverse(s.begin(), s.end());
+	\\ transform(s.begin(), s.end(), s.begin(), ::toupper);  (::tolower)
+	\\ //字符串和数字互转
+	\\ int a;
+	\\ stringstream(s) >> a;
+	\\ char s[100];
+	\\ sprint(s,"\%d",a);
+	\\ string(v.begin(),v.end());
+	\\ //返回pos开始的长度为len的字符串
+	\\ substr(pos,len);
+	\\ //在pos位置插入字符串s
+	\\ insert(int pos,string s)
+	\\ //从索引pos开始往后删num个，num为空表示全删除
+	\\ erase(pos,num);
+	\\ //删除迭代器it指向的字符，返回删除后迭代器的位置
+	\\ erase(it);
+	\\ //删除迭代器[first，last)之间的所有字符，返回删除后迭代器的位置
+	\\ erase(first,last);
+	\\ //从pos开始查找字符c/字符串s在当前字符串的位置
+	\\ int find(c/s,pos);
+\end{framed}
+\subsection{Max/Min-Expression}
+\inputminted[]{c++}{Template/String/express.cpp}
+\subsection{KMP}
+\inputminted[]{c++}{Template/String/kmp.cpp}
+\subsection{EXKMP}
+\inputminted[]{c++}{Template/String/exkmp.cpp}
+\subsection{Hash}
+\inputminted[]{c++}{Template/String/hash.cpp}
+\subsection{Trie}
+\inputminted[]{c++}{Template/String/trie.cpp}
+\subsection{AC-Automaton}
+\inputminted[]{c++}{Template/String/acm.cpp}
+\subsection{Manacher}
+\inputminted[]{c++}{Template/String/manacher.cpp}
+\subsection{Palindromic-Tree}
+\inputminted[]{c++}{Template/String/pt.cpp}
+\subsection{Suffix-Array}
+%\inputminted[]{c++}{Template/String/sa.cpp}
+%\inputminted[]{c++}{Template/String/sa-dc3.cpp}
+\subsection{Suffix-Automaton}
+\inputminted[]{c++}{Template/String/sam.cpp}
+\subsection{ProblemSet}
+%\section{Graph Theory} % 一级标题
+%\subsection{Minimum Spanning Tree} % 二级标题
+%\subsubsection{Kruskal} % 三级标题
+%\inputminted[breaklines]{c++}{graph/kruskal.cc} % 插入代码文件
+%% 中文测试
+%\subsection{单源最短路}
+%\subsubsection{SPFA}
+%\inputminted[breaklines]{c++}{graph/spfa.cc}
+
+%\twocolumn  % 分页显示
+%\newpage
+%\section{String}
+%\subsection{KMP}
+%\inputminted[breaklines]{c++}{string/kmp.cc}
+
+%\subsection{Suffix Automaton}
+%\inputminted[breaklines]{c++}{string/suffix-automaton.cc}
+
+%\newpage
+%\section{Others}
+
+\end{document}

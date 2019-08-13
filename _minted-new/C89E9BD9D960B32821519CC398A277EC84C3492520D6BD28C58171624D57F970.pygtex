@@ -1,0 +1,60 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{//nex[i]表示t串中以i开始的后缀与t串的最长公共前缀}
+\PYG{c+c1}{//ext[i]表示s串中以i开始的后缀与t串的最长公共前缀}
+\PYG{k+kt}{void} \PYG{n+nf}{getNex}\PYG{p}{(}\PYG{k+kt}{char} \PYG{o}{*}\PYG{n}{t}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{len}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{a}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{a}\PYG{o}{\PYGZlt{}}\PYG{n}{len}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{t}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{o}{==}\PYG{n}{t}\PYG{p}{[}\PYG{n}{a}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{])\PYGZob{}}
+        \PYG{n}{a}\PYG{o}{++}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{nex}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{=}\PYG{n}{a}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{po}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{len}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{p}\PYG{o}{=}\PYG{n}{po}\PYG{o}{+}\PYG{n}{nex}\PYG{p}{[}\PYG{n}{po}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{k+kt}{int} \PYG{n}{l}\PYG{o}{=}\PYG{n}{nex}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{n}{po}\PYG{p}{];}
+
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZgt{}=}\PYG{n}{p}\PYG{o}{\PYGZhy{}}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+            \PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{p}\PYG{o}{\PYGZhy{}}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{);}
+            \PYG{k}{while}\PYG{p}{(}\PYG{n}{i}\PYG{o}{+}\PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{n}{len} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{t}\PYG{p}{[}\PYG{n}{i}\PYG{o}{+}\PYG{n}{j}\PYG{p}{]}\PYG{o}{==}\PYG{n}{t}\PYG{p}{[}\PYG{n}{j}\PYG{p}{])\PYGZob{}}
+                \PYG{n}{j}\PYG{o}{++}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{nex}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{j}\PYG{p}{;}
+            \PYG{n}{po}\PYG{o}{=}\PYG{n}{i}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{n}{nex}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{l}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{getExt}\PYG{p}{(}\PYG{k+kt}{char} \PYG{o}{*}\PYG{n}{s}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{,}\PYG{k+kt}{char} \PYG{o}{*}\PYG{n}{t}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{m}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{a}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{n}{getNex}\PYG{p}{(}\PYG{n}{t}\PYG{p}{,}\PYG{n}{m}\PYG{p}{);}
+    \PYG{k+kt}{int} \PYG{n}{mlen}\PYG{o}{=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{n}\PYG{p}{,}\PYG{n}{m}\PYG{p}{);}
+    \PYG{c+c1}{//计算ext[0]}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{a}\PYG{o}{\PYGZlt{}}\PYG{n}{mlen} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{s}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{o}{==}\PYG{n}{t}\PYG{p}{[}\PYG{n}{a}\PYG{p}{])\PYGZob{}}
+        \PYG{n}{a}\PYG{o}{++}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{ext}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{n}{a}\PYG{p}{;}
+    \PYG{c+c1}{//po表示当前最右的i+ext[i]\PYGZhy{}1所对应的i}
+    \PYG{k+kt}{int} \PYG{n}{po}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//p表示最右的i+ext[i]\PYGZhy{}1}
+        \PYG{k+kt}{int} \PYG{n}{p}\PYG{o}{=}\PYG{n}{po}\PYG{o}{+}\PYG{n}{ext}\PYG{p}{[}\PYG{n}{po}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{c+c1}{//此时前面已匹配的s[po..p]==t[0..p\PYGZhy{}po]，即s[i..p]==t[i\PYGZhy{}po..p\PYGZhy{}po]}
+        \PYG{c+c1}{//所以l就是表示t[i\PYGZhy{}po...m\PYGZhy{}1]和t[0..m\PYGZhy{}1]的lcp}
+        \PYG{c+c1}{//也就是s[i..p]和t[0..m\PYGZhy{}1]的**部分**lcp}
+        \PYG{c+c1}{//得看l和p\PYGZhy{}i+1(ext[i]可能的最大值)哪个大}
+        \PYG{k+kt}{int} \PYG{n}{l}\PYG{o}{=}\PYG{n}{nex}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{n}{po}\PYG{p}{];}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{l}\PYG{o}{\PYGZgt{}=}\PYG{n}{p}\PYG{o}{\PYGZhy{}}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//l大，那么从p\PYGZhy{}i+1(目前可以保证的ext[i]的值)继续暴力往下匹配}
+            \PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{p}\PYG{o}{\PYGZhy{}}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{);}
+            \PYG{k}{while}\PYG{p}{(}\PYG{n}{i}\PYG{o}{+}\PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{n}{n} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{j}\PYG{o}{\PYGZlt{}}\PYG{n}{m} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{s}\PYG{p}{[}\PYG{n}{i}\PYG{o}{+}\PYG{n}{j}\PYG{p}{]}\PYG{o}{==}\PYG{n}{t}\PYG{p}{[}\PYG{n}{j}\PYG{p}{])\PYGZob{}}
+                \PYG{n}{j}\PYG{o}{++}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{ext}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{j}\PYG{p}{;}
+            \PYG{n}{po}\PYG{o}{=}\PYG{n}{i}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{c+c1}{//p\PYGZhy{}i+1大，那么ext[i]就只能是l了}
+            \PYG{n}{ext}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{l}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

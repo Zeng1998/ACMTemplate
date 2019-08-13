@@ -1,0 +1,89 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{struct} \PYG{n}{PT}\PYG{p}{\PYGZob{}}
+	\PYG{c+c1}{//回文树中每个节点表示一个回文串，所以有偶数长度的树和奇数长度的树两棵}
+	\PYG{c+c1}{//next指针 next[u][i]表示u节点左右添加字符i之后得到的回文串节点}
+	\PYG{k+kt}{int} \PYG{n}{next}\PYG{p}{[}\PYG{n}{N}\PYG{p}{][}\PYG{l+m+mi}{26}\PYG{p}{];}
+	\PYG{c+c1}{//fail指针 失配后跳转到最长后缀回文串对应的节点}
+	\PYG{k+kt}{int} \PYG{n}{fail}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+	\PYG{c+c1}{//节点对应回文串在原串中出现次数，需先调用count函数}
+	\PYG{k+kt}{int} \PYG{n}{cnt}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+	\PYG{c+c1}{//num[i]表示**以节点i所表示的回文串右端点结尾**的回文串个数(包括自身)}
+    \PYG{c+c1}{//即fail指针的深度}
+	\PYG{k+kt}{int} \PYG{n}{num}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+	\PYG{c+c1}{//节点对应回文串的长度}
+	\PYG{k+kt}{int} \PYG{n}{len}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+	\PYG{c+c1}{//存放添加的字符}
+	\PYG{k+kt}{int} \PYG{n}{S}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+	\PYG{c+c1}{//上一个字符所在节点}
+	\PYG{k+kt}{int} \PYG{n}{last}\PYG{p}{;}
+	\PYG{c+c1}{//节点对应的最新字符位置，反向映射last(可以改成vector\PYGZlt{}int\PYGZgt{}[])}
+	\PYG{k+kt}{int} \PYG{n}{id}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+	\PYG{c+c1}{//字符数，不等于节点数}
+	\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{;}
+	\PYG{c+c1}{//回文树总结点数，包括奇偶两个空节点，节点编号为0到p\PYGZhy{}1}
+	\PYG{c+c1}{//不同回文子串个数 p\PYGZhy{}2 回文子串个数 \PYGZbs{}sum num[i]}
+	\PYG{k+kt}{int} \PYG{n}{p}\PYG{p}{;}
+	\PYG{c+c1}{//创建长度为l的新节点}
+	\PYG{k+kt}{int} \PYG{n+nf}{newnode}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{)\PYGZob{}}
+		\PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{26}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+			\PYG{n}{next}\PYG{p}{[}\PYG{n}{p}\PYG{p}{][}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+		\PYG{p}{\PYGZcb{}}
+		\PYG{n}{cnt}\PYG{p}{[}\PYG{n}{p}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+		\PYG{n}{num}\PYG{p}{[}\PYG{n}{p}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+		\PYG{n}{len}\PYG{p}{[}\PYG{n}{p}\PYG{p}{]}\PYG{o}{=}\PYG{n}{l}\PYG{p}{;}
+		\PYG{k}{return} \PYG{n}{p}\PYG{o}{++}\PYG{p}{;}
+	\PYG{p}{\PYGZcb{}}
+	\PYG{c+c1}{//初始化}
+	\PYG{k+kt}{void} \PYG{n+nf}{init}\PYG{p}{()\PYGZob{}}
+		\PYG{n}{p}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+		\PYG{c+c1}{//奇偶空节点，先偶再奇}
+		\PYG{n}{newnode}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{);}
+		\PYG{n}{newnode}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+		\PYG{n}{last}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+		\PYG{n}{n}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+		\PYG{n}{S}\PYG{p}{[}\PYG{n}{n}\PYG{p}{]}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+		\PYG{c+c1}{//偶根fail指向奇根}
+		\PYG{n}{fail}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+	\PYG{p}{\PYGZcb{}}
+	\PYG{c+c1}{//找到新插入字符c的回文匹配位置}
+	\PYG{k+kt}{int} \PYG{n+nf}{getFail}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+		\PYG{c+c1}{//在节点x对应串的后面加上一个字符，就判断x前面字符是否相同}
+		\PYG{c+c1}{//若相同直接构成新的回文串，不同就跳到fail，即最长回文后缀}
+		\PYG{c+c1}{//S[n\PYGZhy{}len[x]\PYGZhy{}1]就是新加的字符(S[n])关于x串的对称字符}
+		\PYG{k}{while}\PYG{p}{(}\PYG{n}{S}\PYG{p}{[}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{n}{len}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{!=}\PYG{n}{S}\PYG{p}{[}\PYG{n}{n}\PYG{p}{])\PYGZob{}}
+			\PYG{n}{x}\PYG{o}{=}\PYG{n}{fail}\PYG{p}{[}\PYG{n}{x}\PYG{p}{];}
+		\PYG{p}{\PYGZcb{}}
+		\PYG{k}{return} \PYG{n}{x}\PYG{p}{;}
+	\PYG{p}{\PYGZcb{}}
+	\PYG{c+c1}{//插入字符c}
+	\PYG{k+kt}{void} \PYG{n+nf}{add}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{c}\PYG{p}{)\PYGZob{}}
+		\PYG{n}{c}\PYG{o}{\PYGZhy{}=}\PYG{l+s+sc}{\PYGZsq{}a\PYGZsq{}}\PYG{p}{;}
+		\PYG{n}{S}\PYG{p}{[}\PYG{o}{++}\PYG{n}{n}\PYG{p}{]}\PYG{o}{=}\PYG{n}{c}\PYG{p}{;}
+		\PYG{c+c1}{//找到当前回文串匹配位置，也就是当前回文串节点的父节点}
+		\PYG{k+kt}{int} \PYG{n}{cur}\PYG{o}{=}\PYG{n}{getFail}\PYG{p}{(}\PYG{n}{last}\PYG{p}{);}
+		\PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{next}\PYG{p}{[}\PYG{n}{cur}\PYG{p}{][}\PYG{n}{c}\PYG{p}{])\PYGZob{}}
+			\PYG{c+c1}{//出现了一个新的本质不同的回文串}
+			\PYG{k+kt}{int} \PYG{n}{now}\PYG{o}{=}\PYG{n}{newnode}\PYG{p}{(}\PYG{n}{len}\PYG{p}{[}\PYG{n}{cur}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{2}\PYG{p}{);}
+			\PYG{c+c1}{//类似于AC自动机，往上跳直到找到满足条件的串节点}
+			\PYG{c+c1}{//getFail其实就是不断比较当前加入的字符和x节点对称的那个字符}
+			\PYG{n}{fail}\PYG{p}{[}\PYG{n}{now}\PYG{p}{]}\PYG{o}{=}\PYG{n}{next}\PYG{p}{[}\PYG{n}{getFail}\PYG{p}{(}\PYG{n}{fail}\PYG{p}{[}\PYG{n}{cur}\PYG{p}{])][}\PYG{n}{c}\PYG{p}{];}
+			\PYG{c+c1}{//fail指针深度加1}
+			\PYG{n}{num}\PYG{p}{[}\PYG{n}{now}\PYG{p}{]}\PYG{o}{=}\PYG{n}{num}\PYG{p}{[}\PYG{n}{fail}\PYG{p}{[}\PYG{n}{now}\PYG{p}{]]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+			\PYG{c+c1}{//这句要放最后，前面的指针关系处理好再连上子节点}
+			\PYG{n}{next}\PYG{p}{[}\PYG{n}{cur}\PYG{p}{][}\PYG{n}{c}\PYG{p}{]}\PYG{o}{=}\PYG{n}{now}\PYG{p}{;}
+		\PYG{p}{\PYGZcb{}}
+		\PYG{c+c1}{//最新回文串节点}
+		\PYG{n}{last}\PYG{o}{=}\PYG{n}{next}\PYG{p}{[}\PYG{n}{cur}\PYG{p}{][}\PYG{n}{c}\PYG{p}{];}
+		\PYG{n}{cnt}\PYG{p}{[}\PYG{n}{last}\PYG{p}{]}\PYG{o}{++}\PYG{p}{;}
+		\PYG{n}{id}\PYG{p}{[}\PYG{n}{last}\PYG{p}{]}\PYG{o}{=}\PYG{n}{n}\PYG{p}{;}
+	\PYG{p}{\PYGZcb{}}
+	\PYG{c+c1}{//统计每个节点回文串出现次数}
+	\PYG{k+kt}{void} \PYG{n+nf}{count}\PYG{p}{()\PYGZob{}}
+		\PYG{c+c1}{//从子节点逆推}
+		\PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{n}{p}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZgt{}=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+			\PYG{c+c1}{//i节点出现，说明其最长回文后缀fail[i]也出现}
+			\PYG{n}{cnt}\PYG{p}{[}\PYG{n}{fail}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]}\PYG{o}{+=}\PYG{n}{cnt}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+		\PYG{p}{\PYGZcb{}}
+	\PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}\PYG{n}{ac}\PYG{p}{;}
+\end{Verbatim}
