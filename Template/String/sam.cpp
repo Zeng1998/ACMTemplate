@@ -27,7 +27,7 @@ struct SAM{
         fa[lst]=-1;
     }
     void add(int c){
-        c-='A';
+        c-='a';
         int p=lst;
         int cur=newnode(len[p]+1,1);
         //假设当前sam为"aabb"，起点S为空串，节点5是{b}，节点4是{aabb,abb,bb}
