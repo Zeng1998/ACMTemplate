@@ -6,8 +6,8 @@
 \setlength{\headheight}{15pt}
 \usepackage{geometry}
 \usepackage{framed} 
-\geometry{a4paper,scale=0.8}
-
+%\geometry{a4paper,scale=0.9}
+\geometry{a4paper,left=2cm,right=2cm,top=2cm,bottom=1cm}
 % 定义页眉页脚
 \pagestyle{fancy}
 \fancyhf{}
@@ -67,8 +67,38 @@
 \subsection{Suffix-Array}
 %\inputminted[]{c++}{Template/String/sa.cpp}
 %\inputminted[]{c++}{Template/String/sa-dc3.cpp}
+\subsubsection{Usage}
+\begin{framed}
+	\noindent 0 循环字符串字典序第k小
+	\\ 将原串拼接在最后，再加一个大于字符集最大值的字符，计算sa，sa本身就是对后缀进行排序，按顺序枚举k个有效(sa[i]在0-n)的后缀即可。
+\end{framed}
 \subsection{Suffix-Automaton}
 \inputminted[]{c++}{Template/String/sam.cpp}
+\subsubsection{Usage}
+\begin{framed}
+	\noindent 0 判断模式串是否是原串的子串
+	\\ 从起点S按模式串的每个字符进行转移，无法转移则不是。
+	\\ 1 字符串最小循环移位
+	\\ 对字符串s+s建立sam，从起点贪心向最小的字符转移。
+	\\ 2 不同子串个数
+	\\ -(1)-所有的状态节点就保存了所有不同子串，枚举每个状态，计算吗$\sum (len[i]-len[fa[i]])$即可。
+	\\ 推广到长度大于等于m的不同子串个数，答案即$\sum max(0,len[i]-max(len[fa[i]],m-1))$。
+	\\ -(2)-建立sam后直接从根节点(0)dfs搜索，dp[u]表示u为起点的路径数，$dp[u]+=\sum dp[v]$，注意计算过的dp[v]不要重复计算，最后答案是dp[0]-1(或初始化dp[i]为1，dp[0]为0)。
+	\\dfs也可以改用拓扑排序，从后往前递推。
+	\\ 3 不同字串长度之和
+	\\ 即不同路径的长度之和，ans[u]表示u为起点的路径长度和，$ans[u]=\sum (ans[v]+dp[v])$，即(u,v)这条边对每条路径都有一个长度字符的贡献。
+	\\ 4 字典序第k小子串(相同子串算1个)
+	\\ 从根节点(0)往下走，根据求出的dp[i]和k大小比较，判断走哪一条边，并输出该字符(k也要减1)，递归继续判断。
+	\\ 5 出现次数k次的不同子串个数。
+	\\ 子串出现的次数即endpos的大小，因此求出endpos大小然后枚举所有状态即可。
+	\\ 从S开始的反向fa连接可以看成一个parent树，由endpos的性质，$|endpos(u)|=\sum |endpos(v)|+1/0$，是否需要加上1取决于该节点对应的substrings是否包含原串的某个前缀(即非分解出来的状态节点cl)。
+	\\ 拓扑(桶?)排序后从后往前推，累加$|endpos|$，节点0代表空串，$|endpos|=0$。
+	\\ 6 字典序第k小子串(相同子串算多个)
+	\\ 结合上述第4和第5，定义pd[u]表示节点u为起点的子串数(可相同),初始化$pd[i]=|endpos(i)|(i>0)$，而$pd[u]+=\sum pd[v]$。
+	\\ 求解的时候，找到满足的字符(pd[v]>=k)，直接跳过相同的前缀个数(k-num[u])，递归边界同样是判断(k<=num[u])。
+\end{framed}
+\subsubsection{Memo}
+\inputminted[]{c++}{Template/String/usage/sam-1.cpp}
 \subsection{ProblemSet}
 %\section{Graph Theory} % 一级标题
 %\subsection{Minimum Spanning Tree} % 二级标题

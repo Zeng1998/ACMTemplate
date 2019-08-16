@@ -1,6 +1,7 @@
 //空间足够的情况下开大点
 struct SAM{
     //转移边
+    //可以改成map<int,int> next[N]，可以快速找最小/最大转移字符
     int next[N*2][26];
     //link边
     int fa[N*2];
@@ -33,9 +34,10 @@ struct SAM{
         //假设当前sam为"aabb"，起点S为空串，节点5是{b}，节点4是{aabb,abb,bb}
         //定义suffix-path为当前字符串的所有后缀的状态，即S[1..i]，S[2..i]...
         //此时的s-p就是S-5-4，(b这个后缀因为endpos大于其他，所以在节点5)
+        //每插入一个字符，s-p的遍历是从后往前，根据fa边
         //插入的字符是a，而s-p上5和4节点都没有a，因此将节点5和4 fa节点6
         //节点6此时为{aabba,abba,bba,ba}
-        //当路径上的节点已经有a
+        //当路径上的节点没有a
         while(p!=-1 && !next[p][c]){
             next[p][c]=cur;
             p=fa[p];
