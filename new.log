@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.7.17)  16 AUG 2019 14:55
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.7.17)  24 AUG 2019 20:58
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1557,17 +1557,16 @@ LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <12> not available
 .pygtex [7])
 (./_minted-new/3FB2D95903EB437C3B8565CD54EDB8A3B62054EBB551E393B87FAD4193BBB9B4
 .pygtex [8] [9])
+(./_minted-new/BCF2D932B61E1E318A134DC8BF328309A767CEA7D8E7B8708D955501A8147E07
+.pygtex [10] [11])
+(./_minted-new/B334B05925A4992B1C32E4627B4CCC442682544DDF1274763ACB2127FCF51DD2
+.pygtex [12] [13])
 (./_minted-new/1826A13AC49A2164179ABB7A1E792C96B84BAFBAB9CFC0AAE4C23E6F1C36B06A
-.pygtex [10]) [11]
-runsystem(pygmentize -l c++ -f latex -P commandprefix=PYG -F tokenmerge -o _min
-ted-new/9F00F9A8D029EAC3CC89E6F1FF1871E39C1340C774F53CC9FE156BF04130D268.pygtex
- Template/String/usage/sam-1.cpp)...executed.
-
-
+.pygtex [14]) [15]
 (./_minted-new/9F00F9A8D029EAC3CC89E6F1FF1871E39C1340C774F53CC9FE156BF04130D268
-.pygtex [12])
+.pygtex [16])
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 124.
- [13] [14]
+ [17]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 124.
  (./new.aux)
 Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 124.
@@ -1578,12 +1577,12 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 28437 strings out of 494558
- 548089 string characters out of 6167440
- 669057 words of memory out of 5000000
- 32050 multiletter control sequences out of 15000+600000
+ 28445 strings out of 494558
+ 548723 string characters out of 6167440
+ 676347 words of memory out of 5000000
+ 32052 multiletter control sequences out of 15000+600000
  534465 words of font info for 58 fonts, out of 8000000 for 9000
  264 hyphenation exceptions out of 8191
- 53i,11n,76p,10438b,554s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 53i,11n,76p,10438b,556s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on new.pdf (14 pages).
+Output written on new.pdf (17 pages).

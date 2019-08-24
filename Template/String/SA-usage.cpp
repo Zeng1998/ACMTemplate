@@ -7,7 +7,8 @@ void RMQ_init(int n){
         dp[i][0]=h[i];
     }
     for(int j=1;(1<<j)<=n;j++){
-	    for(int i=0;i+(1<<(j-1)<n;i++){
+            //i起点 1<<j长度
+	    for(int i=0;i+(1<<j)-1<=n;i++){
 	        //两段重叠部分小区间
 	        dp[i][j]=min(dp[i][j-1],dp[i+(1<<(j-1))][j-1]);
 	    }

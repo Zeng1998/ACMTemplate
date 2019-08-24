@@ -1,8 +1,5 @@
 \begin{Verbatim}[commandchars=\\\{\}]
-\PYG{c+cm}{/*}
-\PYG{c+cm}{ * 初始化nex数组}
-\PYG{c+cm}{ × nex[i]：表示前i个字符的最长相同前后缀长度}
-\PYG{c+cm}{ */}
+\PYG{c+c1}{//nex[i]：表示前i个字符的最长相同前后缀长度}
 \PYG{k+kt}{void} \PYG{n+nf}{getNext}\PYG{p}{(}\PYG{k+kt}{char} \PYG{n}{s}\PYG{p}{[],}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{)\PYGZob{}}
     \PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{j}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
     \PYG{n}{nex}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
@@ -14,12 +11,7 @@
         \PYG{p}{\PYGZcb{}}
     \PYG{p}{\PYGZcb{}}
 \PYG{p}{\PYGZcb{}}
-\PYG{c+cm}{/*}
-\PYG{c+cm}{ * KMP匹配(位置/个数(可重叠/不可重叠))}
-\PYG{c+cm}{ * 循环节:}
-\PYG{c+cm}{ *     前i个字符的最小循环节长度: i\PYGZhy{}nex[i]}
-\PYG{c+cm}{ *     循环节个数: i/(i\PYGZhy{}nex[i])}
-\PYG{c+cm}{ */}
+\PYG{c+c1}{//前i个字符的最小循环节长度: i\PYGZhy{}nex[i]，个数: i/(i\PYGZhy{}nex[i])}
 \PYG{k+kt}{int} \PYG{n+nf}{kmp}\PYG{p}{(}\PYG{k+kt}{char} \PYG{n}{s}\PYG{p}{[],}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{,}\PYG{k+kt}{char} \PYG{n}{p}\PYG{p}{[],}\PYG{k+kt}{int} \PYG{n}{m}\PYG{p}{)\PYGZob{}}
     \PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
     \PYG{c+c1}{// int cnt=0;}

@@ -1,0 +1,26 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/**}
+\PYG{c+cm}{reverse(s.begin(), s.end());}
+\PYG{c+cm}{transform(s.begin(), s.end(), s.begin(), ::toupper);  (::tolower)}
+\PYG{c+cm}{string\PYGZhy{}\PYGZgt{}number:}
+\PYG{c+cm}{    int a;}
+\PYG{c+cm}{    stringstream(s) \PYGZgt{}\PYGZgt{} a;}
+\PYG{c+cm}{number\PYGZhy{}\PYGZgt{}char*}
+\PYG{c+cm}{    char s[100];}
+\PYG{c+cm}{    sprint(s,\PYGZdq{}\PYGZpc{}d\PYGZdq{},a);}
+\PYG{c+cm}{//返回pos开始的长度为len的字符串}
+\PYG{c+cm}{substr(pos,len);}
+\PYG{c+cm}{//在pos位置插入字符串s}
+\PYG{c+cm}{insert(int pos,string s)}
+\PYG{c+cm}{//从索引pos开始往后全删除}
+\PYG{c+cm}{erase(pos);}
+\PYG{c+cm}{//从索引pos开始往后删num个}
+\PYG{c+cm}{erase(pos,num);}
+\PYG{c+cm}{//删除迭代器it指向的字符，返回删除后迭代器的位置}
+\PYG{c+cm}{erase(it);}
+\PYG{c+cm}{//删除迭代器[first，last)之间的所有字符，返回删除后迭代器的位置}
+\PYG{c+cm}{erase(first,last);}
+\PYG{c+cm}{//从pos开始查找字符c/字符串s在当前字符串的位置}
+\PYG{c+cm}{int find(c/s,pos);}
+\PYG{c+cm}{**/}
+\end{Verbatim}

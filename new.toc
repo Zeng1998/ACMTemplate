@@ -9,8 +9,8 @@
 \contentsline {subsection}{\numberline {1.8}Manacher}{7}{subsection.1.8}
 \contentsline {subsection}{\numberline {1.9}Palindromic-Tree}{8}{subsection.1.9}
 \contentsline {subsection}{\numberline {1.10}Suffix-Array}{10}{subsection.1.10}
-\contentsline {subsubsection}{\numberline {1.10.1}Usage}{10}{subsubsection.1.10.1}
-\contentsline {subsection}{\numberline {1.11}Suffix-Automaton}{10}{subsection.1.11}
-\contentsline {subsubsection}{\numberline {1.11.1}Usage}{12}{subsubsection.1.11.1}
-\contentsline {subsubsection}{\numberline {1.11.2}Memo}{12}{subsubsection.1.11.2}
-\contentsline {subsection}{\numberline {1.12}ProblemSet}{14}{subsection.1.12}
+\contentsline {subsubsection}{\numberline {1.10.1}Usage}{14}{subsubsection.1.10.1}
+\contentsline {subsection}{\numberline {1.11}Suffix-Automaton}{14}{subsection.1.11}
+\contentsline {subsubsection}{\numberline {1.11.1}Usage}{15}{subsubsection.1.11.1}
+\contentsline {subsubsection}{\numberline {1.11.2}Memo}{16}{subsubsection.1.11.2}
+\contentsline {subsection}{\numberline {1.12}ProblemSet}{17}{subsection.1.12}

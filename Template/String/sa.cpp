@@ -78,3 +78,20 @@ void build_sa(int n, int m){
         h[rk[i]] = k;
     }
 }
+void debug(){
+    //sa 0~n 包括一个特殊字符 从0计
+    for(int i=0;i<=n;i++){
+        printf("%d ",sa[i]);
+    }
+    printf("\n");
+    //rk 0~n-1 后缀[i...n-1]的排名 从1计
+    for(int i=0;i<n;i++){
+        printf("%d ",rk[i]);
+    }
+    printf("\n");
+    //h 1~n 排名为i的后缀与排名为i-1的后缀的LCP
+    for(int i=1;i<=n;i++){
+        printf("%d ",h[i]);
+    }
+    printf("\n");
+}

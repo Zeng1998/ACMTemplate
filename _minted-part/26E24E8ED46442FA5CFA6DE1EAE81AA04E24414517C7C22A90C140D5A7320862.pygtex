@@ -1,9 +1,7 @@
 \begin{Verbatim}[commandchars=\\\{\}]
-\PYG{c+cm}{/*}
-\PYG{c+cm}{ * 求循环字符串s的最小/最大表示}
-\PYG{c+cm}{ * i,j: 当前比较两个字符串的起始位置}
-\PYG{c+cm}{ * k: 这两个字符串已比较的长度}
-\PYG{c+cm}{ */}
+\PYG{c+c1}{//求循环字符串s的最小/最大表示}
+\PYG{c+c1}{//i,j: 当前比较两个字符串的起始位置}
+\PYG{c+c1}{//k: 这两个字符串已比较的长度}
 \PYG{k+kt}{int} \PYG{n+nf}{getMin}\PYG{p}{(}\PYG{k+kt}{char} \PYG{n}{s}\PYG{p}{[])\PYGZob{}}
     \PYG{k+kt}{int} \PYG{n}{n}\PYG{o}{=}\PYG{n}{strlen}\PYG{p}{(}\PYG{n}{s}\PYG{p}{);}
     \PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{k}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
@@ -16,7 +14,6 @@
                 \PYG{c+c1}{//如果是求最大表示则为j+=k+1}
                 \PYG{n}{i}\PYG{o}{+=}\PYG{n}{k}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;} 
             \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
-                 \PYG{c+c1}{//同理则为i+=k+1}
                 \PYG{n}{j}\PYG{o}{+=}\PYG{n}{k}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
             \PYG{p}{\PYGZcb{}}
             \PYG{k}{if}\PYG{p}{(}\PYG{n}{i}\PYG{o}{==}\PYG{n}{j}\PYG{p}{)\PYGZob{}}
