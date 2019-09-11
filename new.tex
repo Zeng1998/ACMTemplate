@@ -83,7 +83,9 @@
 	\\ 2 不同子串个数
 	\\ -(1)-所有的状态节点就保存了所有不同子串，枚举每个状态，计算$\sum (len[i]-len[fa[i]])$即可。
 	\\ 推广到长度大于等于m的不同子串个数，答案即$\sum max(0,len[i]-max(len[fa[i]],m-1))$。
-	\\ -(2)-建立sam后直接从根节点(0)dfs搜索，dp[u]表示u为起点的路径数，$dp[u]+=\sum dp[v]$，注意计算过的dp[v]不要重复计算，最后答案是dp[0]-1(或初始化dp[i]为1，dp[0]为0)。
+	\\ 每添加一个字符，所增加的不同子串为$len[lst]-len[fa[lst]]$ 
+	\\
+	 -(2)-建立sam后直接从根节点(0)dfs搜索，dp[u]表示u为起点的路径数，$dp[u]+=\sum dp[v]$，注意计算过的dp[v]不要重复计算，最后答案是dp[0]-1(或初始化dp[i]为1，dp[0]为0)。
 	\\dfs也可以改用拓扑排序，从后往前递推。
 	\\ 3 不同字串长度之和
 	\\ 即不同路径的长度之和，ans[u]表示u为起点的路径长度和，$ans[u]=\sum (ans[v]+dp[v])$，即(u,v)这条边对每条路径都有一个长度字符的贡献。
@@ -100,6 +102,8 @@
 \subsubsection{Memo}
 \inputminted[]{c++}{Template/String/usage/sam-1.cpp}
 \subsection{ProblemSet}
+\section{离散化}
+
 %\section{Graph Theory} % 一级标题
 %\subsection{Minimum Spanning Tree} % 二级标题
 %\subsubsection{Kruskal} % 三级标题

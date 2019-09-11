@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.7.17)  24 AUG 2019 20:58
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.7.17)  25 AUG 2019 10:56
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1565,12 +1565,12 @@ LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <12> not available
 .pygtex [14]) [15]
 (./_minted-new/9F00F9A8D029EAC3CC89E6F1FF1871E39C1340C774F53CC9FE156BF04130D268
 .pygtex [16])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 124.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 126.
  [17]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 124.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 126.
  (./new.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 124.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 124.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 126.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 126.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.

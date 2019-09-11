@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.7.17)  24 AUG 2019 20:44
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.7.17)  25 AUG 2019 11:14
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1400,15 +1400,15 @@ LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10> not available
 5.pygtex)
 (./_minted-part/2EB0B50DDD8FDAEF973CB9B425AB4A5EEB110C08882A35798B740174086B620
 F.pygtex [2])
-(./_minted-part/BC4B3E67F805ECCAAC46A5CA6C09B1A76FB1C0DFBA30CD363BEB93EF1027D87
+runsystem(pygmentize -l c++ -f latex -P commandprefix=PYG -F tokenmerge -o _min
+ted-part/BCF2D932B61E1E318A134DC8BF3283096FB1C0DFBA30CD363BEB93EF1027D877.pygte
+x Template/String/sa.cpp)...executed.
+
+
+(./_minted-part/BCF2D932B61E1E318A134DC8BF3283096FB1C0DFBA30CD363BEB93EF1027D87
 7.pygtex [3] [4])
 (./_minted-part/B334B05925A4992B1C32E4627B4CCC44195F6762682865D9C7772E7A2588F76
 F.pygtex [5] [6])
-runsystem(pygmentize -l c++ -f latex -P commandprefix=PYG -F tokenmerge -o _min
-ted-part/14C8A8D9D36353EFD06AF91C740F15EB4B678B2CD02B8B9A4A0810597231EBBB.pygte
-x Template/String/SA-usage.cpp)...executed.
-
-
 (./_minted-part/14C8A8D9D36353EFD06AF91C740F15EB4B678B2CD02B8B9A4A0810597231EBB
 B.pygtex [7] [8] [9] [10] [11] [12] [13] [14] [15] [16] [17])
 (./_minted-part/083AD0EDF5CF9A7C2DE0CEFAEE0213278D8B2474BAE0DC4DF31012441149BB1
@@ -1577,8 +1577,8 @@ A.pygtex) [112]
 E.pygtex) [122]
 (./_minted-part/6C958DC1CFDBF76F76AAF8F774E394539979F0399F2D60BB013465C21535186
 5.pygtex [123]) [124]
-runsystem(rm _minted-part/D3D3572BF13C13210307BFF47B07005F4B678B2CD02B8B9A4A081
-0597231EBBB.pygtex)...executed.
+runsystem(rm _minted-part/BC4B3E67F805ECCAAC46A5CA6C09B1A76FB1C0DFBA30CD363BEB9
+3EF1027D877.pygtex)...executed.
 
  [125] (./part.aux)
 
