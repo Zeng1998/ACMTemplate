@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.7.17)  25 AUG 2019 10:56
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.7.17)  15 SEP 2019 22:21
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1565,24 +1565,58 @@ LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <12> not available
 .pygtex [14]) [15]
 (./_minted-new/9F00F9A8D029EAC3CC89E6F1FF1871E39C1340C774F53CC9FE156BF04130D268
 .pygtex [16])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 126.
- [17]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 126.
+(./_minted-new/7B8C673981BE2CCE1FFE11648677FF79487A4CC51D841323E9542853D3CFCE1F
+.pygtex [17] [18])
+(./_minted-new/7AC35866A574F44EFB8C48EA13D3B07D3233AF1DA1077B4C0BE9BBD22B061CE2
+.pygtex [19] [20])
+(./_minted-new/AE10AED0D7408D67CD7B93C1CCBD8C8DB27944EDC21DFFC0B2EDBBE3BFCE6826
+.pygtex [21] [22])
+runsystem(pygmentize -l c++ -f latex -P commandprefix=PYG -F tokenmerge -o _min
+ted-new/FB05C1629ABE9838A70DB89A2D8D45F69B6D8E8EACCC4C99CE8B2C5FAEF6A9CE.pygtex
+ code/bzoj1819.cpp)...executed.
+
+
+(./_minted-new/FB05C1629ABE9838A70DB89A2D8D45F69B6D8E8EACCC4C99CE8B2C5FAEF6A9CE
+.pygtex [23] [24])
+runsystem(pygmentize -l c++ -f latex -P commandprefix=PYG -F tokenmerge -o _min
+ted-new/BE7DB8C4872F0B57A90377F8469A1E9489A10DA50F07A63B8087AB5F36B0FEE7.pygtex
+ code/UVALive3942.cpp)...executed.
+
+
+(./_minted-new/BE7DB8C4872F0B57A90377F8469A1E9489A10DA50F07A63B8087AB5F36B0FEE7
+.pygtex [25])
+runsystem(pygmentize -l c++ -f latex -P commandprefix=PYG -F tokenmerge -o _min
+ted-new/7EA8F76767EFD309EE7B138057E694F4BFB72C35C05A55D8D606CC63CA1809CB.pygtex
+ code/hdu5421.cpp)...executed.
+
+
+(./_minted-new/7EA8F76767EFD309EE7B138057E694F4BFB72C35C05A55D8D606CC63CA1809CB
+.pygtex [26] [27])
+runsystem(pygmentize -l c++ -f latex -P commandprefix=PYG -F tokenmerge -o _min
+ted-new/7E0473DF0F18113C526F994A66C59CCF550462D7995D9520C4AD0CA757AAF4E7.pygtex
+ code/nc886C.cpp)...executed.
+
+
+(./_minted-new/7E0473DF0F18113C526F994A66C59CCF550462D7995D9520C4AD0CA757AAF4E7
+.pygtex [28] [29])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 135.
+ [30]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 135.
  (./new.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 126.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 126.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 135.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 135.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 28445 strings out of 494558
- 548723 string characters out of 6167440
- 676347 words of memory out of 5000000
- 32052 multiletter control sequences out of 15000+600000
+ 28473 strings out of 494558
+ 550942 string characters out of 6167440
+ 676566 words of memory out of 5000000
+ 32059 multiletter control sequences out of 15000+600000
  534465 words of font info for 58 fonts, out of 8000000 for 9000
  264 hyphenation exceptions out of 8191
  53i,11n,76p,10438b,556s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on new.pdf (17 pages).
+Output written on new.pdf (30 pages).

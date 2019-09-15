@@ -1,0 +1,102 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{k}{typedef} \PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{n}{ll}\PYG{p}{;}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{N}\PYG{o}{=}\PYG{l+m+mf}{2e5}\PYG{o}{+}\PYG{l+m+mi}{50}\PYG{p}{;}
+\PYG{k}{struct} \PYG{n}{PT}\PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{next}\PYG{p}{[}\PYG{n}{N}\PYG{p}{][}\PYG{l+m+mi}{26}\PYG{p}{],}\PYG{n}{fail}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+    \PYG{k+kt}{int} \PYG{n}{cnt}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{num}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{len}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+    \PYG{k+kt}{int} \PYG{n}{S}\PYG{p}{[}\PYG{n}{N}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{],}\PYG{n}{last}\PYG{p}{[}\PYG{l+m+mi}{2}\PYG{p}{],}\PYG{n}{L}\PYG{p}{,}\PYG{n}{R}\PYG{p}{,}\PYG{n}{id}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{n}\PYG{p}{,}\PYG{n}{p}\PYG{p}{;}
+    \PYG{n}{ll} \PYG{n}{ans}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n+nf}{newnode}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{26}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{next}\PYG{p}{[}\PYG{n}{p}\PYG{p}{][}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{cnt}\PYG{p}{[}\PYG{n}{p}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{n}{num}\PYG{p}{[}\PYG{n}{p}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{n}{len}\PYG{p}{[}\PYG{n}{p}\PYG{p}{]}\PYG{o}{=}\PYG{n}{l}\PYG{p}{;}
+        \PYG{k}{return} \PYG{n}{p}\PYG{o}{++}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{void} \PYG{n+nf}{init}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{allLen}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{n}{p}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{n}{newnode}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{);}
+        \PYG{n}{newnode}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{n}{fail}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{c+c1}{//两个last分别维护前端和后端插入}
+        \PYG{n}{last}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{n}{last}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{c+c1}{//普通的后端插入是n从0开始，然后S[++n]}
+        \PYG{c+c1}{//这里分为前后端插入，将S扩大两倍，后端插入的放在S[allLen...]，前端插入的放在S[0...allLen\PYGZhy{}1]}
+        \PYG{c+c1}{//因为添加的时候是S[++R]和S[\PYGZhy{}\PYGZhy{}L]，所以L初值为allLen，R初值为allLen\PYGZhy{}1}
+        \PYG{n}{L}\PYG{o}{=}\PYG{n}{allLen}\PYG{p}{;}
+        \PYG{n}{R}\PYG{o}{=}\PYG{n}{allLen}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{n}{memset}\PYG{p}{(}\PYG{n}{S}\PYG{p}{,}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{S}\PYG{p}{));}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n+nf}{getFail}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{d}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{d}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//后端添加}
+            \PYG{k}{while}\PYG{p}{(}\PYG{n}{S}\PYG{p}{[}\PYG{n}{R}\PYG{o}{\PYGZhy{}}\PYG{n}{len}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{!=}\PYG{n}{S}\PYG{p}{[}\PYG{n}{R}\PYG{p}{])\PYGZob{}}
+                \PYG{n}{x}\PYG{o}{=}\PYG{n}{fail}\PYG{p}{[}\PYG{n}{x}\PYG{p}{];}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{c+c1}{//前端添加}
+            \PYG{k}{while}\PYG{p}{(}\PYG{n}{S}\PYG{p}{[}\PYG{n}{L}\PYG{o}{+}\PYG{n}{len}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{!=}\PYG{n}{S}\PYG{p}{[}\PYG{n}{L}\PYG{p}{])\PYGZob{}}
+                \PYG{n}{x}\PYG{o}{=}\PYG{n}{fail}\PYG{p}{[}\PYG{n}{x}\PYG{p}{];}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{n}{x}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{void} \PYG{n+nf}{add}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{c}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{d}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{c}\PYG{o}{\PYGZhy{}=}\PYG{l+s+sc}{\PYGZsq{}a\PYGZsq{}}\PYG{p}{;}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{d}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{S}\PYG{p}{[}\PYG{o}{++}\PYG{n}{R}\PYG{p}{]}\PYG{o}{=}\PYG{n}{c}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{n}{S}\PYG{p}{[}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{n}{L}\PYG{p}{]}\PYG{o}{=}\PYG{n}{c}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k+kt}{int} \PYG{n}{cur}\PYG{o}{=}\PYG{n}{getFail}\PYG{p}{(}\PYG{n}{last}\PYG{p}{[}\PYG{n}{d}\PYG{p}{],}\PYG{n}{d}\PYG{p}{);}
+        \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{next}\PYG{p}{[}\PYG{n}{cur}\PYG{p}{][}\PYG{n}{c}\PYG{p}{])\PYGZob{}}
+            \PYG{k+kt}{int} \PYG{n}{now}\PYG{o}{=}\PYG{n}{newnode}\PYG{p}{(}\PYG{n}{len}\PYG{p}{[}\PYG{n}{cur}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{2}\PYG{p}{);}
+            \PYG{n}{fail}\PYG{p}{[}\PYG{n}{now}\PYG{p}{]}\PYG{o}{=}\PYG{n}{next}\PYG{p}{[}\PYG{n}{getFail}\PYG{p}{(}\PYG{n}{fail}\PYG{p}{[}\PYG{n}{cur}\PYG{p}{],}\PYG{n}{d}\PYG{p}{)][}\PYG{n}{c}\PYG{p}{];}
+            \PYG{n}{num}\PYG{p}{[}\PYG{n}{now}\PYG{p}{]}\PYG{o}{=}\PYG{n}{num}\PYG{p}{[}\PYG{n}{fail}\PYG{p}{[}\PYG{n}{now}\PYG{p}{]]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+            \PYG{n}{next}\PYG{p}{[}\PYG{n}{cur}\PYG{p}{][}\PYG{n}{c}\PYG{p}{]}\PYG{o}{=}\PYG{n}{now}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{last}\PYG{p}{[}\PYG{n}{d}\PYG{p}{]}\PYG{o}{=}\PYG{n}{next}\PYG{p}{[}\PYG{n}{cur}\PYG{p}{][}\PYG{n}{c}\PYG{p}{];}
+        \PYG{n}{cnt}\PYG{p}{[}\PYG{n}{last}\PYG{p}{[}\PYG{n}{d}\PYG{p}{]]}\PYG{o}{++}\PYG{p}{;}
+        \PYG{c+c1}{//添加字符之后当前整个串为回文，修改另一个last}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{len}\PYG{p}{[}\PYG{n}{last}\PYG{p}{[}\PYG{n}{d}\PYG{p}{]]}\PYG{o}{==}\PYG{n}{R}\PYG{o}{\PYGZhy{}}\PYG{n}{L}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{last}\PYG{p}{[}\PYG{n}{d}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{=}\PYG{n}{last}\PYG{p}{[}\PYG{n}{d}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{ans}\PYG{o}{+=}\PYG{l+m+mi}{1ll}\PYG{o}{*}\PYG{n}{num}\PYG{p}{[}\PYG{n}{last}\PYG{p}{[}\PYG{n}{d}\PYG{p}{]];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{void} \PYG{n+nf}{count}\PYG{p}{()\PYGZob{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{n}{p}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZgt{}=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{cnt}\PYG{p}{[}\PYG{n}{fail}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]]}\PYG{o}{+=}\PYG{n}{cnt}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}\PYG{n}{ac}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{,}\PYG{n}{op}\PYG{p}{;}
+\PYG{k+kt}{char} \PYG{n}{s}\PYG{p}{[}\PYG{l+m+mi}{3}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{()\PYGZob{}}
+\PYG{c+c1}{//    freopen(\PYGZdq{}in.txt\PYGZdq{},\PYGZdq{}r\PYGZdq{},stdin);}
+    \PYG{k}{while}\PYG{p}{(}\PYG{o}{\PYGZti{}}\PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{n}\PYG{p}{))\PYGZob{}}
+        \PYG{n}{ac}\PYG{p}{.}\PYG{n}{init}\PYG{p}{(}\PYG{n}{n}\PYG{p}{);}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{op}\PYG{p}{);}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{op}\PYG{o}{==}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}s\PYGZdq{}}\PYG{p}{,}\PYG{n}{s}\PYG{p}{);}
+                \PYG{n}{ac}\PYG{p}{.}\PYG{n}{add}\PYG{p}{(}\PYG{n}{s}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{],}\PYG{l+m+mi}{0}\PYG{p}{);}
+            \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{op}\PYG{o}{==}\PYG{l+m+mi}{2}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}s\PYGZdq{}}\PYG{p}{,}\PYG{n}{s}\PYG{p}{);}
+                \PYG{n}{ac}\PYG{p}{.}\PYG{n}{add}\PYG{p}{(}\PYG{n}{s}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{],}\PYG{l+m+mi}{1}\PYG{p}{);}
+            \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{op}\PYG{o}{==}\PYG{l+m+mi}{3}\PYG{p}{)\PYGZob{}}
+                \PYG{c+c1}{//不同回文子串个数}
+                \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{ac}\PYG{p}{.}\PYG{n}{p}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{2}\PYG{p}{);}
+            \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+                \PYG{c+c1}{//回文子串个数}
+                \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}lld}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{ac}\PYG{p}{.}\PYG{n}{ans}\PYG{p}{);}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

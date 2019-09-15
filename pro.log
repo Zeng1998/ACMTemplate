@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.7.17)  11 SEP 2019 16:12
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.7.17)  15 SEP 2019 21:53
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1493,29 +1493,7 @@ LaTeX Info: Redefining \nameref on input line 22.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <14.4> on input line 24.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 24.
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
-File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
-
-)
-[1
-
-] (./pro.toc
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 2.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 2.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 2.
-)
-\tf@toc=\write7
-\openout7 = `pro.toc'.
-
- [2] (./_minted-pro/default-pyg-prefix.pygstyle)
-(./_minted-pro/default.pygstyle)
+(./_minted-pro/default-pyg-prefix.pygstyle) (./_minted-pro/default.pygstyle)
 (./_minted-pro/42C0E453F1BEF0767167C7249F66F524B85503EE3E7C4D2A66D0199194C94C2A
 .pygtex
 \g__fontspec_family_AdobeFangsongStd-Regular.otf_int=\count306
@@ -1535,52 +1513,59 @@ DFLT;mapping=tex-text;"
 .................................................
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <12> not available
 (Font)              Font shape `TU/lmtt/b/n' tried instead on input line 3.
- [3] [4])
+ (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
+File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
+
+) [1
+
+] [2])
 (./_minted-pro/AC4ECC78C5D48BBD169E3D9FF47A9A86CC6019BEDC7467A7BE11268ED647C5E2
-.pygtex [5]
+.pygtex [3]
 
 LaTeX Font Warning: Font shape `TU/AdobeFangsongStd-Regular.otf(0)/m/it' undefi
 ned
 (Font)              using `TU/AdobeFangsongStd-Regular.otf(0)/m/n' instead on i
 nput line 51.
 
-[6])
+[4])
 (./_minted-pro/8FC13C96DC9BDFDC86574F4B8749F29AE1C1305AC660B2363DC5829B4CF0E215
-.pygtex [7] [8] [9])
+.pygtex [5] [6] [7])
 (./_minted-pro/6D6AB51AC06631155A4D921891AFB41AE4E56665FD23180CEF4A3C652E0D821B
+.pygtex [8] [9])
+(./_minted-pro/C9B2395B2272B107EC51FD6B88A0E178BA215DE2F351907256870A3FA5C6568A
 .pygtex [10] [11])
-runsystem(pygmentize -l c++ -f latex -P commandprefix=PYG -F tokenmerge -o _min
-ted-pro/EC1AFA501DEA92125196FC88D0BBA50A74539F48DB1430B12D7B4DE318EB4F3B.pygtex
- code/luoguP2617.cpp)...executed.
-
-
+(./_minted-pro/A323834EE88B86CF72DC4A6F15711C9208424D967B218356FDB498496D10FF94
+.pygtex [12] [13])
+(./_minted-pro/396B0852FFD540E44360EEE4725883CB3AF356895C6E0D26CFA816AF53042276
+.pygtex [14] [15] [16])
+(./_minted-pro/3880B46C9B37B61B499AD4E99EA3CB6895EACBE9E9442B4A3EF45D1BFB1798D2
+.pygtex [17])
 (./_minted-pro/EC1AFA501DEA92125196FC88D0BBA50A74539F48DB1430B12D7B4DE318EB4F3B
-.pygtex [12] [13] [14])
-runsystem(pygmentize -l c++ -f latex -P commandprefix=PYG -F tokenmerge -o _min
-ted-pro/D4F6090B6D5667EF8F1D3032E9149F25404DE3C612969B7BE7A6899B8D6DB9AB.pygtex
- code/19ncI.cpp)...executed.
-
-
+.pygtex [18] [19] [20])
 (./_minted-pro/D4F6090B6D5667EF8F1D3032E9149F25404DE3C612969B7BE7A6899B8D6DB9AB
-.pygtex [15] [16] [17])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 62.
- [18]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 62.
+.pygtex [21] [22])
+(./_minted-pro/F37C2014905414997776E5D525CA3A69734180498470004410095F69B04BBE44
+.pygtex [23] [24] [25])
+(./_minted-pro/1D2ECF639D921710BE4B3A3938E300A330844A04BB7157233949EBB32F6BC4D8
+.pygtex [26])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 77.
+ [27]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 77.
  (./pro.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 62.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 62.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 77.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 77.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 28378 strings out of 494558
- 543253 string characters out of 6167440
- 665966 words of memory out of 5000000
- 32000 multiletter control sequences out of 15000+600000
- 534489 words of font info for 61 fonts, out of 8000000 for 9000
+ 28349 strings out of 494558
+ 544094 string characters out of 6167440
+ 666361 words of memory out of 5000000
+ 31975 multiletter control sequences out of 15000+600000
+ 530784 words of font info for 42 fonts, out of 8000000 for 9000
  264 hyphenation exceptions out of 8191
  53i,11n,76p,10438b,568s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on pro.pdf (18 pages).
+Output written on pro.pdf (27 pages).
