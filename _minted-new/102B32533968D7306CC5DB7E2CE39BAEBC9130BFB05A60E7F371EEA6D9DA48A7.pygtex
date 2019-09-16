@@ -1,0 +1,72 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{N}\PYG{o}{=}\PYG{l+m+mf}{1e4}\PYG{o}{+}\PYG{l+m+mi}{50}\PYG{p}{;}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{INF}\PYG{o}{=}\PYG{l+m+mh}{0x3f3f3f3f}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{s}\PYG{p}{,}\PYG{n}{t}\PYG{p}{,}\PYG{n}{n}\PYG{p}{,}\PYG{n}{m}\PYG{p}{,}\PYG{n}{k}\PYG{p}{,}\PYG{n}{u}\PYG{p}{,}\PYG{n}{v}\PYG{p}{,}\PYG{n}{w}\PYG{p}{;}
+\PYG{k+kt}{bool} \PYG{n}{vis}\PYG{p}{[}\PYG{n}{N}\PYG{p}{][}\PYG{l+m+mi}{20}\PYG{p}{];}
+\PYG{c+c1}{//dis[v][i]: 到v使用i条免费路的最短路}
+\PYG{k+kt}{int} \PYG{n}{dis}\PYG{p}{[}\PYG{n}{N}\PYG{p}{][}\PYG{l+m+mi}{20}\PYG{p}{];}
+\PYG{k}{struct} \PYG{n}{Edge}\PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{v}\PYG{p}{,}\PYG{n}{w}\PYG{p}{;}
+\PYG{p}{\PYGZcb{};}
+\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{Edge}\PYG{o}{\PYGZgt{}} \PYG{n}{g}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k}{struct} \PYG{n}{node}\PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{v}\PYG{p}{,}\PYG{n}{dis}\PYG{p}{,}\PYG{n}{lev}\PYG{p}{;}
+    \PYG{k+kt}{bool} \PYG{k}{operator} \PYG{o}{\PYGZlt{}}\PYG{p}{(}\PYG{k}{const} \PYG{n}{node}\PYG{o}{\PYGZam{}} \PYG{n}{rhs}\PYG{p}{)}\PYG{k}{const}\PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{dis}\PYG{o}{\PYGZgt{}}\PYG{n}{rhs}\PYG{p}{.}\PYG{n}{dis}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+\PYG{k+kt}{int} \PYG{n+nf}{dijkstra}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{s}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{t}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}=}\PYG{n}{k}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{vis}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{false}\PYG{p}{;}
+            \PYG{n}{dis}\PYG{p}{[}\PYG{n}{i}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]}\PYG{o}{=}\PYG{n}{INF}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{dis}\PYG{p}{[}\PYG{n}{s}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{n}{priority\PYGZus{}queue}\PYG{o}{\PYGZlt{}}\PYG{n}{node}\PYG{o}{\PYGZgt{}} \PYG{n}{pq}\PYG{p}{;}
+    \PYG{n}{pq}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{n}{node}\PYG{p}{\PYGZob{}}\PYG{n}{s}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{\PYGZcb{});}
+    \PYG{k}{while}\PYG{p}{(}\PYG{o}{!}\PYG{n}{pq}\PYG{p}{.}\PYG{n}{empty}\PYG{p}{())\PYGZob{}}
+        \PYG{n}{node} \PYG{n}{t}\PYG{o}{=}\PYG{n}{pq}\PYG{p}{.}\PYG{n}{top}\PYG{p}{();}
+        \PYG{n}{pq}\PYG{p}{.}\PYG{n}{pop}\PYG{p}{();}
+        \PYG{k+kt}{int} \PYG{n}{u}\PYG{o}{=}\PYG{n}{t}\PYG{p}{.}\PYG{n}{v}\PYG{p}{;}
+        \PYG{k+kt}{int} \PYG{n}{lev}\PYG{o}{=}\PYG{n}{t}\PYG{p}{.}\PYG{n}{lev}\PYG{p}{;}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{vis}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{lev}\PYG{p}{])\PYGZob{}}
+            \PYG{k}{continue}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{vis}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{lev}\PYG{p}{]}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+        \PYG{k+kt}{int} \PYG{n}{siz}\PYG{o}{=}\PYG{n}{g}\PYG{p}{[}\PYG{n}{u}\PYG{p}{].}\PYG{n}{size}\PYG{p}{();}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{siz}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{k+kt}{int} \PYG{n}{v}\PYG{o}{=}\PYG{n}{g}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{i}\PYG{p}{].}\PYG{n}{v}\PYG{p}{;}
+            \PYG{k+kt}{int} \PYG{n}{w}\PYG{o}{=}\PYG{n}{g}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{i}\PYG{p}{].}\PYG{n}{w}\PYG{p}{;}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{dis}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{lev}\PYG{p}{]}\PYG{o}{+}\PYG{n}{w}\PYG{o}{\PYGZlt{}}\PYG{n}{dis}\PYG{p}{[}\PYG{n}{v}\PYG{p}{][}\PYG{n}{lev}\PYG{p}{])\PYGZob{}}
+                \PYG{n}{dis}\PYG{p}{[}\PYG{n}{v}\PYG{p}{][}\PYG{n}{lev}\PYG{p}{]}\PYG{o}{=}\PYG{n}{dis}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{lev}\PYG{p}{]}\PYG{o}{+}\PYG{n}{w}\PYG{p}{;}
+                \PYG{n}{pq}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{n}{node}\PYG{p}{\PYGZob{}}\PYG{n}{v}\PYG{p}{,}\PYG{n}{dis}\PYG{p}{[}\PYG{n}{v}\PYG{p}{][}\PYG{n}{lev}\PYG{p}{],}\PYG{n}{lev}\PYG{p}{\PYGZcb{});}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{lev}\PYG{o}{\PYGZlt{}}\PYG{n}{k} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{dis}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{lev}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{dis}\PYG{p}{[}\PYG{n}{v}\PYG{p}{][}\PYG{n}{lev}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{])\PYGZob{}}
+                \PYG{c+c1}{//使用一条免费路}
+                \PYG{n}{dis}\PYG{p}{[}\PYG{n}{v}\PYG{p}{][}\PYG{n}{lev}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{=}\PYG{n}{dis}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{lev}\PYG{p}{];}
+                \PYG{n}{pq}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{n}{node}\PYG{p}{\PYGZob{}}\PYG{n}{v}\PYG{p}{,}\PYG{n}{dis}\PYG{p}{[}\PYG{n}{v}\PYG{p}{][}\PYG{n}{lev}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{],}\PYG{n}{lev}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{\PYGZcb{});}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{n}{INF}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{k}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{ans}\PYG{o}{=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{ans}\PYG{p}{,}\PYG{n}{dis}\PYG{p}{[}\PYG{n}{t}\PYG{p}{][}\PYG{n}{i}\PYG{p}{]);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{n}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{m}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{k}\PYG{p}{);}
+    \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{s}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{t}\PYG{p}{);}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{m}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{u}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{v}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{w}\PYG{p}{);}
+        \PYG{n}{g}\PYG{p}{[}\PYG{n}{u}\PYG{p}{].}\PYG{n}{push\PYGZus{}back}\PYG{p}{(}\PYG{n}{Edge}\PYG{p}{\PYGZob{}}\PYG{n}{v}\PYG{p}{,}\PYG{n}{w}\PYG{p}{\PYGZcb{});}
+        \PYG{n}{g}\PYG{p}{[}\PYG{n}{v}\PYG{p}{].}\PYG{n}{push\PYGZus{}back}\PYG{p}{(}\PYG{n}{Edge}\PYG{p}{\PYGZob{}}\PYG{n}{u}\PYG{p}{,}\PYG{n}{w}\PYG{p}{\PYGZcb{});}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{ans}\PYG{o}{=}\PYG{n}{dijkstra}\PYG{p}{(}\PYG{n}{s}\PYG{p}{,}\PYG{n}{t}\PYG{p}{);}
+    \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{ans}\PYG{p}{);}
+    \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

@@ -1,0 +1,141 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{N}\PYG{o}{=}\PYG{l+m+mf}{5e6}\PYG{o}{+}\PYG{l+m+mi}{50}\PYG{p}{;}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{INF}\PYG{o}{=}\PYG{l+m+mh}{0x3f3f3f3f}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{T}\PYG{p}{,}\PYG{n}{n}\PYG{p}{,}\PYG{n}{k}\PYG{p}{,}\PYG{n}{w}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{nc}\PYG{p}{,}\PYG{n}{s}\PYG{p}{,}\PYG{n}{t}\PYG{p}{;}
+\PYG{k}{struct} \PYG{n}{edge} \PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{to}\PYG{p}{,} \PYG{n}{capacity}\PYG{p}{,} \PYG{n}{cost}\PYG{p}{,} \PYG{n}{rev}\PYG{p}{;}
+\PYG{p}{\PYGZcb{};}
+\PYG{k+kt}{int} \PYG{n}{h}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{dis}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{PreV}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{p}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{a}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{c+c1}{//vector\PYGZlt{}edge\PYGZgt{} G[N + 5];}
+\PYG{c+c1}{//void init() \PYGZob{}}
+\PYG{c+c1}{//    for (int i = 0; i \PYGZlt{}N; ++i)G[i].clear();}
+\PYG{c+c1}{//\PYGZcb{}}
+\PYG{c+c1}{//void add(int from, int to, int cap, int cost) \PYGZob{}}
+\PYG{c+c1}{//    G[from].push\PYGZus{}back(\PYGZob{}to, cap, cost, int(G[to].size())\PYGZcb{});}
+\PYG{c+c1}{//    G[to].push\PYGZus{}back(\PYGZob{}from, 0, \PYGZhy{}cost, int(G[from].size() \PYGZhy{} 1)\PYGZcb{});}
+\PYG{c+c1}{//\PYGZcb{}}
+\PYG{k}{struct} \PYG{n}{Edge}\PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{,}\PYG{n}{v}\PYG{p}{,}\PYG{n}{w}\PYG{p}{,}\PYG{n}{c}\PYG{p}{,}\PYG{n}{next}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}\PYG{n}{e}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{cnt}\PYG{p}{,}\PYG{n}{head}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{void} \PYG{n+nf}{init}\PYG{p}{()\PYGZob{}}
+    \PYG{n}{cnt}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{n}{memset}\PYG{p}{(}\PYG{n}{head}\PYG{p}{,}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{head}\PYG{p}{));}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{add}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{v}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{w}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{c}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{e}\PYG{p}{[}\PYG{n}{cnt}\PYG{p}{]}\PYG{o}{=}\PYG{n}{Edge}\PYG{p}{\PYGZob{}}\PYG{n}{u}\PYG{p}{,}\PYG{n}{v}\PYG{p}{,}\PYG{n}{w}\PYG{p}{,}\PYG{n}{c}\PYG{p}{,}\PYG{n}{head}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]\PYGZcb{};}
+    \PYG{n}{head}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{n}{cnt}\PYG{o}{++}\PYG{p}{;}
+    \PYG{n}{e}\PYG{p}{[}\PYG{n}{cnt}\PYG{p}{]}\PYG{o}{=}\PYG{n}{Edge}\PYG{p}{\PYGZob{}}\PYG{n}{v}\PYG{p}{,}\PYG{n}{u}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{o}{\PYGZhy{}}\PYG{n}{c}\PYG{p}{,}\PYG{n}{head}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]\PYGZcb{};}
+    \PYG{n}{head}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{=}\PYG{n}{cnt}\PYG{o}{++}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k}{struct} \PYG{n}{node}\PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{v}\PYG{p}{,}\PYG{n}{c}\PYG{p}{;}
+    \PYG{k+kt}{bool} \PYG{k}{operator} \PYG{o}{\PYGZlt{}}\PYG{p}{(}\PYG{k}{const} \PYG{n}{node} \PYG{o}{\PYGZam{}}\PYG{n}{rhs}\PYG{p}{)}\PYG{k}{const}\PYG{p}{\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{c}\PYG{o}{\PYGZgt{}}\PYG{n}{rhs}\PYG{p}{.}\PYG{n}{c}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{};}
+\PYG{k+kt}{void} \PYG{n+nf}{mcmf}\PYG{p}{(}\PYG{k+kt}{int} \PYG{o}{\PYGZam{}}\PYG{n}{flow}\PYG{p}{,} \PYG{k+kt}{int} \PYG{o}{\PYGZam{}}\PYG{n}{cost}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{flow}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{n}{cost}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{c+c1}{//初始化势函数，也可以跑一遍spfa计算出dis，赋值给h}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{nc}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n+nb}{true}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//重复跑dijk堆优化}
+        \PYG{c+c1}{//跑费用的最短路，同时记录路径的最小流量}
+        \PYG{n}{priority\PYGZus{}queue}\PYG{o}{\PYGZlt{}}\PYG{n}{node}\PYG{o}{\PYGZgt{}} \PYG{n}{q}\PYG{p}{;}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{nc}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{dis}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{INF}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{dis}\PYG{p}{[}\PYG{n}{s}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{n}{p}\PYG{p}{[}\PYG{n}{s}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{n}{a}\PYG{p}{[}\PYG{n}{s}\PYG{p}{]}\PYG{o}{=}\PYG{n}{INF}\PYG{p}{;}
+        \PYG{n}{q}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(\PYGZob{}}\PYG{n}{s}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{\PYGZcb{});}
+        \PYG{k}{while}\PYG{p}{(}\PYG{o}{!}\PYG{n}{q}\PYG{p}{.}\PYG{n}{empty}\PYG{p}{())\PYGZob{}}
+            \PYG{n}{node} \PYG{n}{now}\PYG{o}{=}\PYG{n}{q}\PYG{p}{.}\PYG{n}{top}\PYG{p}{();}
+            \PYG{n}{q}\PYG{p}{.}\PYG{n}{pop}\PYG{p}{();}
+            \PYG{k+kt}{int} \PYG{n}{u}\PYG{o}{=}\PYG{n}{now}\PYG{p}{.}\PYG{n}{v}\PYG{p}{;}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{dis}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{now}\PYG{p}{.}\PYG{n}{c}\PYG{p}{)\PYGZob{}}
+                \PYG{k}{continue}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{n}{head}\PYG{p}{[}\PYG{n}{u}\PYG{p}{];}\PYG{n}{i}\PYG{o}{!=\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{=}\PYG{n}{e}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{next}\PYG{p}{)\PYGZob{}}
+                \PYG{k+kt}{int} \PYG{n}{v}\PYG{o}{=}\PYG{n}{e}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{v}\PYG{p}{;}
+                \PYG{k+kt}{int} \PYG{n}{w}\PYG{o}{=}\PYG{n}{e}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{w}\PYG{p}{;}
+                \PYG{k+kt}{int} \PYG{n}{c}\PYG{o}{=}\PYG{n}{e}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{c}\PYG{p}{;}
+\PYG{c+c1}{//            for (int i = 0; i \PYGZlt{} G[u].size(); ++i) \PYGZob{}}
+\PYG{c+c1}{//                edge \PYGZam{}e = G[u][i];}
+\PYG{c+c1}{//                int v=e.to;}
+\PYG{c+c1}{//                int w=e.capacity;}
+\PYG{c+c1}{//                int c=e.cost;}
+                \PYG{k}{if}\PYG{p}{(}\PYG{n}{w}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{dis}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{\PYGZgt{}}\PYG{n}{dis}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{+}\PYG{n}{c}\PYG{o}{+}\PYG{n}{h}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{h}\PYG{p}{[}\PYG{n}{v}\PYG{p}{])\PYGZob{}}
+                    \PYG{n}{dis}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{=}\PYG{n}{dis}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{+}\PYG{n}{c}\PYG{o}{+}\PYG{n}{h}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{h}\PYG{p}{[}\PYG{n}{v}\PYG{p}{];}
+                    \PYG{n}{a}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{=}\PYG{n}{min}\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{n}{u}\PYG{p}{],}\PYG{n}{w}\PYG{p}{);}
+                    \PYG{n}{PreV}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]} \PYG{o}{=} \PYG{n}{u}\PYG{p}{;}
+                    \PYG{n}{p}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]}\PYG{o}{=}\PYG{n}{i}\PYG{p}{;}
+                    \PYG{n}{q}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(\PYGZob{}}\PYG{n}{v}\PYG{p}{,}\PYG{n}{dis}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]\PYGZcb{});}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//无法再增广}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{dis}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]}\PYG{o}{==}\PYG{n}{INF}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{break}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//更新势函数}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{nc}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{+=}\PYG{n}{dis}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{flow}\PYG{o}{+=}\PYG{n}{a}\PYG{p}{[}\PYG{n}{t}\PYG{p}{];}
+        \PYG{n}{cost}\PYG{o}{+=}\PYG{n}{a}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]}\PYG{o}{*}\PYG{n}{h}\PYG{p}{[}\PYG{n}{t}\PYG{p}{];}
+\PYG{c+c1}{//        for (int v = t; v != s; v = PreV[v]) \PYGZob{}}
+\PYG{c+c1}{//            edge \PYGZam{}e = G[PreV[v]][p[v]];}
+\PYG{c+c1}{//            e.capacity \PYGZhy{}= a[t];}
+\PYG{c+c1}{//            G[v][e.rev].capacity += a[t];}
+\PYG{c+c1}{//        \PYGZcb{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{o}{=}\PYG{n}{t}\PYG{p}{;}\PYG{n}{u}\PYG{o}{!=}\PYG{n}{s}\PYG{p}{;}\PYG{n}{u}\PYG{o}{=}\PYG{n}{e}\PYG{p}{[}\PYG{n}{p}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]].}\PYG{n}{u}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{e}\PYG{p}{[}\PYG{n}{p}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]].}\PYG{n}{w}\PYG{o}{\PYGZhy{}=}\PYG{n}{a}\PYG{p}{[}\PYG{n}{t}\PYG{p}{];}
+            \PYG{n}{e}\PYG{p}{[}\PYG{n}{p}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{].}\PYG{n}{w}\PYG{o}{+=}\PYG{n}{a}\PYG{p}{[}\PYG{n}{t}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{()\PYGZob{}}
+\PYG{c+c1}{//    freopen(\PYGZdq{}in.txt\PYGZdq{},\PYGZdq{}r\PYGZdq{},stdin);}
+    \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{T}\PYG{p}{);}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{T}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{n}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{k}\PYG{p}{);}
+        \PYG{n}{init}\PYG{p}{();}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{w}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{s}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{n}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{k+kt}{int} \PYG{n}{s1}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{n}\PYG{o}{+}\PYG{l+m+mi}{2}\PYG{p}{;}
+        \PYG{k+kt}{int} \PYG{n}{t1}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{n}\PYG{o}{+}\PYG{l+m+mi}{3}\PYG{p}{;}
+        \PYG{n}{t}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{n}\PYG{o}{+}\PYG{l+m+mi}{4}\PYG{p}{;}
+        \PYG{n}{add}\PYG{p}{(}\PYG{n}{s}\PYG{p}{,}\PYG{n}{s1}\PYG{p}{,}\PYG{n}{k}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{);}
+        \PYG{n}{add}\PYG{p}{(}\PYG{n}{t1}\PYG{p}{,}\PYG{n}{t}\PYG{p}{,}\PYG{n}{k}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{);}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{add}\PYG{p}{(}\PYG{n}{s1}\PYG{p}{,}\PYG{n}{i}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{o}{\PYGZhy{}}\PYG{n}{w}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{add}\PYG{p}{(}\PYG{n}{i}\PYG{p}{,}\PYG{n}{i}\PYG{o}{+}\PYG{n}{n}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{add}\PYG{p}{(}\PYG{n}{i}\PYG{o}{+}\PYG{n}{n}\PYG{p}{,}\PYG{n}{t1}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{n}{i}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{j}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+                \PYG{k}{if}\PYG{p}{(}\PYG{n}{w}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{\PYGZgt{}=}\PYG{n}{w}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])\PYGZob{}}
+                    \PYG{n}{add}\PYG{p}{(}\PYG{n}{i}\PYG{o}{+}\PYG{n}{n}\PYG{p}{,}\PYG{n}{j}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{o}{\PYGZhy{}}\PYG{n}{w}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]);}
+                \PYG{p}{\PYGZcb{}}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{nc}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{n}\PYG{o}{+}\PYG{l+m+mi}{4}\PYG{p}{;}
+        \PYG{k+kt}{int} \PYG{n}{flow}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{cost}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{n}{mcmf}\PYG{p}{(}\PYG{n}{flow}\PYG{p}{,}\PYG{n}{cost}\PYG{p}{);}
+        \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZhy{}}\PYG{n}{cost}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

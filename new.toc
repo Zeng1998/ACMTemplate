@@ -33,3 +33,14 @@
 \contentsline {subsubsection}{\numberline {2.4.3}长度大于等于m不同子串个数}{39}{subsubsection.2.4.3}
 \contentsline {subsubsection}{\numberline {2.4.4}字典序第k小子串}{40}{subsubsection.2.4.4}
 \contentsline {subsubsection}{\numberline {2.4.5}循环字典序第k小}{44}{subsubsection.2.4.5}
+\contentsline {subsection}{\numberline {2.5}其他}{45}{subsection.2.5}
+\contentsline {subsubsection}{\numberline {2.5.1}k短路}{45}{subsubsection.2.5.1}
+\contentsline {subsubsection}{\numberline {2.5.2}k小团}{46}{subsubsection.2.5.2}
+\contentsline {subsubsection}{\numberline {2.5.3}floyd最小环}{48}{subsubsection.2.5.3}
+\contentsline {subsubsection}{\numberline {2.5.4}dijk费用流+vector建图}{49}{subsubsection.2.5.4}
+\contentsline {subsubsection}{\numberline {2.5.5}分层图最短路}{52}{subsubsection.2.5.5}
+\contentsline {subsubsection}{\numberline {2.5.6}日期公式}{53}{subsubsection.2.5.6}
+\contentsline {subsubsection}{\numberline {2.5.7}二维RMQ}{54}{subsubsection.2.5.7}
+\contentsline {subsubsection}{\numberline {2.5.8}左偏树+并查集}{56}{subsubsection.2.5.8}
+\contentsline {subsubsection}{\numberline {2.5.9}左偏树+dfs}{57}{subsubsection.2.5.9}
+\contentsline {subsubsection}{\numberline {2.5.10}左偏树+dfs}{59}{subsubsection.2.5.10}

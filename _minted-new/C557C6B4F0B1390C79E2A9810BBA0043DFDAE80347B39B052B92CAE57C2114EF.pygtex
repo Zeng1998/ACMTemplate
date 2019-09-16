@@ -1,0 +1,42 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{N}\PYG{o}{=}\PYG{l+m+mf}{1e5}\PYG{o}{+}\PYG{l+m+mi}{50}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{T}\PYG{p}{,}\PYG{n}{n}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{ms}\PYG{p}{[]}\PYG{o}{=}\PYG{p}{\PYGZob{}}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{l+m+mi}{31}\PYG{p}{,}\PYG{l+m+mi}{28}\PYG{p}{,}\PYG{l+m+mi}{31}\PYG{p}{,}\PYG{l+m+mi}{30}\PYG{p}{,}\PYG{l+m+mi}{31}\PYG{p}{,}\PYG{l+m+mi}{30}\PYG{p}{,}\PYG{l+m+mi}{31}\PYG{p}{,}\PYG{l+m+mi}{31}\PYG{p}{,}\PYG{l+m+mi}{30}\PYG{p}{,}\PYG{l+m+mi}{31}\PYG{p}{,}\PYG{l+m+mi}{30}\PYG{p}{,}\PYG{l+m+mi}{31}\PYG{p}{\PYGZcb{};}
+\PYG{k+kt}{bool} \PYG{n+nf}{leap}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{y}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{return} \PYG{p}{((}\PYG{n}{y}\PYG{o}{\PYGZpc{}}\PYG{l+m+mi}{4}\PYG{o}{==}\PYG{l+m+mi}{0} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{y}\PYG{o}{\PYGZpc{}}\PYG{l+m+mi}{100}\PYG{o}{!=}\PYG{l+m+mi}{0}\PYG{p}{)} \PYG{o}{||} \PYG{n}{y}\PYG{o}{\PYGZpc{}}\PYG{l+m+mi}{400}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//判断日期合法性}
+\PYG{k+kt}{bool} \PYG{n+nf}{check}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{y}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{m}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{d}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{m}\PYG{o}{==}\PYG{l+m+mi}{0} \PYG{o}{||} \PYG{n}{m}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{12} \PYG{o}{||} \PYG{n}{d}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n+nb}{false}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{t}\PYG{o}{=}\PYG{n}{ms}\PYG{p}{[}\PYG{n}{m}\PYG{p}{];}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{leap}\PYG{p}{(}\PYG{n}{y}\PYG{p}{)} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{m}\PYG{o}{==}\PYG{l+m+mi}{2}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{t}\PYG{o}{++}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{d}\PYG{o}{\PYGZlt{}=}\PYG{n}{t}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//基姆拉尔森公式}
+\PYG{k+kt}{bool} \PYG{n+nf}{cl}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{y}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{m}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{d}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{check}\PYG{p}{(}\PYG{n}{y}\PYG{p}{,}\PYG{n}{m}\PYG{p}{,}\PYG{n}{d}\PYG{p}{))\PYGZob{}}
+        \PYG{k}{return} \PYG{n+nb}{false}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//题面...}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{y}\PYG{o}{\PYGZlt{}}\PYG{l+m+mi}{1600}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n+nb}{false}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//1 2月要转成上一年13 14月}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{m}\PYG{o}{\PYGZlt{}=}\PYG{l+m+mi}{2}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{m}\PYG{o}{+=}\PYG{l+m+mi}{12}\PYG{p}{;}
+        \PYG{n}{y}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n}{w}\PYG{o}{=}\PYG{p}{((}\PYG{n}{d}\PYG{o}{+}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{m}\PYG{o}{+}\PYG{l+m+mi}{3}\PYG{o}{*}\PYG{p}{(}\PYG{n}{m}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{/}\PYG{l+m+mi}{5}\PYG{o}{+}\PYG{n}{y}\PYG{o}{+}\PYG{n}{y}\PYG{o}{/}\PYG{l+m+mi}{4}\PYG{o}{\PYGZhy{}}\PYG{n}{y}\PYG{o}{/}\PYG{l+m+mi}{100}\PYG{o}{+}\PYG{n}{y}\PYG{o}{/}\PYG{l+m+mi}{400}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{l+m+mi}{7}\PYG{o}{+}\PYG{l+m+mi}{7}\PYG{p}{)}\PYG{o}{\PYGZpc{}}\PYG{l+m+mi}{7}\PYG{p}{;}
+    \PYG{k}{return} \PYG{n}{w}\PYG{o}{==}\PYG{l+m+mi}{5}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//main}
+    \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
