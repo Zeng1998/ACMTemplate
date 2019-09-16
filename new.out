@@ -13,6 +13,13 @@
 \BOOKMARK [2][-]{subsection.1.11}{Suffix-Automaton}{section.1}% 13
 \BOOKMARK [3][-]{subsubsection.1.11.1}{Usage}{subsection.1.11}% 14
 \BOOKMARK [3][-]{subsubsection.1.11.2}{Memo}{subsection.1.11}% 15
-\BOOKMARK [2][-]{subsection.1.12}{ProblemSet}{section.1}% 16
-\BOOKMARK [3][-]{subsubsection.1.12.1}{Trie}{subsection.1.12}% 17
-\BOOKMARK [3][-]{subsubsection.1.12.2}{Pam}{subsection.1.12}% 18
+\BOOKMARK [1][-]{section.2}{ProblemSet}{}% 16
+\BOOKMARK [2][-]{subsection.2.1}{Trie}{section.2}% 17
+\BOOKMARK [3][-]{subsubsection.2.1.1}{区间异或最大值}{subsection.2.1}% 18
+\BOOKMARK [3][-]{subsubsection.2.1.2}{路径异或最大值}{subsection.2.1}% 19
+\BOOKMARK [3][-]{subsubsection.2.1.3}{子树异或最大值}{subsection.2.1}% 20
+\BOOKMARK [3][-]{subsubsection.2.1.4}{编辑距离}{subsection.2.1}% 21
+\BOOKMARK [3][-]{subsubsection.2.1.5}{trie树上dp}{subsection.2.1}% 22
+\BOOKMARK [3][-]{subsubsection.2.1.6}{Pam}{subsection.2.1}% 23
+\BOOKMARK [3][-]{subsubsection.2.1.7}{双向插入}{subsection.2.1}% 24
+\BOOKMARK [3][-]{subsubsection.2.1.8}{next和fail统计贡献}{subsection.2.1}% 25
