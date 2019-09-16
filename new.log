@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.7.17)  16 SEP 2019 13:33
+This is XeTeX, Version 3.14159265-2.6-0.99998 (TeX Live 2017/Debian) (preloaded format=xelatex 2019.7.17)  16 SEP 2019 19:50
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1510,11 +1510,11 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 2.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 2.
-)
+ [2])
 \tf@toc=\write7
 \openout7 = `new.toc'.
 
- [2] (./_minted-new/default-pyg-prefix.pygstyle)
+ [3] (./_minted-new/default-pyg-prefix.pygstyle)
 (./_minted-new/default.pygstyle)
 (./_minted-new/26E24E8ED46442FA5CFA6DE1EAE81AA08287E55C9AA52EE99AA326046539C93D
 .pygtex
@@ -1542,102 +1542,127 @@ nput line 2.
 
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <12> not available
 (Font)              Font shape `TU/lmtt/b/n' tried instead on input line 5.
-[3])
+[4])
 (./_minted-new/4F89CC5C33067822F59D248D13209B085BDC84066CC04B69406F5D669B48A42D
 .pygtex)
 (./_minted-new/C89E9BD9D960B32821519CC398A277EC84C3492520D6BD28C58171624D57F970
-.pygtex [4] [5])
+.pygtex [5] [6])
 (./_minted-new/083AD0EDF5CF9A7C2DE0CEFAEE02132789BF96E6FEBA00F810E74372C31B81E2
 .pygtex)
 (./_minted-new/33967B0AFFEBF1D6F9BC48E700D718CEAC33BC277C7B529071C427BF8BFDCA9B
 .pygtex)
 (./_minted-new/2EB0B50DDD8FDAEF973CB9B425AB4A5E62B6037883E73F24459C1F6BC6E78AE8
-.pygtex [6] [7])
+.pygtex [7] [8])
 (./_minted-new/45513B99190F4E56F6B21071CA9DFEB0727681BBE0AC827111FB3C01D4928327
 .pygtex)
 (./_minted-new/3FB2D95903EB437C3B8565CD54EDB8A3B62054EBB551E393B87FAD4193BBB9B4
-.pygtex [8] [9])
+.pygtex [9] [10])
 (./_minted-new/BCF2D932B61E1E318A134DC8BF328309A767CEA7D8E7B8708D955501A8147E07
-.pygtex [10] [11])
+.pygtex [11] [12])
 (./_minted-new/B334B05925A4992B1C32E4627B4CCC442682544DDF1274763ACB2127FCF51DD2
-.pygtex [12] [13])
+.pygtex [13] [14])
 (./_minted-new/1826A13AC49A2164179ABB7A1E792C96B84BAFBAB9CFC0AAE4C23E6F1C36B06A
-.pygtex [14] [15]) [16]
+.pygtex [15] [16]) [17]
 (./_minted-new/9F00F9A8D029EAC3CC89E6F1FF1871E39C1340C774F53CC9FE156BF04130D268
-.pygtex [17])
+.pygtex [18])
 (./_minted-new/7B8C673981BE2CCE1FFE11648677FF79487A4CC51D841323E9542853D3CFCE1F
-.pygtex [18] [19])
+.pygtex [19] [20])
 (./_minted-new/7AC35866A574F44EFB8C48EA13D3B07D3233AF1DA1077B4C0BE9BBD22B061CE2
-.pygtex [20] [21])
+.pygtex [21] [22])
 (./_minted-new/AE10AED0D7408D67CD7B93C1CCBD8C8DB27944EDC21DFFC0B2EDBBE3BFCE6826
-.pygtex [22] [23])
+.pygtex [23] [24])
 (./_minted-new/FB05C1629ABE9838A70DB89A2D8D45F69B6D8E8EACCC4C99CE8B2C5FAEF6A9CE
-.pygtex [24] [25])
+.pygtex [25] [26])
 (./_minted-new/BE7DB8C4872F0B57A90377F8469A1E9489A10DA50F07A63B8087AB5F36B0FEE7
-.pygtex [26])
+.pygtex [27])
 (./_minted-new/7EA8F76767EFD309EE7B138057E694F4BFB72C35C05A55D8D606CC63CA1809CB
-.pygtex [27] [28])
+.pygtex [28] [29])
 (./_minted-new/7E0473DF0F18113C526F994A66C59CCF550462D7995D9520C4AD0CA757AAF4E7
-.pygtex [29] [30])
+.pygtex [30] [31])
 (./_minted-new/9D7F3ACF9F9E7A5AE05F32BDBDEEF707C4160562744740EF2698831A61C864AD
-.pygtex [31])
+.pygtex [32])
 (./_minted-new/2988B4C7660A2B3879DE016C3FBE504E7B31602C3346C80BEF2D60504AE3F2D5
-.pygtex [32] [33] [34])
+.pygtex [33] [34] [35])
 (./_minted-new/9F3BC51FD621BC02AF0D098EF8E2647E3F8B8D1729ECAD42D1D3CE6FC4ABF35F
-.pygtex [35] [36])
+.pygtex [36] [37])
 (./_minted-new/3780A31A0F240EBABD5025595CD791997CAE7F42DB0C76BC9C4452DC2FA5D919
-.pygtex [37])
-(./_minted-new/3D7F3F2170105637AC6B80378E2EA6C9328835B86FB2ABE513D035904BD3BA4C
 .pygtex [38])
-(./_minted-new/24FBB50A0C9228D47CA44152518B84EF80CF23135EF762251D010FDDB82F4019
+(./_minted-new/3D7F3F2170105637AC6B80378E2EA6C9328835B86FB2ABE513D035904BD3BA4C
 .pygtex [39])
+(./_minted-new/24FBB50A0C9228D47CA44152518B84EF80CF23135EF762251D010FDDB82F4019
+.pygtex [40])
 (./_minted-new/93BC92AB24E76C4EC90D2C6049EE242CFF7A47512A05A1BD58374ADE258896DE
-.pygtex [40] [41] [42] [43])
+.pygtex [41] [42] [43] [44])
 (./_minted-new/576B1FF4E8B86DC0AE633AF1C9E612568593BD77AC8EF9BEFF49ACBA0D50908B
-.pygtex [44])
-(./_minted-new/426A24D16934480ED17CCC90DAA6BD193E1EECBACAB3423817DBE1A993B21F59
 .pygtex [45])
+(./_minted-new/426A24D16934480ED17CCC90DAA6BD193E1EECBACAB3423817DBE1A993B21F59
+.pygtex [46])
 (./_minted-new/C6A2DFB1B5FE3C773B166C3DCD0E476BCF0F89E97D2548CEB8712C607A3439BE
-.pygtex [46] [47])
+.pygtex [47] [48])
 (./_minted-new/B7E14AA53B687230FF47C2084086EFC7D1085C8C794C399A9F428F3D202B1A41
-.pygtex [48])
+.pygtex [49])
 (./_minted-new/0DE1EEB0BAAACCE747E2329CB3901100615BFA801E1C5575A85704901A7390A3
-.pygtex [49] [50] [51])
+.pygtex [50] [51] [52])
+(./_minted-new/154BC571DA9B243DE5DB909660CFA8A4A576B5B460BE43583584136DAC148B46
+.pygtex [53] [54])
 (./_minted-new/102B32533968D7306CC5DB7E2CE39BAEBC9130BFB05A60E7F371EEA6D9DA48A7
-.pygtex [52])
-(./_minted-new/C557C6B4F0B1390C79E2A9810BBA0043DFDAE80347B39B052B92CAE57C2114EF
-.pygtex [53])
-(./_minted-new/2234AC5C3E428FE9593600AE9C171AACA2184437644FE538A73FEEFC06A10444
-.pygtex [54])
-(./_minted-new/6BBA22F9BADF30FF5CF71770B41125E53A6CC85B4F05BA6BE928FDBA6E2BBD87
 .pygtex [55] [56])
+(./_minted-new/C557C6B4F0B1390C79E2A9810BBA0043DFDAE80347B39B052B92CAE57C2114EF
+.pygtex)
+(./_minted-new/2234AC5C3E428FE9593600AE9C171AACA2184437644FE538A73FEEFC06A10444
+.pygtex [57] [58])
+(./_minted-new/6BBA22F9BADF30FF5CF71770B41125E53A6CC85B4F05BA6BE928FDBA6E2BBD87
+.pygtex [59])
 (./_minted-new/C3683F1BE772DFFE7277FFDA34203D1D1B02B4EB8FA8C5E6F6BD12B409FF160B
-.pygtex [57])
-runsystem(pygmentize -l c++ -f latex -P commandprefix=PYG -F tokenmerge -o _min
-ted-new/404339FC89B35EA1E8B30F133B7C49F4ACF2AE6C9F724422D3054371BE2CC987.pygtex
- code/luoguP3261.cpp)...executed.
-
-
+.pygtex [60] [61])
 (./_minted-new/404339FC89B35EA1E8B30F133B7C49F4ACF2AE6C9F724422D3054371BE2CC987
-.pygtex [58] [59] [60])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 181.
- [61]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 181.
+.pygtex [62] [63])
+(./_minted-new/2611D27D40D9799EC27B2CE647A8D04A37C9EACB65B7B44E1FB7248F789FF468
+.pygtex [64] [65])
+(./_minted-new/253600323BB68FCD1FC50F646FA575E10C9499BE030198F9F5610F5985386FD9
+.pygtex [66] [67])
+(./_minted-new/12D00D784CDE757B9DEF0485C66C987E00F6EABEA05A76677AB672AFBA19A470
+.pygtex [68])
+(./_minted-new/B4D7223F730CEA435C3ADA54EF23154C849314602FC6D55AE46571BBA825D0CA
+.pygtex [69])
+(./_minted-new/EE19E14B7C65CD11DAC902A6F9E15473E5DCD14ED9D7693F4FAF3FB3C1D9E549
+.pygtex [70] [71] [72])
+(./_minted-new/DCBF0295EC1F0ABC1E83D045879268B22D9BB9BA13767854F237D051430B8B48
+.pygtex [73] [74] [75] [76] [77])
+(./_minted-new/278D56EE9B7051C97E16B2949D87DA98C5FA181CD04E3DB29C957A11C6A03CE5
+.pygtex [78] [79] [80])
+runsystem(pygmentize -l c++ -f latex -P commandprefix=PYG -F tokenmerge -o _min
+ted-new/AFF50A93BE6577172A64C0F8208D633CEA9A26AEEF88F849136082CCB92ADFE7.pygtex
+ code/19njA.cpp)...executed.
+
+
+(./_minted-new/AFF50A93BE6577172A64C0F8208D633CEA9A26AEEF88F849136082CCB92ADFE7
+.pygtex [81] [82])
+runsystem(pygmentize -l c++ -f latex -P commandprefix=PYG -F tokenmerge -o _min
+ted-new/7BDE1D7C3FBB7F6AF54ACD40EFB5141DD9CCCEBEA19C1AFE25200818C9E7A41B.pygtex
+ code/19xzI.cpp)...executed.
+
+
+(./_minted-new/7BDE1D7C3FBB7F6AF54ACD40EFB5141DD9CCCEBEA19C1AFE25200818C9E7A41B
+.pygtex [83] [84])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 201.
+ [85]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 201.
  (./new.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 181.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 181.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 201.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 201.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 28558 strings out of 494558
- 557109 string characters out of 6167440
- 675246 words of memory out of 5000000
- 32087 multiletter control sequences out of 15000+600000
+ 28607 strings out of 494558
+ 561084 string characters out of 6167440
+ 675521 words of memory out of 5000000
+ 32107 multiletter control sequences out of 15000+600000
  534481 words of font info for 60 fonts, out of 8000000 for 9000
  264 hyphenation exceptions out of 8191
- 53i,11n,76p,10438b,572s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 53i,12n,76p,10438b,572s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on new.pdf (61 pages).
+Output written on new.pdf (85 pages).

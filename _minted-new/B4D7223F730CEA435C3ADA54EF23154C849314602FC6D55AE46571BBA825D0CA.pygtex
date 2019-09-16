@@ -1,0 +1,45 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{//给定一个排列45231，求排名}
+\PYG{c+c1}{//每个数后面比该数小的数分别有[3 3 1 1 0]个}
+\PYG{c+c1}{//所以排名为3*4!+3*3!+1*2!+1*1+0*0!+1=94}
+\PYG{c+c1}{//给定排名96，求对应排列(n=5)}
+\PYG{c+c1}{//96\PYGZhy{}1=95 95/4!=3...23 23/3!=3...5 5/2!=2...1 1/1!=0...0}
+\PYG{c+c1}{//商就对应每个数后面比该数小的数的个数}
+\PYG{c+c1}{//因为阶乘，适合n小的情况}
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{N}\PYG{o}{=}\PYG{l+m+mi}{1001}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{fac}\PYG{p}{[]}\PYG{o}{=}\PYG{p}{\PYGZob{}}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{2}\PYG{p}{,}\PYG{l+m+mi}{6}\PYG{p}{,}\PYG{l+m+mi}{24}\PYG{p}{,}\PYG{l+m+mi}{120}\PYG{p}{,}\PYG{l+m+mi}{720}\PYG{p}{,}\PYG{l+m+mi}{5040}\PYG{p}{,}\PYG{l+m+mi}{40320}\PYG{p}{\PYGZcb{};}
+\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{,}\PYG{n}{m}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{a}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{vis}\PYG{p}{[}\PYG{l+m+mi}{15}\PYG{p}{];}
+\PYG{k+kt}{void} \PYG{n+nf}{solve}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{m}\PYG{p}{)\PYGZob{}}
+     \PYG{n}{m}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+     \PYG{n}{memset}\PYG{p}{(}\PYG{n}{a}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{a}\PYG{p}{));}
+     \PYG{n}{memset}\PYG{p}{(}\PYG{n}{vis}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{vis}\PYG{p}{));}
+     \PYG{k+kt}{int} \PYG{n}{k}\PYG{o}{=}\PYG{n}{m}\PYG{p}{;}
+     \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+          \PYG{k+kt}{int} \PYG{n}{t}\PYG{o}{=}\PYG{n}{k}\PYG{o}{/}\PYG{n}{fac}\PYG{p}{[}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{];}
+          \PYG{k+kt}{int} \PYG{n}{j}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+          \PYG{k}{for}\PYG{p}{(;}\PYG{n}{j}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{j}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+               \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{vis}\PYG{p}{[}\PYG{n}{j}\PYG{p}{])\PYGZob{}}
+                   \PYG{k}{if}\PYG{p}{(}\PYG{n}{t}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+                       \PYG{k}{break}\PYG{p}{;}
+                   \PYG{p}{\PYGZcb{}}
+                   \PYG{n}{t}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+               \PYG{p}{\PYGZcb{}}
+          \PYG{p}{\PYGZcb{}}
+          \PYG{n}{vis}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+          \PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{j}\PYG{p}{;}
+          \PYG{n}{k}\PYG{o}{=}\PYG{n}{k}\PYG{o}{\PYGZpc{}}\PYG{n}{fac}\PYG{p}{[}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{];}
+     \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{()\PYGZob{}}
+    \PYG{k}{while}\PYG{p}{(}\PYG{o}{\PYGZti{}}\PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{n}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{m}\PYG{p}{))\PYGZob{}}
+        \PYG{n}{solve}\PYG{p}{(}\PYG{n}{n}\PYG{p}{,}\PYG{n}{m}\PYG{p}{);}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}c\PYGZdq{}}\PYG{p}{,}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],}\PYG{n}{i}\PYG{o}{==}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{o}{?}\PYG{l+s+sc}{\PYGZsq{}\PYGZbs{}n\PYGZsq{}}\PYG{o}{:}\PYG{l+s+sc}{\PYGZsq{} \PYGZsq{}}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

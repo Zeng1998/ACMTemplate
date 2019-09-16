@@ -1,0 +1,177 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}include}\PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{c+cp}{\PYGZsh{}define ls tr[u][0]}
+\PYG{c+cp}{\PYGZsh{}define rs tr[u][1]}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{N}\PYG{o}{=}\PYG{l+m+mf}{3e5}\PYG{o}{+}\PYG{l+m+mi}{7}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{,}\PYG{n}{m}\PYG{p}{,}\PYG{n}{a}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{o}\PYG{p}{,}\PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{;}
+\PYG{k}{struct} \PYG{n}{LCT}\PYG{p}{\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{fa}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{N}\PYG{p}{][}\PYG{l+m+mi}{2}\PYG{p}{],}\PYG{n}{xr}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{lz}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{q}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{top}\PYG{p}{;}
+    \PYG{c+c1}{//维护信息，这里维护路径点权异或值}
+    \PYG{k+kt}{void} \PYG{n+nf}{pushup}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{xr}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{n}{xr}\PYG{p}{[}\PYG{n}{ls}\PYG{p}{]}\PYG{o}{\PYGZca{}}\PYG{n}{xr}\PYG{p}{[}\PYG{n}{rs}\PYG{p}{]}\PYG{o}{\PYGZca{}}\PYG{n}{a}\PYG{p}{[}\PYG{n}{u}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//区间翻转，左右子树交换}
+    \PYG{k+kt}{void} \PYG{n+nf}{change}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{temp}\PYG{o}{=}\PYG{n}{ls}\PYG{p}{;}
+        \PYG{n}{ls}\PYG{o}{=}\PYG{n}{rs}\PYG{p}{;}
+        \PYG{n}{rs}\PYG{o}{=}\PYG{n}{temp}\PYG{p}{;}
+        \PYG{n}{lz}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{\PYGZca{}=}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//下传标记}
+    \PYG{k+kt}{void} \PYG{n+nf}{pushdown}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{lz}\PYG{p}{[}\PYG{n}{u}\PYG{p}{])\PYGZob{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{ls}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{change}\PYG{p}{(}\PYG{n}{ls}\PYG{p}{);}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{rs}\PYG{p}{)\PYGZob{}}
+                \PYG{n}{change}\PYG{p}{(}\PYG{n}{rs}\PYG{p}{);}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{lz}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//判断u是否为Splay的根，父节点是Path father}
+    \PYG{k+kt}{bool} \PYG{n+nf}{isroot}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{p}{(}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{!=}\PYG{n}{u} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{tr}\PYG{p}{[}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]][}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{!=}\PYG{n}{u}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n+nf}{get}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{tr}\PYG{p}{[}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]][}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{==}\PYG{n}{x}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{int} \PYG{n+nf}{connect}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{f}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{son}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{fa}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{=}\PYG{n}{f}\PYG{p}{;}
+        \PYG{n}{tr}\PYG{p}{[}\PYG{n}{f}\PYG{p}{][}\PYG{n}{son}\PYG{p}{]}\PYG{o}{=}\PYG{n}{x}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//Splay单旋}
+    \PYG{k+kt}{void} \PYG{n+nf}{rotate}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{y}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{x}\PYG{p}{];}
+        \PYG{k+kt}{int} \PYG{n}{z}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{y}\PYG{p}{];}
+        \PYG{k+kt}{int} \PYG{n}{xs}\PYG{o}{=}\PYG{n}{get}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+        \PYG{k+kt}{int} \PYG{n}{ys}\PYG{o}{=}\PYG{n}{get}\PYG{p}{(}\PYG{n}{y}\PYG{p}{);}
+        \PYG{c+c1}{//区别于普通Splay，如果y已经是Splay的根，z就不属于该Splay}
+        \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{isroot}\PYG{p}{(}\PYG{n}{y}\PYG{p}{))\PYGZob{}}
+            \PYG{n}{connect}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{z}\PYG{p}{,}\PYG{n}{ys}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{n}{fa}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{=}\PYG{n}{z}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k+kt}{int} \PYG{n}{b}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{x}\PYG{p}{][}\PYG{n}{xs}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{];}
+        \PYG{n}{connect}\PYG{p}{(}\PYG{n}{b}\PYG{p}{,}\PYG{n}{y}\PYG{p}{,}\PYG{n}{xs}\PYG{p}{);}
+        \PYG{n}{connect}\PYG{p}{(}\PYG{n}{y}\PYG{p}{,}\PYG{n}{x}\PYG{p}{,}\PYG{n}{xs}\PYG{o}{\PYGZca{}}\PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{n}{pushup}\PYG{p}{(}\PYG{n}{y}\PYG{p}{);}
+        \PYG{n}{pushup}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k+kt}{void} \PYG{n+nf}{splay}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//区别于普通Splay}
+        \PYG{n}{top}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{n}{q}\PYG{p}{[}\PYG{n}{top}\PYG{p}{]}\PYG{o}{=}\PYG{n}{x}\PYG{p}{;}
+        \PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{n}{x}\PYG{p}{;}
+        \PYG{k}{while}\PYG{p}{(}\PYG{o}{!}\PYG{n}{isroot}\PYG{p}{(}\PYG{n}{i}\PYG{p}{))\PYGZob{}}
+            \PYG{n}{q}\PYG{p}{[}\PYG{o}{++}\PYG{n}{top}\PYG{p}{]}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+            \PYG{n}{i}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{top}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{pushdown}\PYG{p}{(}\PYG{n}{q}\PYG{p}{[}\PYG{n}{top}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{]);}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{while}\PYG{p}{(}\PYG{o}{!}\PYG{n}{isroot}\PYG{p}{(}\PYG{n}{x}\PYG{p}{))\PYGZob{}}
+            \PYG{k+kt}{int} \PYG{n}{y}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{x}\PYG{p}{];}
+            \PYG{k+kt}{int} \PYG{n}{z}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{y}\PYG{p}{];}
+            \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{isroot}\PYG{p}{(}\PYG{n}{y}\PYG{p}{))\PYGZob{}}
+                \PYG{n}{rotate}\PYG{p}{(}\PYG{n}{get}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}\PYG{o}{==}\PYG{n}{get}\PYG{p}{(}\PYG{n}{y}\PYG{p}{)}\PYG{o}{?}\PYG{n+nl}{y}\PYG{p}{:}\PYG{n}{x}\PYG{p}{);}
+            \PYG{p}{\PYGZcb{}}
+            \PYG{n}{rotate}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//打通根到u的实链，得到一个中序遍历以根开始、以u结束的Splay }
+    \PYG{k+kt}{void} \PYG{n+nf}{access}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{)\PYGZob{}}
+        \PYG{c+cm}{/**}
+\PYG{c+cm}{         * 先将x旋至所在Splay的根，然后断开右子树，然后沿着偏爱路径往上爬}
+\PYG{c+cm}{         * 每遇到一条虚边，把虚边连向的节点y旋至所在Splay的根，断开y的右子树，并把x所在splay接在y的右子树}
+\PYG{c+cm}{         * Splay中右儿子==\PYGZgt{}深度大，要打通的实链中u是深度最大的，从下往上}
+\PYG{c+cm}{         * 因此每次将旋转后的Splay接到下一个Splay的右儿子上}
+\PYG{c+cm}{         */}
+        \PYG{k+kt}{int} \PYG{n}{x}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{c+c1}{//u不为整个LCT的根}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{u}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//将u旋到根}
+            \PYG{n}{splay}\PYG{p}{(}\PYG{n}{u}\PYG{p}{);}
+            \PYG{c+c1}{//断开右子树，将x接在u的右子树}
+            \PYG{n}{connect}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{u}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{);}
+            \PYG{n}{pushup}\PYG{p}{(}\PYG{n}{u}\PYG{p}{);}
+            \PYG{c+c1}{//往上爬}
+            \PYG{n}{x}\PYG{o}{=}\PYG{n}{u}\PYG{p}{;}
+            \PYG{n}{u}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{u}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//将u变为整个LCT的根}
+    \PYG{k+kt}{void} \PYG{n+nf}{makeroot}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//access后，u成为所在Splay中深度最大的点}
+        \PYG{n}{access}\PYG{p}{(}\PYG{n}{u}\PYG{p}{);}
+        \PYG{c+c1}{//splay后，u旋至Splay的根，没有右儿子}
+        \PYG{n}{splay}\PYG{p}{(}\PYG{n}{u}\PYG{p}{);}
+        \PYG{c+c1}{//翻转整个Splay，u没有左子树，也就是u是深度最小的点，也就是LCT的根}
+        \PYG{n}{change}\PYG{p}{(}\PYG{n}{u}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//查找u所在原树的根}
+    \PYG{k+kt}{int} \PYG{n+nf}{find}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//构造出新的Splay后，不断找左儿子，即深度小的}
+        \PYG{n}{access}\PYG{p}{(}\PYG{n}{u}\PYG{p}{);}
+        \PYG{c+c1}{//find(u)会把u旋至Splay的根}
+        \PYG{n}{splay}\PYG{p}{(}\PYG{n}{u}\PYG{p}{);}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{ls}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{pushdown}\PYG{p}{(}\PYG{n}{u}\PYG{p}{);}
+            \PYG{n}{u}\PYG{o}{=}\PYG{n}{ls}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//加上这个就WA了一个点}
+        \PYG{c+c1}{// splay(u);}
+        \PYG{k}{return} \PYG{n}{u}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//拉出一条u\PYGZhy{}v的路径用Splay维护，以v为根}
+    \PYG{k+kt}{void} \PYG{n+nf}{split}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{v}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{makeroot}\PYG{p}{(}\PYG{n}{u}\PYG{p}{);}
+        \PYG{n}{access}\PYG{p}{(}\PYG{n}{v}\PYG{p}{);}
+        \PYG{n}{splay}\PYG{p}{(}\PYG{n}{v}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//断开边(u,v)}
+    \PYG{k+kt}{void} \PYG{n+nf}{cut}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{v}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{makeroot}\PYG{p}{(}\PYG{n}{u}\PYG{p}{);}
+        \PYG{c+c1}{//(u,v)不一定合法}
+        \PYG{c+c1}{//1.边存在 2.v是u的父节点 3.v没有右儿子}
+        \PYG{c+c1}{//find(v)调用了access(v)，u到v的实链构造一个Splay，v成了Splay的根}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{find}\PYG{p}{(}\PYG{n}{v}\PYG{p}{)}\PYG{o}{==}\PYG{n}{u} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{fa}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{==}\PYG{n}{v} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{o}{!}\PYG{n}{rs}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{fa}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{n}{tr}\PYG{p}{[}\PYG{n}{v}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+            \PYG{n}{pushup}\PYG{p}{(}\PYG{n}{v}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//连轻边(x,y)}
+    \PYG{k+kt}{void} \PYG{n+nf}{link}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{v}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{makeroot}\PYG{p}{(}\PYG{n}{u}\PYG{p}{);}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{find}\PYG{p}{(}\PYG{n}{v}\PYG{p}{)}\PYG{o}{!=}\PYG{n}{u}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{fa}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{n}{v}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}\PYG{n}{T}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{()\PYGZob{}}
+    \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{n}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{m}\PYG{p}{);}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+        \PYG{n}{T}\PYG{p}{.}\PYG{n}{xr}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{m}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{o}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{x}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{y}\PYG{p}{);}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{o}\PYG{o}{==}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//构造出一个Splay维护路径(x,y)，根为y，xr[y]就是该Splay维护的信息}
+            \PYG{n}{T}\PYG{p}{.}\PYG{n}{split}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{);}
+            \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{T}\PYG{p}{.}\PYG{n}{xr}\PYG{p}{[}\PYG{n}{y}\PYG{p}{]);}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{o}\PYG{o}{==}\PYG{l+m+mi}{1}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{T}\PYG{p}{.}\PYG{n}{link}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{o}\PYG{o}{==}\PYG{l+m+mi}{2}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{T}\PYG{p}{.}\PYG{n}{cut}\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{n}{y}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else} \PYG{k}{if}\PYG{p}{(}\PYG{n}{o}\PYG{o}{==}\PYG{l+m+mi}{3}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//先旋到根，再修改点权，pushup更新信息}
+            \PYG{n}{T}\PYG{p}{.}\PYG{n}{splay}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+            \PYG{n}{a}\PYG{p}{[}\PYG{n}{x}\PYG{p}{]}\PYG{o}{=}\PYG{n}{y}\PYG{p}{;}
+            \PYG{n}{T}\PYG{p}{.}\PYG{n}{pushup}\PYG{p}{(}\PYG{n}{x}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}} 
+\end{Verbatim}

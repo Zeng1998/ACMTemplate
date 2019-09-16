@@ -1,0 +1,119 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{c+cp}{\PYGZsh{}define lson i\PYGZlt{}\PYGZlt{}1}
+\PYG{c+cp}{\PYGZsh{}define rson i\PYGZlt{}\PYGZlt{}1|1}
+\PYG{c+cp}{\PYGZsh{}define mid (l+r)/2}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{N}\PYG{o}{=}\PYG{l+m+mf}{1e5}\PYG{o}{+}\PYG{l+m+mi}{50}\PYG{p}{;}
+\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}} \PYG{n}{g}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{ans}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n}{a}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{b}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{n}\PYG{p}{,}\PYG{n}{m}\PYG{p}{,}\PYG{n}{u}\PYG{p}{,}\PYG{n}{v}\PYG{p}{;}
+\PYG{c+c1}{//动态开点权值线段树}
+\PYG{k+kt}{int} \PYG{n}{cnt}\PYG{p}{,}\PYG{n}{sum}\PYG{p}{[}\PYG{n}{N}\PYG{o}{*}\PYG{l+m+mi}{40}\PYG{p}{],}\PYG{n}{ls}\PYG{p}{[}\PYG{n}{N}\PYG{o}{*}\PYG{l+m+mi}{40}\PYG{p}{],}\PYG{n}{rs}\PYG{p}{[}\PYG{n}{N}\PYG{o}{*}\PYG{l+m+mi}{40}\PYG{p}{];}
+\PYG{c+c1}{//两个线段树，维护节点对应(值域)区间的lis/lds最大值}
+\PYG{c+c1}{//比如节点[1,4]维护的就是1的某个子孙节点到1，2的某个子孙节点到2...4的某个子孙节点到4这4个lis/lds中的最大值}
+\PYG{k+kt}{int} \PYG{n}{lis}\PYG{p}{[}\PYG{n}{N}\PYG{o}{*}\PYG{l+m+mi}{40}\PYG{p}{],}\PYG{n}{lds}\PYG{p}{[}\PYG{n}{N}\PYG{o}{*}\PYG{l+m+mi}{40}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{rt}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{c+c1}{//now: 当前节点}
+\PYG{c+c1}{//l,r: 权值线段树范围}
+\PYG{c+c1}{//x: 要插入的值}
+\PYG{c+c1}{//a: 本题中区别维护的是LIS还是LDS}
+\PYG{c+c1}{//c: 要插入的这个权值对应的权值(lis/lds长度)}
+\PYG{c+c1}{//不同于主席树，权值线段树合并是每个根节点rt[i]一个完全的线段树，然后再合并}
+\PYG{k+kt}{void} \PYG{n+nf}{insert}\PYG{p}{(}\PYG{k+kt}{int} \PYG{o}{\PYGZam{}}\PYG{n}{now}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{x}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{c}\PYG{p}{,}\PYG{k+kt}{int} \PYG{o}{*}\PYG{n}{a}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//动态开点}
+    \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{now}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{now}\PYG{o}{=++}\PYG{n}{cnt}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//lis/lds即维护最大值}
+    \PYG{n}{a}\PYG{p}{[}\PYG{n}{now}\PYG{p}{]}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{n}{a}\PYG{p}{[}\PYG{n}{now}\PYG{p}{],}\PYG{n}{c}\PYG{p}{);}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{l}\PYG{o}{==}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{x}\PYG{o}{\PYGZlt{}=}\PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{insert}\PYG{p}{(}\PYG{n}{ls}\PYG{p}{[}\PYG{n}{now}\PYG{p}{],}\PYG{n}{l}\PYG{p}{,}\PYG{n}{mid}\PYG{p}{,}\PYG{n}{x}\PYG{p}{,}\PYG{n}{c}\PYG{p}{,}\PYG{n}{a}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+        \PYG{n}{insert}\PYG{p}{(}\PYG{n}{rs}\PYG{p}{[}\PYG{n}{now}\PYG{p}{],}\PYG{n}{mid}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{r}\PYG{p}{,}\PYG{n}{x}\PYG{p}{,}\PYG{n}{c}\PYG{p}{,}\PYG{n}{a}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//权值线段树合并}
+\PYG{k+kt}{int} \PYG{n+nf}{merge}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{a}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{b}\PYG{p}{)\PYGZob{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{a}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{b}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{b}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{a}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{lis}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{n}{lis}\PYG{p}{[}\PYG{n}{a}\PYG{p}{],}\PYG{n}{lis}\PYG{p}{[}\PYG{n}{b}\PYG{p}{]);}
+    \PYG{n}{lds}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{n}{lds}\PYG{p}{[}\PYG{n}{a}\PYG{p}{],}\PYG{n}{lds}\PYG{p}{[}\PYG{n}{b}\PYG{p}{]);}
+    \PYG{c+c1}{//更新全局答案}
+    \PYG{n}{ans}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{n}{ans}\PYG{p}{,}\PYG{n}{max}\PYG{p}{(}\PYG{n}{lis}\PYG{p}{[}\PYG{n}{ls}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]]}\PYG{o}{+}\PYG{n}{lds}\PYG{p}{[}\PYG{n}{rs}\PYG{p}{[}\PYG{n}{b}\PYG{p}{]],}\PYG{n}{lds}\PYG{p}{[}\PYG{n}{rs}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]]}\PYG{o}{+}\PYG{n}{lis}\PYG{p}{[}\PYG{n}{ls}\PYG{p}{[}\PYG{n}{b}\PYG{p}{]]));}
+    \PYG{n}{ls}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{o}{=}\PYG{n}{merge}\PYG{p}{(}\PYG{n}{ls}\PYG{p}{[}\PYG{n}{a}\PYG{p}{],}\PYG{n}{ls}\PYG{p}{[}\PYG{n}{b}\PYG{p}{]);} \PYG{n}{rs}\PYG{p}{[}\PYG{n}{a}\PYG{p}{]}\PYG{o}{=}\PYG{n}{merge}\PYG{p}{(}\PYG{n}{rs}\PYG{p}{[}\PYG{n}{a}\PYG{p}{],}\PYG{n}{rs}\PYG{p}{[}\PYG{n}{b}\PYG{p}{]);}
+    \PYG{k}{return} \PYG{n}{a}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//权值线段树查询最值(lis或lds)}
+\PYG{c+c1}{//查询now(rt[v])对应权值线段树权值为[ql,qr]之间的a数组最大值}
+\PYG{c+c1}{//即查询以v(u的子节点)结尾，所对应子树权值为[ql,qr]之间的lis或lds，和u的权值结合成一个新的lis或lds}
+\PYG{k+kt}{int} \PYG{n+nf}{query}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{now}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{l}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{r}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{ql}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{qr}\PYG{p}{,}\PYG{k+kt}{int} \PYG{o}{*}\PYG{n}{a}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//因为是动态开点，递归到不存在的节点直接返回}
+    \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{now}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{ql}\PYG{o}{\PYGZlt{}=}\PYG{n}{l} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{qr}\PYG{o}{\PYGZgt{}=}\PYG{n}{r}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{a}\PYG{p}{[}\PYG{n}{now}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{qr}\PYG{o}{\PYGZlt{}=}\PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{query}\PYG{p}{(}\PYG{n}{ls}\PYG{p}{[}\PYG{n}{now}\PYG{p}{],}\PYG{n}{l}\PYG{p}{,}\PYG{n}{mid}\PYG{p}{,}\PYG{n}{ql}\PYG{p}{,}\PYG{n}{qr}\PYG{p}{,}\PYG{n}{a}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{if}\PYG{p}{(}\PYG{n}{ql}\PYG{o}{\PYGZgt{}}\PYG{n}{mid}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{return} \PYG{n}{query}\PYG{p}{(}\PYG{n}{rs}\PYG{p}{[}\PYG{n}{now}\PYG{p}{],}\PYG{n}{mid}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{r}\PYG{p}{,}\PYG{n}{ql}\PYG{p}{,}\PYG{n}{qr}\PYG{p}{,}\PYG{n}{a}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{max}\PYG{p}{(}\PYG{n}{query}\PYG{p}{(}\PYG{n}{ls}\PYG{p}{[}\PYG{n}{now}\PYG{p}{],}\PYG{n}{l}\PYG{p}{,}\PYG{n}{mid}\PYG{p}{,}\PYG{n}{ql}\PYG{p}{,}\PYG{n}{mid}\PYG{p}{,}\PYG{n}{a}\PYG{p}{),}\PYG{n}{query}\PYG{p}{(}\PYG{n}{rs}\PYG{p}{[}\PYG{n}{now}\PYG{p}{],}\PYG{n}{mid}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{r}\PYG{p}{,}\PYG{n}{mid}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{qr}\PYG{p}{,}\PYG{n}{a}\PYG{p}{));}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{void} \PYG{n+nf}{dfs}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{u}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{f}\PYG{p}{)\PYGZob{}}
+    \PYG{k+kt}{int} \PYG{n}{mlis}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{n}{mlds}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{siz}\PYG{o}{=}\PYG{n}{g}\PYG{p}{[}\PYG{n}{u}\PYG{p}{].}\PYG{n}{size}\PYG{p}{();}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{siz}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{v}\PYG{o}{=}\PYG{n}{g}\PYG{p}{[}\PYG{n}{u}\PYG{p}{][}\PYG{n}{i}\PYG{p}{];}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{v}\PYG{o}{==}\PYG{n}{f}\PYG{p}{)\PYGZob{}}
+            \PYG{k}{continue}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{dfs}\PYG{p}{(}\PYG{n}{v}\PYG{p}{,}\PYG{n}{u}\PYG{p}{);}
+        \PYG{c+c1}{//对于u，先递归查询每个子链，再依次合并}
+        \PYG{c+c1}{//这里就是查询从v的子孙节点到v路径上值域为[1,a[u]\PYGZhy{}1]的lis长度}
+        \PYG{k+kt}{int} \PYG{n}{ilis}\PYG{o}{=}\PYG{n}{query}\PYG{p}{(}\PYG{n}{rt}\PYG{p}{[}\PYG{n}{v}\PYG{p}{],}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{m}\PYG{p}{,}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{a}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{lis}\PYG{p}{);}
+        \PYG{c+c1}{//同理}
+        \PYG{k+kt}{int} \PYG{n}{ilds}\PYG{o}{=}\PYG{n}{query}\PYG{p}{(}\PYG{n}{rt}\PYG{p}{[}\PYG{n}{v}\PYG{p}{],}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{m}\PYG{p}{,}\PYG{n}{a}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{m}\PYG{p}{,}\PYG{n}{lds}\PYG{p}{);}
+        \PYG{c+c1}{//合并权值线段树}
+        \PYG{n}{rt}\PYG{p}{[}\PYG{n}{u}\PYG{p}{]}\PYG{o}{=}\PYG{n}{merge}\PYG{p}{(}\PYG{n}{rt}\PYG{p}{[}\PYG{n}{u}\PYG{p}{],}\PYG{n}{rt}\PYG{p}{[}\PYG{n}{v}\PYG{p}{]);}
+        \PYG{c+c1}{//更新全局答案}
+        \PYG{n}{ans}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{n}{ans}\PYG{p}{,}\PYG{n}{max}\PYG{p}{(}\PYG{n}{ilis}\PYG{o}{+}\PYG{n}{mlds}\PYG{p}{,}\PYG{n}{ilds}\PYG{o}{+}\PYG{n}{mlis}\PYG{p}{)}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{);}
+        \PYG{c+c1}{//更新u节点暂时的值(从u的子孙节点到u路径上，以u结尾)}
+        \PYG{n}{mlis}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{n}{mlis}\PYG{p}{,}\PYG{n}{ilis}\PYG{p}{);}
+        \PYG{n}{mlds}\PYG{o}{=}\PYG{n}{max}\PYG{p}{(}\PYG{n}{mlds}\PYG{p}{,}\PYG{n}{ilds}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{//节点u对应的一颗权值线段树，从u的某个子孙节点到u路径上某个值域区间的lis/lds长度}
+    \PYG{n}{insert}\PYG{p}{(}\PYG{n}{rt}\PYG{p}{[}\PYG{n}{u}\PYG{p}{],}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{m}\PYG{p}{,}\PYG{n}{a}\PYG{p}{[}\PYG{n}{u}\PYG{p}{],}\PYG{n}{mlis}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{lis}\PYG{p}{);}
+    \PYG{n}{insert}\PYG{p}{(}\PYG{n}{rt}\PYG{p}{[}\PYG{n}{u}\PYG{p}{],}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{m}\PYG{p}{,}\PYG{n}{a}\PYG{p}{[}\PYG{n}{u}\PYG{p}{],}\PYG{n}{mlds}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{lds}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)\PYGZob{}}
+    \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{n}\PYG{p}{);}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+        \PYG{n}{b}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{sort}\PYG{p}{(}\PYG{n}{b}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{b}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{o}{+}\PYG{n}{n}\PYG{p}{);}
+    \PYG{n}{m}\PYG{o}{=}\PYG{n}{unique}\PYG{p}{(}\PYG{n}{b}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{b}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{o}{+}\PYG{n}{n}\PYG{p}{)}\PYG{o}{\PYGZhy{}}\PYG{n}{b}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{lower\PYGZus{}bound}\PYG{p}{(}\PYG{n}{b}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{n}{b}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{o}{+}\PYG{n}{m}\PYG{p}{,}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])}\PYG{o}{\PYGZhy{}}\PYG{n}{b}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{u}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{v}\PYG{p}{);}
+        \PYG{n}{g}\PYG{p}{[}\PYG{n}{u}\PYG{p}{].}\PYG{n}{push\PYGZus{}back}\PYG{p}{(}\PYG{n}{v}\PYG{p}{);}
+        \PYG{n}{g}\PYG{p}{[}\PYG{n}{v}\PYG{p}{].}\PYG{n}{push\PYGZus{}back}\PYG{p}{(}\PYG{n}{u}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{dfs}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+m+mi}{0}\PYG{p}{);}
+    \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{ans}\PYG{p}{);}
+    \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
