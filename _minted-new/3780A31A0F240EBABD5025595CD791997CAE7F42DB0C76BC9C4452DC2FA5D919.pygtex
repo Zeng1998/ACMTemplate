@@ -1,0 +1,68 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}bits/stdc++.h\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{k}{typedef} \PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{n}{ll}\PYG{p}{;}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{N}\PYG{o}{=}\PYG{l+m+mf}{2e6}\PYG{o}{+}\PYG{l+m+mi}{50}\PYG{p}{;}
+\PYG{k}{struct} \PYG{n}{SAM}\PYG{p}{\PYGZob{}}
+    \PYG{k}{struct} \PYG{n}{state}\PYG{p}{\PYGZob{}}
+        \PYG{k+kt}{int} \PYG{n}{len}\PYG{p}{,}\PYG{n}{fa}\PYG{p}{;}
+        \PYG{c+c1}{//状态对应endpos大小，即子串出现次数}
+        \PYG{k+kt}{int} \PYG{n}{siz}\PYG{p}{;}
+        \PYG{k+kt}{int} \PYG{n}{next}\PYG{p}{[}\PYG{l+m+mi}{26}\PYG{p}{];}
+    \PYG{p}{\PYGZcb{}}\PYG{n}{st}\PYG{p}{[}\PYG{n}{N}\PYG{o}{*}\PYG{l+m+mi}{2}\PYG{p}{];}
+    \PYG{c+c1}{//后缀自动机}
+    \PYG{k+kt}{void} \PYG{n+nf}{topo}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{len}\PYG{p}{)\PYGZob{}}
+        \PYG{c+c1}{//按len从小到大排序 O(n)}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{len}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{ws}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{cnt}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{ws}\PYG{p}{[}\PYG{n}{st}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{len}\PYG{p}{]}\PYG{o}{++}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{len}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{ws}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{+=}\PYG{n}{ws}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{n}{cnt}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZgt{}=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{tp}\PYG{p}{[}\PYG{n}{ws}\PYG{p}{[}\PYG{n}{st}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{len}\PYG{p}{]}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{]}\PYG{o}{=}\PYG{n}{i}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//从叶子节点递推到S，累加siz，得到endpos的大小}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{n}{cnt}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d add \PYGZpc{}d}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{st}\PYG{p}{[}\PYG{n}{tp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]].}\PYG{n}{fa}\PYG{p}{,}\PYG{n}{tp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+            \PYG{n}{st}\PYG{p}{[}\PYG{n}{st}\PYG{p}{[}\PYG{n}{tp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]].}\PYG{n}{fa}\PYG{p}{].}\PYG{n}{siz}\PYG{o}{+=}\PYG{n}{st}\PYG{p}{[}\PYG{n}{tp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]].}\PYG{n}{siz}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{cnt}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d \PYGZpc{}d \PYGZpc{}d}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{i}\PYG{p}{,}\PYG{n}{tp}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],}\PYG{n}{st}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{siz}\PYG{p}{);}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{ll} \PYG{n+nf}{solve}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{k}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{ll} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{cnt}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//siz表示状态的endpos大小，也就是子串集合出现的次数}
+            \PYG{k}{if}\PYG{p}{(}\PYG{n}{st}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{siz}\PYG{o}{==}\PYG{n}{k}\PYG{p}{)\PYGZob{}}
+                \PYG{c+c1}{//st[i].len\PYGZhy{}st[st[i].fa].len表示该状态对应的子串数}
+                \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{st}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{len}\PYG{o}{\PYGZhy{}}\PYG{n}{st}\PYG{p}{[}\PYG{n}{st}\PYG{p}{[}\PYG{n}{i}\PYG{p}{].}\PYG{n}{fa}\PYG{p}{].}\PYG{n}{len}\PYG{p}{;}
+            \PYG{p}{\PYGZcb{}}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}\PYG{n}{ac}\PYG{p}{;}
+\PYG{k+kt}{char} \PYG{n}{s}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{T}\PYG{p}{,}\PYG{n}{k}\PYG{p}{;}
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)\PYGZob{}}
+   \PYG{n}{freopen}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}in.txt\PYGZdq{}}\PYG{p}{,}\PYG{l+s}{\PYGZdq{}r\PYGZdq{}}\PYG{p}{,}\PYG{n}{stdin}\PYG{p}{);}
+    \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{T}\PYG{p}{);}
+    \PYG{k}{while}\PYG{p}{(}\PYG{n}{T}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{k}\PYG{p}{);}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}s\PYGZdq{}}\PYG{p}{,}\PYG{n}{s}\PYG{p}{);}
+        \PYG{k+kt}{int} \PYG{n}{n}\PYG{o}{=}\PYG{n}{strlen}\PYG{p}{(}\PYG{n}{s}\PYG{p}{);}
+        \PYG{n}{ac}\PYG{p}{.}\PYG{n}{init}\PYG{p}{();}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{ac}\PYG{p}{.}\PYG{n}{add}\PYG{p}{(}\PYG{n}{s}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]);}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{ac}\PYG{p}{.}\PYG{n}{topo}\PYG{p}{(}\PYG{n}{n}\PYG{p}{);}
+        \PYG{n}{ll} \PYG{n}{ans}\PYG{o}{=}\PYG{n}{ac}\PYG{p}{.}\PYG{n}{solve}\PYG{p}{(}\PYG{n}{k}\PYG{p}{);}
+        \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}lld}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{ans}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

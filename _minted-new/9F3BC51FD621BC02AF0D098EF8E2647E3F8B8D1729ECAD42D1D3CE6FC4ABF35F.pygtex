@@ -1,0 +1,107 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}cstdio\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}algorithm\PYGZgt{}}
+\PYG{c+cp}{\PYGZsh{}include} \PYG{c+cpf}{\PYGZlt{}cstring\PYGZgt{}}
+\PYG{k}{using} \PYG{k}{namespace} \PYG{n}{std}\PYG{p}{;}
+\PYG{k}{typedef} \PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{n}{ll}\PYG{p}{;}
+\PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{N}\PYG{o}{=}\PYG{l+m+mf}{3e5}\PYG{o}{+}\PYG{l+m+mi}{50}\PYG{p}{;}
+\PYG{k+kt}{char} \PYG{n}{a}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{b}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{s}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{sa}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{rk}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{h}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{t}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{t2}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{c}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{k+kt}{int} \PYG{n}{al}\PYG{p}{,}\PYG{n}{bl}\PYG{p}{,}\PYG{n}{n}\PYG{p}{,}\PYG{n}{k}\PYG{p}{;}
+\PYG{k+kt}{void} \PYG{n+nf}{build}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{n}\PYG{p}{,}\PYG{k+kt}{int} \PYG{n}{m}\PYG{p}{)\PYGZob{}}
+    \PYG{c+c1}{//后缀数组}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{//答案就是对任意两个不同后缀a[i...]和b[j...]的sum(lcp(ai,bj)\PYGZhy{}k+1)}
+\PYG{c+c1}{//两个单调栈，一个维护h[i]，一个维护贡献之和}
+\PYG{n}{ll} \PYG{n}{he}\PYG{p}{[}\PYG{n}{N}\PYG{p}{],}\PYG{n}{ct}\PYG{p}{[}\PYG{n}{N}\PYG{p}{];}
+\PYG{n}{ll} \PYG{n+nf}{solve}\PYG{p}{()\PYGZob{}}
+    \PYG{c+c1}{//考虑用单调栈优化到O(n)，即对于每一个后缀求与前面后缀的lcp之和，不重不漏}
+    \PYG{n}{ll} \PYG{n}{ans}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{c+c1}{//当前后缀与前面每个后缀的lcp之和}
+    \PYG{c+c1}{//由性质可知，当前后缀和前面某一个后缀的lcp应该是之间的h[i]最小值}
+    \PYG{c+c1}{//因此可以将递减的h[i]合并为最小的那个h[min]*cnt}
+    \PYG{n}{ll} \PYG{n}{sum}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k+kt}{int} \PYG{n}{tp}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{k}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{tp}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+            \PYG{n}{sum}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+            \PYG{k}{continue}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{ll} \PYG{n}{cnt}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{c+c1}{//维护单调栈，由于lcp只跟区间h最小值有关，将所有栈顶大于当前h[i]的都合并}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{tp} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{he}\PYG{p}{[}\PYG{n}{tp}\PYG{p}{]}\PYG{o}{\PYGZgt{}}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])\PYGZob{}}
+            \PYG{c+c1}{//减去无效栈顶的贡献(h[i]\PYGZhy{}k+1)}
+            \PYG{n}{sum}\PYG{o}{\PYGZhy{}=}\PYG{p}{(}\PYG{n}{he}\PYG{p}{[}\PYG{n}{tp}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{k}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{*}\PYG{n}{ct}\PYG{p}{[}\PYG{n}{tp}\PYG{p}{];}
+            \PYG{c+c1}{//暂时累计cnt，存储到新的栈顶}
+            \PYG{n}{cnt}\PYG{o}{+=}\PYG{n}{ct}\PYG{p}{[}\PYG{n}{tp}\PYG{p}{];}
+            \PYG{c+c1}{//栈顶出栈}
+            \PYG{n}{tp}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//入栈，保持单调性}
+        \PYG{n}{he}\PYG{p}{[}\PYG{o}{++}\PYG{n}{tp}\PYG{p}{]}\PYG{o}{=}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{al}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+            \PYG{c+c1}{//有效贡献的串，个数加1}
+            \PYG{n}{cnt}\PYG{o}{++}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{ct}\PYG{p}{[}\PYG{n}{tp}\PYG{p}{]}\PYG{o}{=}\PYG{n}{cnt}\PYG{p}{;}
+        \PYG{c+c1}{//累加栈顶贡献}
+        \PYG{n}{sum}\PYG{o}{+=}\PYG{p}{(}\PYG{n}{he}\PYG{p}{[}\PYG{n}{tp}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{k}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{*}\PYG{n}{ct}\PYG{p}{[}\PYG{n}{tp}\PYG{p}{];}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZgt{}}\PYG{n}{al}\PYG{p}{)\PYGZob{}}
+            \PYG{c+c1}{//将当前累加的贡献加到答案中，即b串后缀与前面所有a串后缀的lcp之和}
+            \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{sum}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{tp}\PYG{o}{=}\PYG{n}{sum}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{k}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{tp}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+            \PYG{n}{sum}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+            \PYG{k}{continue}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{ll} \PYG{n}{cnt}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{tp} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{he}\PYG{p}{[}\PYG{n}{tp}\PYG{p}{]}\PYG{o}{\PYGZgt{}}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])\PYGZob{}}
+            \PYG{n}{sum}\PYG{o}{\PYGZhy{}=}\PYG{p}{(}\PYG{n}{he}\PYG{p}{[}\PYG{n}{tp}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{k}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{*}\PYG{n}{ct}\PYG{p}{[}\PYG{n}{tp}\PYG{p}{];}
+            \PYG{n}{cnt}\PYG{o}{+=}\PYG{n}{ct}\PYG{p}{[}\PYG{n}{tp}\PYG{p}{];}
+            \PYG{n}{tp}\PYG{o}{\PYGZhy{}\PYGZhy{}}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{\PYGZgt{}}\PYG{n}{al}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{he}\PYG{p}{[}\PYG{o}{++}\PYG{n}{tp}\PYG{p}{]}\PYG{o}{=}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+            \PYG{n}{ct}\PYG{p}{[}\PYG{n}{tp}\PYG{p}{]}\PYG{o}{=}\PYG{n}{cnt}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+            \PYG{n}{sum}\PYG{o}{+=}\PYG{p}{(}\PYG{n}{he}\PYG{p}{[}\PYG{n}{tp}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{k}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{*}\PYG{n}{ct}\PYG{p}{[}\PYG{n}{tp}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}\PYG{k}{else}\PYG{p}{\PYGZob{}}
+            \PYG{n}{he}\PYG{p}{[}\PYG{o}{++}\PYG{n}{tp}\PYG{p}{]}\PYG{o}{=}\PYG{n}{h}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+            \PYG{n}{ct}\PYG{p}{[}\PYG{n}{tp}\PYG{p}{]}\PYG{o}{=}\PYG{n}{cnt}\PYG{p}{;}
+            \PYG{n}{sum}\PYG{o}{+=}\PYG{p}{(}\PYG{n}{he}\PYG{p}{[}\PYG{n}{tp}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{k}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{o}{*}\PYG{n}{ct}\PYG{p}{[}\PYG{n}{tp}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//累加b串后缀与前面所有a串后缀的lcp之和}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{sa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{\PYGZlt{}}\PYG{n}{al}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{ans}\PYG{o}{+=}\PYG{n}{sum}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{n}{ans}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{k+kt}{int} \PYG{n+nf}{main}\PYG{p}{()\PYGZob{}}
+\PYG{c+c1}{//    freopen(\PYGZdq{}in.txt\PYGZdq{},\PYGZdq{}r\PYGZdq{},stdin);}
+    \PYG{k}{while}\PYG{p}{(}\PYG{o}{\PYGZti{}}\PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}d\PYGZdq{}}\PYG{p}{,}\PYG{o}{\PYGZam{}}\PYG{n}{k}\PYG{p}{)} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{k}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}s\PYGZdq{}}\PYG{p}{,}\PYG{n}{a}\PYG{p}{);}
+        \PYG{n}{scanf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}s\PYGZdq{}}\PYG{p}{,}\PYG{n}{b}\PYG{p}{);}
+        \PYG{n}{al}\PYG{o}{=}\PYG{n}{strlen}\PYG{p}{(}\PYG{n}{a}\PYG{p}{);}
+        \PYG{n}{bl}\PYG{o}{=}\PYG{n}{strlen}\PYG{p}{(}\PYG{n}{b}\PYG{p}{);}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{al}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{s}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{s}\PYG{p}{[}\PYG{n}{al}\PYG{p}{]}\PYG{o}{=}\PYG{l+s+sc}{\PYGZsq{}\PYGZti{}\PYGZsq{}}\PYG{p}{;}
+        \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}}\PYG{n}{bl}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{s}\PYG{p}{[}\PYG{n}{al}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{o}{+}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{b}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{n}\PYG{o}{=}\PYG{n}{al}\PYG{o}{+}\PYG{n}{bl}\PYG{o}{+}\PYG{l+m+mi}{1}\PYG{p}{;}
+        \PYG{n}{s}\PYG{p}{[}\PYG{n}{n}\PYG{p}{]}\PYG{o}{=}\PYG{l+s+sc}{\PYGZsq{}\PYGZbs{}0\PYGZsq{}}\PYG{p}{;}
+        \PYG{n}{build}\PYG{p}{(}\PYG{n}{n}\PYG{p}{,}\PYG{l+m+mi}{300}\PYG{p}{);}
+        \PYG{n}{ll} \PYG{n}{ans}\PYG{o}{=}\PYG{n}{solve}\PYG{p}{();}
+        \PYG{n}{printf}\PYG{p}{(}\PYG{l+s}{\PYGZdq{}\PYGZpc{}lld}\PYG{l+s+se}{\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}\PYG{n}{ans}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{return} \PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

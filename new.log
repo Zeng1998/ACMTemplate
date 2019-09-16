@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2019.3.4)  16 SEP 2019 08:50
+This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2019.3.4)  16 SEP 2019 09:42
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1273,11 +1273,11 @@ LaTeX Info: Redefining \nameref on input line 22.
 * layoutoffset:(h,v)=(0.0pt,0.0pt)
 * modes: 
 * h-part:(L,W,R)=(56.9055pt, 483.69687pt, 56.9055pt)
-* v-part:(T,H,B)=(56.9055pt, 759.6886pt, 28.45274pt)
+* v-part:(T,H,B)=(56.9055pt, 731.23584pt, 56.9055pt)
 * \paperwidth=597.50787pt
 * \paperheight=845.04684pt
 * \textwidth=483.69687pt
-* \textheight=759.6886pt
+* \textheight=731.23584pt
 * \oddsidemargin=-15.36449pt
 * \evensidemargin=-15.36449pt
 * \topmargin=-55.36449pt
@@ -1347,19 +1347,19 @@ nput line 2.
 
 LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <12> not available
 (Font)              Font shape `TU/lmtt/b/n' tried instead on input line 5.
-)
+[3])
 (./_minted-new/4F89CC5C33067822F59D248D13209B085BDC84066CC04B69406F5D669B48A42D
-.pygtex [3])
+.pygtex)
 (./_minted-new/C89E9BD9D960B32821519CC398A277EC84C3492520D6BD28C58171624D57F970
-.pygtex [4])
+.pygtex [4] [5])
 (./_minted-new/083AD0EDF5CF9A7C2DE0CEFAEE02132789BF96E6FEBA00F810E74372C31B81E2
-.pygtex [5])
+.pygtex)
 (./_minted-new/33967B0AFFEBF1D6F9BC48E700D718CEAC33BC277C7B529071C427BF8BFDCA9B
 .pygtex)
 (./_minted-new/2EB0B50DDD8FDAEF973CB9B425AB4A5E62B6037883E73F24459C1F6BC6E78AE8
-.pygtex [6])
+.pygtex [6] [7])
 (./_minted-new/45513B99190F4E56F6B21071CA9DFEB0727681BBE0AC827111FB3C01D4928327
-.pygtex [7])
+.pygtex)
 (./_minted-new/3FB2D95903EB437C3B8565CD54EDB8A3B62054EBB551E393B87FAD4193BBB9B4
 .pygtex [8] [9])
 (./_minted-new/BCF2D932B61E1E318A134DC8BF328309A767CEA7D8E7B8708D955501A8147E07
@@ -1367,43 +1367,83 @@ LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <12> not available
 (./_minted-new/B334B05925A4992B1C32E4627B4CCC442682544DDF1274763ACB2127FCF51DD2
 .pygtex [12] [13])
 (./_minted-new/1826A13AC49A2164179ABB7A1E792C96B84BAFBAB9CFC0AAE4C23E6F1C36B06A
-.pygtex [14]) [15]
+.pygtex [14] [15]) [16]
 (./_minted-new/9F00F9A8D029EAC3CC89E6F1FF1871E39C1340C774F53CC9FE156BF04130D268
-.pygtex [16])
+.pygtex [17])
 (./_minted-new/7B8C673981BE2CCE1FFE11648677FF79487A4CC51D841323E9542853D3CFCE1F
-.pygtex [17] [18])
+.pygtex [18] [19])
 (./_minted-new/7AC35866A574F44EFB8C48EA13D3B07D3233AF1DA1077B4C0BE9BBD22B061CE2
-.pygtex [19] [20])
+.pygtex [20] [21])
 (./_minted-new/AE10AED0D7408D67CD7B93C1CCBD8C8DB27944EDC21DFFC0B2EDBBE3BFCE6826
-.pygtex [21] [22])
+.pygtex [22] [23])
 (./_minted-new/FB05C1629ABE9838A70DB89A2D8D45F69B6D8E8EACCC4C99CE8B2C5FAEF6A9CE
-.pygtex [23] [24])
+.pygtex [24] [25])
 (./_minted-new/BE7DB8C4872F0B57A90377F8469A1E9489A10DA50F07A63B8087AB5F36B0FEE7
-.pygtex [25])
+.pygtex [26])
 (./_minted-new/7EA8F76767EFD309EE7B138057E694F4BFB72C35C05A55D8D606CC63CA1809CB
-.pygtex [26] [27])
+.pygtex [27] [28])
 (./_minted-new/7E0473DF0F18113C526F994A66C59CCF550462D7995D9520C4AD0CA757AAF4E7
-.pygtex [28] [29])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 142.
- [30]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 142.
+.pygtex [29] [30])
+(./_minted-new/9D7F3ACF9F9E7A5AE05F32BDBDEEF707C4160562744740EF2698831A61C864AD
+.pygtex [31])
+(./_minted-new/2988B4C7660A2B3879DE016C3FBE504E7B31602C3346C80BEF2D60504AE3F2D5
+.pygtex [32] [33] [34])
+(./_minted-new/9F3BC51FD621BC02AF0D098EF8E2647E3F8B8D1729ECAD42D1D3CE6FC4ABF35F
+.pygtex [35] [36])
+runsystem(pygmentize -l c++ -f latex -P commandprefix=PYG -F tokenmerge -o _min
+ted-new/3780A31A0F240EBABD5025595CD791997CAE7F42DB0C76BC9C4452DC2FA5D919.pygtex
+ code/hdu6194.cpp)...executed.
+
+
+(./_minted-new/3780A31A0F240EBABD5025595CD791997CAE7F42DB0C76BC9C4452DC2FA5D919
+.pygtex [37])
+runsystem(pygmentize -l c++ -f latex -P commandprefix=PYG -F tokenmerge -o _min
+ted-new/3D7F3F2170105637AC6B80378E2EA6C9328835B86FB2ABE513D035904BD3BA4C.pygtex
+ code/luoguP2408.cpp)...executed.
+
+
+(./_minted-new/3D7F3F2170105637AC6B80378E2EA6C9328835B86FB2ABE513D035904BD3BA4C
+.pygtex [38])
+(./_minted-new/24FBB50A0C9228D47CA44152518B84EF80CF23135EF762251D010FDDB82F4019
+.pygtex [39])
+(./_minted-new/93BC92AB24E76C4EC90D2C6049EE242CFF7A47512A05A1BD58374ADE258896DE
+.pygtex [40] [41] [42] [43])
+runsystem(pygmentize -l c++ -f latex -P commandprefix=PYG -F tokenmerge -o _min
+ted-new/576B1FF4E8B86DC0AE633AF1C9E612568593BD77AC8EF9BEFF49ACBA0D50908B.pygtex
+ code/luoguP1368.cpp)...executed.
+
+
+(./_minted-new/576B1FF4E8B86DC0AE633AF1C9E612568593BD77AC8EF9BEFF49ACBA0D50908B
+.pygtex [44])
+runsystem(rm _minted-new/1DD3206A0E0FF25F0E9FCEE57DB9F23C7CAE7F42DB0C76BC9C4452
+DC2FA5D919.pygtex)...executed.
+
+runsystem(rm _minted-new/6FF0E3429FFC91721BEE5BF0E2CC5917328835B86FB2ABE513D035
+904BD3BA4C.pygtex)...executed.
+
+runsystem(rm _minted-new/67368FF9CC652132FF8F289084C42D908593BD77AC8EF9BEFF49AC
+BA0D50908B.pygtex)...executed.
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 160.
+ [45]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 160.
  (./new.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 142.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 142.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 160.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 160.
 Package rerunfilecheck Info: File `new.out' has not changed.
-(rerunfilecheck)             Checksum: 82CFB650646B627345151E04B7957613.
+(rerunfilecheck)             Checksum: 75AD65FF03898DB083BE04323A17A323.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 23574 strings out of 492970
- 476945 string characters out of 6133519
- 630589 words of memory out of 5000000
- 27327 multiletter control sequences out of 15000+600000
+ 23612 strings out of 492970
+ 479721 string characters out of 6133519
+ 625890 words of memory out of 5000000
+ 27338 multiletter control sequences out of 15000+600000
  534457 words of font info for 57 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 46i,11n,76p,10438b,557s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 46i,11n,76p,10438b,573s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on new.pdf (30 pages).
+Output written on new.pdf (45 pages).

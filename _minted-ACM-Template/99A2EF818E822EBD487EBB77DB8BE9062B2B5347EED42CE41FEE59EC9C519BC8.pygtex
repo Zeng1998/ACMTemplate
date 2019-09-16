@@ -1,0 +1,39 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{/*}
+\PYG{c+cm}{ * 笛卡尔树，一种特殊的二叉树}
+\PYG{c+cm}{ * key满足二叉搜索树的特性(下标小的在左边，下标大的在右边)}
+\PYG{c+cm}{ * value满足堆的性质(小根堆: 父节点比子节点小，大根堆相反)}
+\PYG{c+cm}{ */} 
+\PYG{k+kt}{int} \PYG{n+nf}{build}\PYG{p}{()\PYGZob{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{n}{le}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{ri}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{n}{stack}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{int}\PYG{o}{\PYGZgt{}} \PYG{n}{st}\PYG{p}{;}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k+kt}{bool} \PYG{n}{flag}\PYG{o}{=}\PYG{n+nb}{false}\PYG{p}{;}
+        \PYG{k+kt}{int} \PYG{n}{tmp}\PYG{p}{;}
+        \PYG{c+c1}{//维护一个递增的单调栈，构造大根堆}
+        \PYG{k}{while}\PYG{p}{(}\PYG{n}{st}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{a}\PYG{p}{[}\PYG{n}{st}\PYG{p}{.}\PYG{n}{top}\PYG{p}{()]}\PYG{o}{\PYGZlt{}}\PYG{n}{a}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])\PYGZob{}}
+            \PYG{n}{tmp}\PYG{o}{=}\PYG{n}{st}\PYG{p}{.}\PYG{n}{top}\PYG{p}{();}
+            \PYG{n}{st}\PYG{p}{.}\PYG{n}{pop}\PYG{p}{();}
+            \PYG{n}{flag}\PYG{o}{=}\PYG{n+nb}{true}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//栈中还有元素，那么这个即将入栈的元素i就是右子树}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{st}\PYG{p}{.}\PYG{n}{size}\PYG{p}{()}\PYG{o}{\PYGZgt{}}\PYG{l+m+mi}{0}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{ri}\PYG{p}{[}\PYG{n}{st}\PYG{p}{.}\PYG{n}{top}\PYG{p}{()]}\PYG{o}{=}\PYG{n}{i}\PYG{p}{;}
+            \PYG{n}{fa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{st}\PYG{p}{.}\PYG{n}{top}\PYG{p}{();}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{c+c1}{//维护单调性过程中最后一个出栈的就是左子树}
+        \PYG{k}{if}\PYG{p}{(}\PYG{n}{flag}\PYG{p}{)\PYGZob{}}
+            \PYG{n}{le}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}\PYG{o}{=}\PYG{n}{tmp}\PYG{p}{;}
+            \PYG{n}{fa}\PYG{p}{[}\PYG{n}{tmp}\PYG{p}{]}\PYG{o}{=}\PYG{n}{i}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{st}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{n}{i}\PYG{p}{);}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{k}{for}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{n}{i}\PYG{o}{\PYGZlt{}=}\PYG{n}{n}\PYG{p}{;}\PYG{n}{i}\PYG{o}{++}\PYG{p}{)\PYGZob{}}
+        \PYG{k}{if}\PYG{p}{(}\PYG{o}{!}\PYG{n}{fa}\PYG{p}{[}\PYG{n}{i}\PYG{p}{])\PYGZob{}}
+            \PYG{k}{return} \PYG{n}{i}\PYG{p}{;}
+        \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
