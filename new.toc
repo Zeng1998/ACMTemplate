@@ -54,3 +54,11 @@
 \contentsline {subsubsection}{\numberline {2.5.18}LCT维护路径异或最大值}{78}{subsubsection.2.5.18}
 \contentsline {subsubsection}{\numberline {2.5.19}cdq分治二维偏序}{81}{subsubsection.2.5.19}
 \contentsline {subsubsection}{\numberline {2.5.20}树状数组二位偏序}{83}{subsubsection.2.5.20}
+\contentsline {subsubsection}{\numberline {2.5.21}可持久化并查集}{85}{subsubsection.2.5.21}
+\contentsline {subsubsection}{\numberline {2.5.22}点分治+距离<=k点对数}{86}{subsubsection.2.5.22}
+\contentsline {subsubsection}{\numberline {2.5.23}点分治+模3路径数}{89}{subsubsection.2.5.23}
+\contentsline {subsubsection}{\numberline {2.5.24}动态点分治+单点修改查询最远点}{90}{subsubsection.2.5.24}
+\contentsline {subsubsection}{\numberline {2.5.25}动态点分治+带权重心}{94}{subsubsection.2.5.25}
+\contentsline {subsubsection}{\numberline {2.5.26}sam+线段树合并维护right集合}{97}{subsubsection.2.5.26}
+\contentsline {subsubsection}{\numberline {2.5.27}sam+LCS}{100}{subsubsection.2.5.27}
+\contentsline {subsubsection}{\numberline {2.5.28}sam+多串LCS}{102}{subsubsection.2.5.28}
